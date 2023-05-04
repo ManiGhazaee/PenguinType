@@ -11,6 +11,18 @@ const tokyoNightDark = {
         "--worst-score-color": "#f7768e",
 };
 
+const darkBlue = {
+        "--background-color": "#0D1317",
+        "--first-color":"#696D7D",
+        "--second-color": "#232ED1",
+        "--third-color": "#6564DB",
+        "--fourth-color": "#89D2DC",
+        "--caret-color": "#696D7D",
+        "--error-color": "#A4243B",
+        "--best-score-color": "#38A700",
+        "--worst-score-color": "#D10C0C",
+}
+
 const tokyoNightLight = {
         "--background-color": "#f0f8ff",
         "--first-color": "#4a5175",
