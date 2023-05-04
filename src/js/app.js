@@ -1,11 +1,3 @@
-let dayField = document.getElementById("day");
-let hourField = document.getElementById("hour");
-let minuteField = document.getElementById("minute");
-let secondField = document.getElementById("second");
-
-let interval;
-const eventDay = new Date("Jul 5, 2023 07:00:000").getTime();
-
 const second = 1000;
 const minute = second * 60;
 const hour = minute * 60;
@@ -221,28 +213,6 @@ const worstColorInput = document.getElementById("worst-color-input");
 let caretBloom = "box-shadow: var(--caret-color.3) 0px 0px 34px 14px;";
 
 const validKeyDownSet = new Set(validKeyDownArray);
-
-const countDownFn = () => {
-        const today = new Date().getTime();
-        const timeSpan = eventDay - today;
-
-        let days = Math.floor(timeSpan / day).toString();
-        let hours = Math.floor((timeSpan % day) / hour).toString();
-        let minutes = Math.floor((timeSpan % hour) / minute).toString();
-        let seconds = Math.floor((timeSpan % minute) / second).toString();
-
-        if (days.length === 1) days = "0" + days;
-        if (hours.length === 1) hours = "0" + hours;
-        if (minutes.length === 1) minutes = "0" + minutes;
-        if (seconds.length === 1) seconds = "0" + seconds;
-
-        dayField.innerHTML = days;
-        hourField.innerHTML = hours;
-        minuteField.innerHTML = minutes;
-        secondField.innerHTML = seconds;
-};
-
-// interval = setInterval(countDownFn, second);
 
 settings.addEventListener("click", () => {
         if (popUps.style.display === "none") {
