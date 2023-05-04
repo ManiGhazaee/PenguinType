@@ -164,6 +164,7 @@ let customThemeObj = {
 const themeObj = {
         "tokyo-night-dark": tokyoNightDark,
         "tokyo-night-light": tokyoNightLight,
+        "dark-blue": darkBlue,
         dark: dark,
         matrix: matrix,
         arch: arch,
