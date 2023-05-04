@@ -146,3 +146,15 @@ const jungle = {
         "bloom-caret": "#FFC700A3",
         "caret-animation": "blinker-bloom-jungle",
 };
+
+const sakura = {
+        "--background-color": "#141322",
+        "--first-color": "#554E5A",
+        "--second-color": "#854B93",
+        "--third-color": "#ED9AD4",
+        "--fourth-color": "#CAE4FD",
+        "--caret-color": "#CAE4FD",
+        "--error-color": "#67003C",
+        "--best-score-color": "#ED9AD4",
+        "--worst-score-color": "#67003C",
+}

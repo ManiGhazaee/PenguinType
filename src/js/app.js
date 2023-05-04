@@ -161,6 +161,7 @@ const themeObj = {
         matrix: matrix,
         arch: arch,
         "modern-ink": modernInk,
+        "sakura": sakura,
         dracula: dracula,
         terminal: terminal,
         "red-dragon": redDragon,
