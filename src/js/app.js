@@ -161,7 +161,7 @@ const themeObj = {
         matrix: matrix,
         arch: arch,
         "modern-ink": modernInk,
-        "sakura": sakura,
+        sakura: sakura,
         dracula: dracula,
         terminal: terminal,
         "red-dragon": redDragon,
@@ -214,6 +214,14 @@ const worstColorInput = document.getElementById("worst-color-input");
 let caretBloom = "box-shadow: var(--caret-color.3) 0px 0px 34px 14px;";
 
 const validKeyDownSet = new Set(validKeyDownArray);
+
+let spaceToNextWord = document.getElementById("space-to-next-word");
+let ofSpaceToNextWord = document.getElementById("of-space-to-next-word");
+
+let spaceToNextWordLocalStorage = localStorage.getItem("spaceToNextWordState");
+let spaceToNextWordState = spaceToNextWordLocalStorage || "OFF";
+ofSpaceToNextWord.innerHTML = spaceToNextWordState;
+console.log(spaceToNextWordState);
 
 settings.addEventListener("click", () => {
         if (popUps.style.display === "none") {
@@ -613,7 +621,27 @@ document.addEventListener("keydown", (event) => {
         rawCharacterCount++;
         everyCharTimeBetween();
 
-        if (event.key === "Backspace") {
+        if (event.key === " " && spaceToNextWordState === "ON") {
+                if (typeTestStarted === false && readyToStart === true) {
+                        typeTestStarted = true;
+                        startTime = performance.now();
+                        focusMode(true);
+                        if (TYPEMODE === "time-type-mode") {
+                                timerForTimeTypeMode(Number(nTimeInput));
+                        }
+                }
+
+                let pos = document.querySelector(".position");
+                if (isLastChild(pos.parentNode)) {
+                        finished();
+                        return;
+                        
+                } else if (isFirstChild(pos)) return;
+
+                let nextPosition = nextWordPosition(TEXT, POSITION);
+                spaceToNextWordHandler(nextPosition);
+
+        } else if (event.key === "Backspace") {
                 POSITION--;
                 STATE = null;
                 //console.log(STATE);
@@ -1308,3 +1336,40 @@ document.querySelectorAll(".color-input").forEach((e) => {
                 themeUpdateOnScreen();
         });
 });
+
+spaceToNextWord.addEventListener("click", () => {
+        if (ofSpaceToNextWord.innerHTML === "OFF") {
+                ofSpaceToNextWord.innerHTML = "ON";
+                localStorage.setItem("spaceToNextWordState", "ON");
+                spaceToNextWordState = "ON";
+        } else {
+                ofSpaceToNextWord.innerHTML = "OFF";
+                localStorage.setItem("spaceToNextWordState", "OFF");
+                spaceToNextWordState = "OFF";
+        }
+        console.log(spaceToNextWordState);
+});
+
+function nextWordPosition(txt, currentPosition) {
+        let i = currentPosition;
+        while (txt[i] !== " ") {
+                i++;
+        }
+        return ++i;
+}
+
+function spaceToNextWordHandler(nextPosition) {
+        let positionElem = document.querySelector(".position");
+        let positionParent = positionElem.parentElement;
+        if (isLastChild(positionParent)) {
+                return;
+        }
+        let tempNode = positionElem;
+        let parent = tempNode.parentNode;
+        let nextParent = parent.nextElementSibling;
+        tempNode = nextParent.children[0];
+        positionElem.classList.remove("position");
+        tempNode.classList.add("position");
+
+        POSITION = nextPosition;
+}

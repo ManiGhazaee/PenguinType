@@ -1033,3 +1033,10 @@ input[type="color"] {
                 font-size: 5vh;
         }
 }
+
+
+.of-button {
+        position: absolute;
+        text-align: right;
+        right: 10px;
+}
