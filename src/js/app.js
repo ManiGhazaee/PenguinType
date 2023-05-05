@@ -254,6 +254,8 @@ darkBack.addEventListener("click", () => {
         themePopup.style.display = "none";
         customTheme.style.display = "none";
         themesSettingItemsDisplay.style.display = "block";
+        settings.focus();
+        settings.blur();
 });
 
 document.getElementById("font-size").addEventListener("click", () => {
