@@ -120,7 +120,7 @@ div {
         right: 0px;
         width: 540px;
         height: 680px;
-        background-color: none;
+        background-color: var(--background-color);
         border: solid 1px var(--first-color);
         font-size: 20px;
         color: var(--fourth-color);
