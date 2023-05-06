@@ -245,6 +245,8 @@ allOnOffBtns.forEach((elem) => {
         ofButtonStyle(elem);
 });
 
+let ctrlPressed = false;
+
 settings.addEventListener("click", () => {
         if (popUps.style.display === "none") {
                 popUps.style.display = "block";
@@ -621,15 +623,7 @@ function textToHTML(str) {
 
 document.addEventListener("keydown", (event) => {
         //if (validKeyDownSet.has(event.key) === false) return;
-        if (
-                event.key === "Shift" ||
-                event.key === "Tab" ||
-                event.key === "Enter" ||
-                event.key === "Control" ||
-                event.key === "Alt" ||
-                event.key === "F11" ||
-                event.key === "CapsLock"
-        ) {
+        if (event.key === "Shift" || event.key === "Tab" || event.key === "Enter" || event.key === "Alt" || event.key === "F11" || event.key === "CapsLock") {
                 return;
         }
         if (POSITION === 0 && event.key === "Backspace") return;
@@ -642,6 +636,14 @@ document.addEventListener("keydown", (event) => {
 
         rawCharacterCount++;
         everyCharTimeBetween();
+
+        if (event.key === "Control") {
+                ctrlPressed = true;
+                return;
+        }
+        if (event.key === "Backspace" && ctrlPressed === true) {
+                return;
+        }
 
         if (event.key === " " && spaceToNextWordState === "ON") {
                 if (typeTestStarted === false && readyToStart === true) {
@@ -703,6 +705,19 @@ document.addEventListener("keydown", (event) => {
         }
         if (nextWordHighlightState === "ON") {
                 checkNextWordForHighlight();
+        }
+});
+
+document.addEventListener("keyup", (event) => {
+        if (event.key === "Control") {
+                ctrlPressed = false;
+        }
+});
+
+document.addEventListener("keypress", (event) => {
+        if (event.key === "Delete") {
+                ctrlbackSpaceHandler();
+                console.log("event.key = Delete");
         }
 });
 
@@ -843,6 +858,59 @@ function incorrectHandler() {
                 position.classList.remove("position");
         }
         positioningTypeFieldOnCaret();
+}
+
+function ctrlbackSpaceHandler() {
+        let pos = document.querySelector(".position");
+        let parent = pos.parentNode;
+
+        if (isFirstChild(pos) && isFirstChild(parent)) return;
+        else {
+                let posToGo = ctrlBackspacePositionCal(TEXT, POSITION);
+                let posDiff = POSITION - posToGo;
+                let tempNode = pos;
+                for (let i = 0; i < posDiff; i++) {
+                        let parent = tempNode.parentNode;
+                        if (isFirstChild(tempNode)) {
+                                let prevParent = parent.previousSibling;
+                                removeCorrOrIncorrClass(tempNode);
+                                tempNode = prevParent.children[prevParent.children.length - 1];
+                        } else {
+                                removeCorrOrIncorrClass(tempNode);
+                                tempNode = tempNode.previousSibling;
+                        }
+                }
+                removeCorrOrIncorrClass(tempNode);
+                pos.classList.remove("position");
+                tempNode.classList.add("position");
+                POSITION = posToGo;
+                if (currentWordHighlightState === "ON") {
+                        checkWordForHighlight();
+                }
+                if (nextWordHighlightState === "ON") {
+                        checkNextWordForHighlight();
+                }
+        }
+}
+
+function removeCorrOrIncorrClass(node) {
+        if (node.classList.contains("correct")) {
+                node.classList.remove("correct");
+        } else if (node.classList.contains("incorrect")) {
+                node.classList.remove("incorrect");
+        } else if (node.classList.contains("space-incorrect")) {
+                node.classList.remove("space-incorrect");
+        }
+}
+
+function ctrlBackspacePositionCal(txt, currentPosition) {
+        let i = currentPosition;
+        if (txt[i - 1] === " ") i -= 2;
+        else if (txt[i] === " ") i -= 1;
+        while (txt[i] !== " " && i !== -1) {
+                i--;
+        }
+        return ++i;
 }
 
 function finished() {
