@@ -1047,3 +1047,10 @@ input[type="color"] {
 .next-highlight {
         color: var(--second-color);
 }
+
+.on-color {
+        color: var(--third-color);
+}
+.off-color {
+        color: var(--error-color);
+}

@@ -240,6 +240,11 @@ let nextWordHighlightState = nextWordHighlightLocalStorage || "OFF";
 ofNextWordHighlight.innerHTML = nextWordHighlightState;
 console.log(nextWordHighlightState);
 
+let allOnOffBtns = document.querySelectorAll(".of-button");
+allOnOffBtns.forEach((elem) => {
+        ofButtonStyle(elem);
+});
+
 settings.addEventListener("click", () => {
         if (popUps.style.display === "none") {
                 popUps.style.display = "block";
@@ -1369,6 +1374,7 @@ spaceToNextWord.addEventListener("click", () => {
                 localStorage.setItem("spaceToNextWordState", "OFF");
                 spaceToNextWordState = "OFF";
         }
+        ofButtonStyle(ofSpaceToNextWord);
         console.log(spaceToNextWordState);
 });
 
@@ -1382,6 +1388,7 @@ currentWordHighlight.addEventListener("click", () => {
                 localStorage.setItem("currentWordHighlightState", "OFF");
                 currentWordHighlightState = "OFF";
         }
+        ofButtonStyle(ofCurrentWordHighlight);
         console.log(currentWordHighlightState);
 });
 
@@ -1395,8 +1402,23 @@ nextWordHighlight.addEventListener("click", () => {
                 localStorage.setItem("nextWordHighlightState", "OFF");
                 nextWordHighlightState = "OFF";
         }
+        ofButtonStyle(ofNextWordHighlight);
         console.log(nextWordHighlightState);
 });
+
+function ofButtonStyle(elem) {
+        if (elem.innerHTML === "OFF") {
+                if (elem.classList.contains("on-color")) {
+                        elem.classList.remove("on-color");
+                }
+                elem.classList.add("off-color");
+        } else {
+                if (elem.classList.contains("off-color")) {
+                        elem.classList.remove("off-color");
+                }
+                elem.classList.add("on-color");
+        }
+}
 
 function nextWordPosition(txt, currentPosition) {
         let i = currentPosition;
