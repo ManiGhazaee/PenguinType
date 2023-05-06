@@ -215,6 +215,7 @@ let caretBloom = "box-shadow: var(--caret-color.3) 0px 0px 34px 14px;";
 
 const validKeyDownSet = new Set(validKeyDownArray);
 
+// on of settings
 let spaceToNextWord = document.getElementById("space-to-next-word");
 let ofSpaceToNextWord = document.getElementById("of-space-to-next-word");
 
@@ -222,6 +223,14 @@ let spaceToNextWordLocalStorage = localStorage.getItem("spaceToNextWordState");
 let spaceToNextWordState = spaceToNextWordLocalStorage || "OFF";
 ofSpaceToNextWord.innerHTML = spaceToNextWordState;
 console.log(spaceToNextWordState);
+
+let currentWordHighlight = document.getElementById("current-word-highlight");
+let ofCurrentWordHighlight = document.getElementById("of-current-word-highlight");
+
+let currentWordHighlightLocalStorage = localStorage.getItem("currentWordHighlightState");
+let currentWordHighlightState = currentWordHighlightLocalStorage || "OFF";
+ofCurrentWordHighlight.innerHTML = currentWordHighlightState;
+console.log(currentWordHighlightState);
 
 settings.addEventListener("click", () => {
         if (popUps.style.display === "none") {
@@ -635,12 +644,10 @@ document.addEventListener("keydown", (event) => {
                 if (isLastChild(pos.parentNode)) {
                         finished();
                         return;
-                        
                 } else if (isFirstChild(pos)) return;
 
                 let nextPosition = nextWordPosition(TEXT, POSITION);
                 spaceToNextWordHandler(nextPosition);
-
         } else if (event.key === "Backspace") {
                 POSITION--;
                 STATE = null;
@@ -1348,6 +1355,19 @@ spaceToNextWord.addEventListener("click", () => {
                 spaceToNextWordState = "OFF";
         }
         console.log(spaceToNextWordState);
+});
+
+currentWordHighlight.addEventListener("click", () => {
+        if (ofCurrentWordHighlight.innerHTML === "OFF") {
+                ofCurrentWordHighlight.innerHTML = "ON";
+                localStorage.setItem("currentWordHighlightState", "ON");
+                currentWordHighlightState = "ON";
+        } else {
+                ofCurrentWordHighlight.innerHTML = "OFF";
+                localStorage.setItem("currentWordHighlightState", "OFF");
+                currentWordHighlightState = "OFF";
+        }
+        console.log(currentWordHighlightState);
 });
 
 function nextWordPosition(txt, currentPosition) {
