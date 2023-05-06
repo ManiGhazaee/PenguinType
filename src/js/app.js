@@ -232,6 +232,14 @@ let currentWordHighlightState = currentWordHighlightLocalStorage || "OFF";
 ofCurrentWordHighlight.innerHTML = currentWordHighlightState;
 console.log(currentWordHighlightState);
 
+let nextWordHighlight = document.getElementById("next-word-highlight");
+let ofNextWordHighlight = document.getElementById("of-next-word-highlight");
+
+let nextWordHighlightLocalStorage = localStorage.getItem("nextWordHighlightState");
+let nextWordHighlightState = nextWordHighlightLocalStorage || "OFF";
+ofNextWordHighlight.innerHTML = nextWordHighlightState;
+console.log(nextWordHighlightState);
+
 settings.addEventListener("click", () => {
         if (popUps.style.display === "none") {
                 popUps.style.display = "block";
@@ -687,6 +695,9 @@ document.addEventListener("keydown", (event) => {
 
         if (currentWordHighlightState === "ON") {
                 checkWordForHighlight();
+        }
+        if (nextWordHighlightState === "ON") {
+                checkNextWordForHighlight();
         }
 });
 
@@ -1374,6 +1385,19 @@ currentWordHighlight.addEventListener("click", () => {
         console.log(currentWordHighlightState);
 });
 
+nextWordHighlight.addEventListener("click", () => {
+        if (ofNextWordHighlight.innerHTML === "OFF") {
+                ofNextWordHighlight.innerHTML = "ON";
+                localStorage.setItem("nextWordHighlightState", "ON");
+                nextWordHighlightState = "ON";
+        } else {
+                ofNextWordHighlight.innerHTML = "OFF";
+                localStorage.setItem("nextWordHighlightState", "OFF");
+                nextWordHighlightState = "OFF";
+        }
+        console.log(nextWordHighlightState);
+});
+
 function nextWordPosition(txt, currentPosition) {
         let i = currentPosition;
         while (txt[i] !== " ") {
@@ -1422,6 +1446,41 @@ function checkWordForHighlight() {
                 }
                 for (let i = 0; i < parent.children.length; i++) {
                         parent.children[i].classList.add("highlight");
+                }
+        }
+}
+
+function checkNextWordForHighlight() {
+        let pos = document.querySelector(".position");
+        let parent = pos.parentNode;
+        let nextParent = parent.nextSibling;
+        if (nextParent == null) {
+                for (let i = 0; i < parent.children.length; i++) {
+                        if (parent.children[i].classList.contains("next-highlight")) {
+                                parent.children[i].classList.remove("next-highlight");
+                        }
+                }
+                return;
+        }
+        if (nextParent.children[0].classList.contains("next-highlight") === false) {
+                if (isFirstChild(nextParent) === false) {
+                        for (let i = 0; i < parent.children.length; i++) {
+                                if (parent.children[i].classList.contains("next-highlight")) {
+                                        parent.children[i].classList.remove("next-highlight");
+                                }
+                        }
+                }
+                if (isLastChild(nextParent) === false) {
+                        let nextNextParent = nextParent.nextSibling;
+
+                        for (let i = 0; i < nextNextParent.children.length; i++) {
+                                if (nextNextParent.children[i].classList.contains("next-highlight")) {
+                                        nextNextParent.children[i].classList.remove("next-highlight");
+                                }
+                        }
+                }
+                for (let i = 0; i < nextParent.children.length; i++) {
+                        nextParent.children[i].classList.add("next-highlight");
                 }
         }
 }

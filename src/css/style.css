@@ -1044,3 +1044,6 @@ input[type="color"] {
 .highlight {
         color: var(--third-color);
 }
+.next-highlight {
+        color: var(--second-color);
+}
