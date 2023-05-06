@@ -14,5 +14,10 @@ To use PenguinType, simply select your preferred typing mode and theme, and star
  - Word and time type mode
  - Shortcut for fast restart and repeat
  - Changeable font size
+ - Space to next word (on | off)
+ - Next word highlight (on | off)
+ - Current word highlight (on | off)
+ - Control + Backspace delete
+ 
 
 PenguinType is inspired by MonkeyType, another popular typing test site.
