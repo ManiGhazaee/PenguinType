@@ -514,7 +514,7 @@ fieldset {
 }
 
 .incorrect {
-        color: var(--error-color);
+        color: var(--error-color) !important;
 }
 
 .space-incorrect {
@@ -1039,4 +1039,8 @@ input[type="color"] {
         position: absolute;
         text-align: right;
         right: 10px;
+}
+
+.highlight {
+        color: var(--third-color);
 }

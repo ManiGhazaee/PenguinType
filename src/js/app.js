@@ -684,6 +684,10 @@ document.addEventListener("keydown", (event) => {
                 //console.log(POSITION);
                 incorrectHandler();
         }
+
+        if (currentWordHighlightState === "ON") {
+                checkWordForHighlight();
+        }
 });
 
 let t1;
@@ -1392,4 +1396,32 @@ function spaceToNextWordHandler(nextPosition) {
         tempNode.classList.add("position");
 
         POSITION = nextPosition;
+}
+
+function checkWordForHighlight() {
+        let pos = document.querySelector(".position");
+        if (pos.classList.contains("highlight") === false) {
+                let parent = pos.parentNode;
+                if (isFirstChild(parent) === false) {
+                        let previousParent = parent.previousSibling;
+
+                        for (let i = 0; i < previousParent.children.length; i++) {
+                                if (previousParent.children[i].classList.contains("highlight")) {
+                                        previousParent.children[i].classList.remove("highlight");
+                                }
+                        }
+                }
+                if (isLastChild(parent) === false) {
+                        let nextParent = parent.nextSibling;
+
+                        for (let i = 0; i < nextParent.children.length; i++) {
+                                if (nextParent.children[i].classList.contains("highlight")) {
+                                        nextParent.children[i].classList.remove("highlight");
+                                }
+                        }
+                }
+                for (let i = 0; i < parent.children.length; i++) {
+                        parent.children[i].classList.add("highlight");
+                }
+        }
 }
