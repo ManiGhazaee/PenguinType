@@ -1,12 +1,13 @@
-# PenguinType
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+
+# About
 Visit the site here: [PenguinType](https://penguintype.epizy.com)
 
 PenguinType is a minimalistic typing test site that allows you to test your typing speed and accuracy. It features a simple and minimal interface, with the ability to choose from different themes or set your own custom theme. It also offers two different typing modes.
 
-## How to get started
-To use PenguinType, simply select your preferred typing mode and theme, and start typing! After each typing test, PenguinType will display your results, including your WPM, raw WPM, accuracy, consistency, errors, and time.
-
-## Features 
+# Features 
  - Blazingly fast
  - Custom theme
  - Color-coded result scores to easily indentify performance
@@ -20,5 +21,5 @@ To use PenguinType, simply select your preferred typing mode and theme, and star
  - Current word highlight (on | off)
  - Control + Backspace delete
  
-
+#
 PenguinType is inspired by MonkeyType, another popular typing test site.
