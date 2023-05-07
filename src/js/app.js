@@ -1510,6 +1510,7 @@ function spaceToNextWordHandler(nextPosition) {
         tempNode.classList.add("position");
 
         POSITION = nextPosition;
+        positioningTypeFieldOnCaret();
 }
 
 function checkWordForHighlight() {
