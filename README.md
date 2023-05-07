@@ -10,6 +10,7 @@ To use PenguinType, simply select your preferred typing mode and theme, and star
  - Blazingly fast
  - Custom theme
  - Color-coded result scores to easily indentify performance
+ - Glowing caret in certain themes
  - Calculates WPM, raw WPM, accuracy, consistency, errors, time
  - Word and time type mode
  - Shortcut for fast restart and repeat
