@@ -1,7 +1,7 @@
 const tokyoNightDark = {
         // monkeytype
-        "--background-color": "#000", // bg
-        "--first-color": "#ffffff3d", // sub
+        "--background-color": "#1a1b26", // bg
+        "--first-color": "#565f89", // sub
         "--second-color": "#7dcfff", // main
         "--third-color": "#bb9af7", // txt
         "--fourth-color": "#f0f8ff", // txt
@@ -12,15 +12,15 @@ const tokyoNightDark = {
 };
 
 const tokyoNightLight = {
-        "--background-color": "#f0f8ff",
-        "--first-color": "#4a5175",
-        "--second-color": "#7dcfff",
-        "--third-color": "#bb9af7",
-        "--fourth-color": "#000",
-        "--caret-color": "#000",
-        "--error-color": "#f7768e",
-        "--best-score-color": "#7dcfff",
-        "--worst-score-color": "#f7768e",
+        "--background-color": "#d5d6db",
+        "--first-color": "#9699a3",
+        "--second-color": "#0f4b6e",
+        "--third-color": "#5a4a78",
+        "--fourth-color": "#0f0f14",
+        "--caret-color": "#0f0f14",
+        "--error-color": "#8c4351",
+        "--best-score-color": "#0f4b6e",
+        "--worst-score-color": "#8c4351",
 };
 
 const darkBlue = {
