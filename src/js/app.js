@@ -1271,6 +1271,7 @@ function positioningTypeFieldOnCaret() {
         let caretLetter = document.querySelector(".position");
         let caretWord = caretLetter.parentNode;
         let caretWordTop = caretWord.offsetTop;
+        
         ////console.log(typeField);
         let typeFieldFontSize = window.getComputedStyle(typeField).getPropertyValue("font-size").replace(/\D/g, "");
         ////console.log(typeFieldFontSize);

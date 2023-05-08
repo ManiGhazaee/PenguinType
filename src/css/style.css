@@ -25,6 +25,7 @@ html {
         -ms-overflow-style: none;
         scrollbar-width: none;
         transition: 400ms;
+        scroll-behavior: smooth;
 }
 
 
@@ -119,11 +120,14 @@ div {
         top: 0px;
         right: 0px;
         width: 540px;
-        height: 680px;
+        height: 80vh;
         background-color: var(--background-color);
         border: solid 1px var(--first-color);
+        border-radius: 6px;
         font-size: 20px;
         color: var(--fourth-color);
+        overflow-y: scroll;
+        overflow-x: hidden;
 }
 
 .input-cont {
@@ -216,51 +220,47 @@ fieldset {
 }
 
 #back-space {
-        width: 40px;
+        width: 50px;
         height: 40px;
         display: inline;
         position: absolute;
-        border-bottom: solid 1px var(--first-color);
+        border-bottom: solid 0px var(--first-color);
+        border-top-left-radius: 6px;
         text-align: center;
         line-height: 40px;
         color: var(--first-color);
 }
 
 #back-space:hover {
-        color: var(--background-color);
-        background-color: var(--fourth-color);
+        color: var(--fourth-color);
 }
 
 #back-space:active {
-        color: var(--background-color);
-        background-color: var(--red-color);
+        color: var(--error-color);
 }
 
 #search-bar {
         display: inline-block;
         margin-left: 40px;
         width: 500px;
+        border-radius: 6px;
+        color: var(--first-color);
+        background-color: var(--background-color);
 }
 
 #search-bar:hover {
         color: var(--first-color);
-        background-color: var(--background-color);
-}
-
-#search-bar {
-        color: var(--first-color);
-        background-color: var(--background-color);
 }
 
 #item-search {
         text-align: left;
         border: none;
         color: var(--first-color);
-        background-color: var(--background-color, 0);
         font-size: 20px;
         height: 40px;
         width: 480px;
         padding: 0px;
+        margin-left: 0px;
 }
 
 ::placeholder {
@@ -274,12 +274,10 @@ fieldset {
 
 .setting-items {
         display: block;
-        width: 540px;
+        width: 539px;
         height: 40px;
         color: var(--first-color);
-        background-color: var(--background-color);
         line-height: 40px;
-        border-bottom: solid 1px var(--first-color);
         font-size: 20px;
 }
 
@@ -294,7 +292,7 @@ fieldset {
 }
 
 .setting-items-text {
-        margin-left: 10px;
+        margin-left: 13px;
 }
 
 .uifont {
@@ -412,7 +410,7 @@ fieldset {
         border-left: 2px solid;
         transform: rotate(45deg);
         left: 16px;
-        top: 15px;
+        top: 14px;
 }
 
 /* css.org20 ^^^^^^^^^^^^^^^^^^^^  */
@@ -852,20 +850,6 @@ h1 {
         color: var(--second-color);
 }
 
-
-#language-settings {
-        display: block;
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        width: 540px;
-        height: 680px;
-        background-color: var(--background-color);
-        border: solid 1px var(--first-color);
-        font-size: 20px;
-        color: var(--fourth-color);
-}
-
 #language-search-bar {
         display: inline-block;
         width: 540px;
@@ -900,19 +884,6 @@ h1 {
         height: 680px;
         margin: 80px auto;
         transition: 300ms;
-}
-
-#about-field {
-        display: block;
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        width: 540px;
-        height: 680px;
-        background-color: var(--background-color);
-        border: solid 1px var(--first-color);
-        font-size: 20px;
-        color: var(--fourth-color);
 }
 
 #about-txt {
@@ -956,11 +927,25 @@ a:visited {
         top: 0px;
         right: 0px;
         width: 540px;
-        height: 680px;
+        height: 80vh;
         background-color: var(--background-color);
         border: solid 1px var(--first-color);
+        border-radius: 6px;
         font-size: 20px;
         color: var(--fourth-color);
+        overflow-y: scroll;
+        overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+        width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+        background-color: var(--first-color);
+        transition: 200ms;
+        cursor: pointer;
 }
 
 .pop-up {
@@ -980,7 +965,8 @@ a:visited {
         display: inline-block;
         width: 540px;
         color: var(--first-color);
-        background-color: var(--background-color);
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
 }
 
 .search-bar:hover {
@@ -1038,12 +1024,13 @@ input[type="color"] {
 .of-button {
         position: absolute;
         text-align: right;
-        right: 10px;
+        right: 13px;
 }
 
 .highlight {
         color: var(--third-color);
 }
+
 .next-highlight {
         color: var(--second-color);
 }
@@ -1051,6 +1038,7 @@ input[type="color"] {
 .on-color {
         color: var(--third-color);
 }
+
 .off-color {
         color: var(--error-color);
 }
