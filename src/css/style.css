@@ -932,14 +932,22 @@ a:visited {
 }
 
 ::-webkit-scrollbar {
-        width: 4px;
+        width: 3px;
 }
-
+.field:hover::-webkit-scrollbar {
+        width: 6px;
+}
 ::-webkit-scrollbar-thumb {
         border-radius: 6px;
         background-color: var(--first-color);
         transition: 200ms;
         cursor: pointer;
+}
+::-webkit-scrollbar-thumb:hover {
+        background-color: var(--fourth-color);
+}
+::-webkit-scrollbar-thumb:active {
+        background-color: var(--second-color);
 }
 
 .pop-up {
