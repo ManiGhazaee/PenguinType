@@ -546,10 +546,13 @@ function textGenerator() {
                 }
         }
         if (PUNCTUATION === "ON") {
+                let firstWord = result[0].split("");
+                firstWord[0] = firstWord[0].toUpperCase();
+                result[0] = firstWord.join("");
                 result = addPunctuation(result);
         } 
         if (NUMBERS === "ON") {
-                //result = addNumbers(TEXT);
+                result = addNumbers(result);
         }
 
         numberOfWords = result.length;
@@ -652,6 +655,15 @@ function addPunctuation(arr) {
                                 arr[i] = arr[i] + puncType;
                         }
                }
+        }
+        return arr;
+}
+
+function addNumbers(arr) {
+        for (let i = 0; i < arr.length; i++) {
+               if (Math.random() < 0.1) {
+                        arr.splice(i, 0, Math.floor(Math.random() * 100)).toString();
+               } 
         }
         return arr;
 }
