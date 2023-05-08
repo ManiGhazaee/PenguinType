@@ -215,7 +215,9 @@ let caretBloom = "box-shadow: var(--caret-color.3) 0px 0px 34px 14px;";
 
 const validKeyDownSet = new Set(validKeyDownArray);
 
-// on of settings
+const resetCustomTheme = document.getElementById("reset-custom-theme");
+
+// on-off settings
 let spaceToNextWord = document.getElementById("space-to-next-word");
 let ofSpaceToNextWord = document.getElementById("of-space-to-next-word");
 
@@ -244,6 +246,7 @@ let allOnOffBtns = document.querySelectorAll(".of-button");
 allOnOffBtns.forEach((elem) => {
         ofButtonStyle(elem);
 });
+// end of on-off settings
 
 let ctrlPressed = false;
 
@@ -1271,7 +1274,7 @@ function positioningTypeFieldOnCaret() {
         let caretLetter = document.querySelector(".position");
         let caretWord = caretLetter.parentNode;
         let caretWordTop = caretWord.offsetTop;
-        
+
         ////console.log(typeField);
         let typeFieldFontSize = window.getComputedStyle(typeField).getPropertyValue("font-size").replace(/\D/g, "");
         ////console.log(typeFieldFontSize);
@@ -1576,3 +1579,16 @@ function checkNextWordForHighlight() {
                 }
         }
 }
+
+resetCustomTheme.addEventListener("click", () => {
+        for (const key in inputIdWithColorKey) {
+                if (inputIdWithColorKey[key][1] in localStorage) {
+                        localStorage.setItem(inputIdWithColorKey[key][1], tokyoNightDark[inputIdWithColorKey[key][0]]);
+                }
+        }
+        document.querySelectorAll(".color-input").forEach((e) => {
+                e.value = tokyoNightDark[inputIdWithColorKey[e.id][0]];
+                customThemeObj[inputIdWithColorKey[e.id][0]] = e.value;
+        });
+        themeUpdateOnScreen();
+});

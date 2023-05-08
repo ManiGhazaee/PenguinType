@@ -1073,3 +1073,26 @@ input[type="color"] {
 .off-color {
         color: var(--error-color);
 }
+
+.reset-custom-theme {
+        position: absolute;
+        bottom: 0px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 103px;
+        color: var(--first-color);
+        text-align: center;
+        font-weight: 500;
+        border-radius: 6px;
+        border-bottom: none;
+}
+
+.reset-custom-theme:active {
+        color: var(--second-color);
+        background-color: var(--background-color);
+}
+
+.reset-custom-theme:hover {
+        color: var(--fourth-color);
+        background-color: var(--background-color);
+}
