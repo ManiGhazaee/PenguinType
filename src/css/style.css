@@ -448,15 +448,24 @@ fieldset {
 .save {
         position: absolute;
         bottom: 0px;
-        background-color: var(--first-color);
-        color: var(--background-color);
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 103px;
+        color: var(--first-color);
         text-align: center;
         font-weight: 500;
+        border-radius: 6px;
         border-bottom: none;
 }
 
 .save:active {
-        background-color: var(--second-color);
+        color: var(--second-color);
+        background-color: var(--background-color);
+}
+
+.save:hover {
+        color: var(--fourth-color);
+        background-color: var(--background-color);
 }
 
 #notif {
