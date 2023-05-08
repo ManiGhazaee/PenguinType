@@ -250,6 +250,15 @@ allOnOffBtns.forEach((elem) => {
 
 let ctrlPressed = false;
 
+let puncElem = document.getElementById("punctuation");
+let numbersElem = document.getElementById("numbers");
+
+let puncLocalStorage = localStorage.getItem("PUNCTUATION");
+let numbersLocalStorage = localStorage.getItem("NUMBERS");
+
+let PUNCTUATION = puncLocalStorage || false;
+let NUMBERS = numbersLocalStorage || false;
+
 settings.addEventListener("click", () => {
         if (popUps.style.display === "none") {
                 popUps.style.display = "block";
@@ -521,11 +530,12 @@ function isFirstChild(el) {
         return el === el.parentNode.children[0];
 }
 
+function random(n) {
+        return Math.floor(Math.random() * n);
+}
+
 function textGenerator() {
         let result = [];
-        const random = (n) => {
-                return Math.floor(Math.random() * n);
-        };
         if (TYPEMODE === "word-type-mode") {
                 for (let i = 0; i < nWordsInput; i++) {
                         result.push(LANGUAGE[random(LANGUAGE.length)]);
@@ -534,6 +544,12 @@ function textGenerator() {
                 for (let i = 0; i < 100; i++) {
                         result.push(LANGUAGE[random(LANGUAGE.length)]);
                 }
+        }
+        if (PUNCTUATION === "ON") {
+                result = addPunctuation(result);
+        } 
+        if (NUMBERS === "ON") {
+                //result = addNumbers(TEXT);
         }
 
         numberOfWords = result.length;
@@ -623,6 +639,23 @@ function textToHTML(str) {
                 }
         }
 }
+
+function addPunctuation(arr) {
+        for (let i = 0; i < arr.length; i++) {
+               if (Math.random() < 0.2)  {
+                        let puncType = punctuation[random(punctuation.length)];
+                        if (puncType === "()" || puncType === "''" || puncType === '""') {
+                                arr[i] = puncType[0] + arr[i] + puncType[1];
+                        } else if (puncType === "-"){
+                                arr[i] = arr[i] + " " + puncType;
+                        } else {
+                                arr[i] = arr[i] + puncType;
+                        }
+               }
+        }
+        return arr;
+}
+
 
 document.addEventListener("keydown", (event) => {
         //if (validKeyDownSet.has(event.key) === false) return;
@@ -1191,6 +1224,10 @@ function typeModeToStyle() {
                         typeModeItems[i].classList.add("mode-active");
                 } else if (typeModeItems[i].innerHTML == nTimeInput) {
                         typeModeItems[i].classList.add("mode-active");
+                } else if (typeModeItems[i].id === "punctuation" && PUNCTUATION === "ON") {
+                        typeModeItems[i].classList.add("mode-active");
+                } else if (typeModeItems[i].id === "numbers" && NUMBERS === "ON") {
+                        typeModeItems[i].classList.add("mode-active");
                 }
         }
 }
@@ -1215,6 +1252,34 @@ function selectTypeMode(node) {
                         TYPEMODE = "time-type-mode";
                         localStorage.setItem("TYPEMODE", "time-type-mode");
                         typeModeToLocalStorage();
+                        return;
+                }
+        } else if (node.id === "punctuation") {
+                if (node.classList.contains("mode-active")) {
+                        node.classList.remove("mode-active");
+                        PUNCTUATION = "OFF";
+                        localStorage.setItem("PUNCTUATION", "OFF");
+                        restart();
+                        return;
+                } else {
+                        node.classList.add("mode-active");
+                        PUNCTUATION = "ON";
+                        localStorage.setItem("PUNCTUATION", "ON");
+                        restart();
+                        return;
+                }
+        } else if (node.id === "numbers") {
+                if (node.classList.contains("mode-active")) {
+                        node.classList.remove("mode-active");
+                        NUMBERS = "OFF";
+                        localStorage.setItem("NUMBERS", "OFF");
+                        restart();
+                        return;
+                } else {
+                        node.classList.add("mode-active");
+                        NUMBERS = "ON";
+                        localStorage.setItem("NUMBERS", "ON");
+                        restart();
                         return;
                 }
         }

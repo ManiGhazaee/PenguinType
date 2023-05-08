@@ -1,3 +1,4 @@
+const punctuation = ["()", ",", "''", '""', ".", "-", "!", "?", ";", ":"]
 const english200 = [
         "the",
         "be",
