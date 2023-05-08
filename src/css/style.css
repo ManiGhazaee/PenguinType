@@ -114,22 +114,6 @@ div {
         color: var(--error-color);
 }
 
-#field-settings {
-        display: block;
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        width: 540px;
-        height: 80vh;
-        background-color: var(--background-color);
-        border: solid 1px var(--first-color);
-        border-radius: 6px;
-        font-size: 20px;
-        color: var(--fourth-color);
-        overflow-y: scroll;
-        overflow-x: hidden;
-}
-
 .input-cont {
         display: inline-block;
         position: relative;
@@ -943,7 +927,7 @@ a:visited {
         border-radius: 6px;
         font-size: 20px;
         color: var(--fourth-color);
-        overflow-y: scroll;
+        overflow-y: auto;
         overflow-x: hidden;
 }
 
