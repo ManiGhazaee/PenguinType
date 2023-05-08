@@ -388,6 +388,7 @@ fieldset {
         line-height: 40px;
         font-size: 20px;
         color: var(--first-color);
+        margin-left: 13px;
 }
 
 .gg-chevron-left {
@@ -992,14 +993,35 @@ a:visited {
 
 
 input[type="color"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
         background-color: none;
         display: inline;
-        width: 170px;
+        width: 40px;
         height: 40px;
         position: absolute;
-        right: 0px;
+        right: 13px;
         border: 0px;
         padding: 0px;
+}
+
+::-webkit-color-swatch {
+        border-radius: 6px;
+        border: none;
+}
+
+::-moz-color-swatch {
+        border-radius: 6px;
+        border: none;
+}
+
+#bg-color-input::-webkit-color-swatch {
+        border: 1px solid var(--first-color);
+}
+
+#bg-color-input::-moz-color-swatch {
+        border: 1px solid var(--first-color);
 }
 
 .nohover:hover {
