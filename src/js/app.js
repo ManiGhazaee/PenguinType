@@ -1497,10 +1497,12 @@ function positionUpdate() {
                         head.insertAdjacentHTML(
                                 "beforeend",
                                 `<style id="new-position" type="text/css">
+                                .position {
                                                 background-color: var(--caret-color);
                                                 color: var(--first-color);
                                                 animation: blinker 1s infinite;
                                                 z-index: 99;
+                                }
                                  </style>
                         `
                         );
@@ -1795,7 +1797,6 @@ resetCustomTheme.addEventListener("click", () => {
 function addCaretStyleOnScreen() {
         try {
                 if (caretStyleState === "LINE") {
-                        let pos = document.querySelector(".position");
                         while (document.querySelector(".block-caret") != undefined) {
                                 document.querySelector(".block-caret").remove();
                         }
@@ -1812,7 +1813,6 @@ function addCaretStyleOnScreen() {
                         }
                 } else if (caretStyleState === "BLOCK") {
                         if (smoothCaretState === "ON") {
-                                let pos = document.querySelector(".position");
                                 while (document.querySelector(".block-caret") != undefined) {
                                         document.querySelector(".block-caret").remove();
                                 }
@@ -1824,8 +1824,10 @@ function addCaretStyleOnScreen() {
                                 typeField.appendChild(elem);
                                 elem.classList.add("smooth-caret");
                         } else {
-                                let pos = document.querySelector(".position");
-                                if (document.querySelector(".line-caret") != undefined) {
+                                while (document.querySelector(".block-caret") != undefined) {
+                                        document.querySelector(".block-caret").remove();
+                                }
+                                while (document.querySelector(".line-caret") != undefined) {
                                         document.querySelector(".line-caret").remove();
                                 }
                         }
