@@ -242,6 +242,14 @@ let nextWordHighlightState = nextWordHighlightLocalStorage || "OFF";
 ofNextWordHighlight.innerHTML = nextWordHighlightState;
 console.log(nextWordHighlightState);
 
+let smoothCaret = document.getElementById("smooth-caret");
+let ofSmoothCaret = document.getElementById("of-smooth-caret");
+
+let smoothCaretLocalStorage = localStorage.getItem("smoothCaretState");
+let smoothCaretState = smoothCaretLocalStorage || "OFF";
+ofSmoothCaret.innerHTML = smoothCaretState;
+console.log(smoothCaretState);
+
 let allOnOffBtns = document.querySelectorAll(".of-button");
 allOnOffBtns.forEach((elem) => {
         ofButtonStyle(elem);
@@ -258,6 +266,13 @@ let numbersLocalStorage = localStorage.getItem("NUMBERS");
 
 let PUNCTUATION = puncLocalStorage || false;
 let NUMBERS = numbersLocalStorage || false;
+
+let caretStyleElem = document.getElementById("caret-style");
+let switchCaretStyle = document.getElementById("switch-caret-style");
+let caretStyleLocalStorage = localStorage.getItem("caretStyleState");
+let caretStyleStates = ["LINE", "BLOCK"];
+let caretStyleState = caretStyleLocalStorage || "BLOCK";
+switchCaretStyle.innerHTML = caretStyleState;
 
 settings.addEventListener("click", () => {
         if (popUps.style.display === "none") {
@@ -550,7 +565,7 @@ function textGenerator() {
                 firstWord[0] = firstWord[0].toUpperCase();
                 result[0] = firstWord.join("");
                 result = addPunctuation(result);
-        } 
+        }
         if (NUMBERS === "ON") {
                 result = addNumbers(result);
         }
@@ -641,33 +656,33 @@ function textToHTML(str) {
                         word = typeField.lastChild;
                 }
         }
+        addCaretStyleOnScreen();
 }
 
 function addPunctuation(arr) {
         for (let i = 0; i < arr.length; i++) {
-               if (Math.random() < 0.2)  {
+                if (Math.random() < 0.2) {
                         let puncType = punctuation[random(punctuation.length)];
                         if (puncType === "()" || puncType === "''" || puncType === '""') {
                                 arr[i] = puncType[0] + arr[i] + puncType[1];
-                        } else if (puncType === "-"){
+                        } else if (puncType === "-") {
                                 arr[i] = arr[i] + " " + puncType;
                         } else {
                                 arr[i] = arr[i] + puncType;
                         }
-               }
+                }
         }
         return arr;
 }
 
 function addNumbers(arr) {
         for (let i = 0; i < arr.length; i++) {
-               if (Math.random() < 0.1) {
+                if (Math.random() < 0.1) {
                         arr.splice(i, 0, Math.floor(Math.random() * 100)).toString();
-               } 
+                }
         }
         return arr;
 }
-
 
 document.addEventListener("keydown", (event) => {
         //if (validKeyDownSet.has(event.key) === false) return;
@@ -704,7 +719,8 @@ document.addEventListener("keydown", (event) => {
                 }
 
                 let pos = document.querySelector(".position");
-                if (isLastChild(pos.parentNode)) {
+                let parentElem = pos.parentElement;
+                if (isLastChild(pos.parentNode) || parentElem.nextElementSibling.tagName === "SPAN") {
                         finished();
                         return;
                 } else if (isFirstChild(pos)) return;
@@ -864,6 +880,7 @@ function backSpaceHandler() {
         }
 
         positioningTypeFieldOnCaret();
+        updateCaretOnScreen();
 }
 
 function correctHandler() {
@@ -872,9 +889,10 @@ function correctHandler() {
 
         if (isLastChild(position)) {
                 let parent = position.parentElement;
-                if (isLastChild(parent)) {
+                if (isLastChild(parent) || parent.nextElementSibling.tagName === "SPAN") {
                         finished();
                 } else {
+                        console.log(parent.nextElementSibling.children[0]);
                         parent.nextElementSibling.children[0].classList.add("position");
                         position.classList.remove("position");
                 }
@@ -883,6 +901,7 @@ function correctHandler() {
                 position.classList.remove("position");
         }
         positioningTypeFieldOnCaret();
+        updateCaretOnScreen();
 }
 
 function incorrectHandler() {
@@ -895,7 +914,7 @@ function incorrectHandler() {
 
         if (isLastChild(position)) {
                 let parent = position.parentElement;
-                if (isLastChild(parent)) {
+                if (isLastChild(parent) || parent.nextElementSibling.tagName === "SPAN") {
                         finished();
                 } else {
                         parent.nextElementSibling.children[0].classList.add("position");
@@ -906,6 +925,7 @@ function incorrectHandler() {
                 position.classList.remove("position");
         }
         positioningTypeFieldOnCaret();
+        updateCaretOnScreen();
 }
 
 function ctrlbackSpaceHandler() {
@@ -939,6 +959,7 @@ function ctrlbackSpaceHandler() {
                         checkNextWordForHighlight();
                 }
         }
+        updateCaretOnScreen();
 }
 
 function removeCorrOrIncorrClass(node) {
@@ -1369,7 +1390,40 @@ function positioningTypeFieldOnCaret() {
                 if (TYPEMODE === "word-type-mode") return;
                 textGeneratorToHtmlTimeTypeMode();
         }
+        updateCaretOnScreen();
 }
+
+function updateCaretOnScreen() {
+        if (caretStyleState === "block" && smoothCaretState === "OFF") return;
+        else {
+                let pos = document.querySelector(".position");
+                let parent = pos.parentElement;
+                let posX = pos.offsetLeft + parent.offsetLeft;
+                let posY = pos.offsetTop + parent.offsetTop;
+                let caret;
+                if (caretStyleState === "BLOCK") {
+                        caret = document.querySelector(".block-caret");
+                } else if (caretStyleState === "LINE") {
+                        caret = document.querySelector(".line-caret");
+                }
+                if (caret != undefined) {
+                        caret.style.top = posY + "px";
+                        caret.style.left = posX + "px";
+                }
+                try {
+                        if (caret == undefined) return;
+                        if (caret.getAnimations().length === 1) {
+                                caret.getAnimations()[0].currentTime = 0;
+                                return;
+                        }
+                        caret.getAnimations()[1].currentTime = 0;
+                } catch (err) {
+                        console.error(err);
+                }
+        }
+}
+
+window.addEventListener("resize", updateCaretOnScreen);
 
 document.querySelectorAll(".lang").forEach((e) => {
         ////console.log(e.id);
@@ -1428,6 +1482,40 @@ function themeUpdateOnScreen() {
                 }
         }
 }
+function positionUpdate() {
+        let head = document.querySelector("head");
+        if (caretStyleState === "BLOCK") {
+                if (smoothCaretState === "ON") {
+                        head.insertAdjacentHTML(
+                                "beforeend",
+                                `<style id="new-position" type="text/css">
+                                                .position { background-color: var(--background-color); animation-name: none}; }
+                                 </style>
+                        `
+                        );
+                } else {
+                        head.insertAdjacentHTML(
+                                "beforeend",
+                                `<style id="new-position" type="text/css">
+                                                background-color: var(--caret-color);
+                                                color: var(--first-color);
+                                                animation: blinker 1s infinite;
+                                                z-index: 99;
+                                 </style>
+                        `
+                        );
+                }
+        } else if (caretStyleState === "LINE") {
+                head.insertAdjacentHTML(
+                        "beforeend",
+                        `<style id="new-position" type="text/css">
+                                                .position { background-color: var(--background-color); animation-name: none}; }
+                                 </style>
+                        `
+                );
+        }
+}
+positionUpdate();
 
 function rgbToArray(str) {
         str = str.split(",");
@@ -1555,6 +1643,39 @@ nextWordHighlight.addEventListener("click", () => {
         console.log(nextWordHighlightState);
 });
 
+smoothCaret.addEventListener("click", () => {
+        if (ofSmoothCaret.innerHTML === "OFF") {
+                ofSmoothCaret.innerHTML = "ON";
+                localStorage.setItem("smoothCaretState", "ON");
+                smoothCaretState = "ON";
+        } else {
+                ofSmoothCaret.innerHTML = "OFF";
+                localStorage.setItem("smoothCaretState", "OFF");
+                smoothCaretState = "OFF";
+        }
+        ofButtonStyle(ofSmoothCaret);
+        addCaretStyleOnScreen();
+        positionUpdate();
+        updateCaretOnScreen();
+        console.log(smoothCaretState);
+});
+
+caretStyleElem.addEventListener("click", () => {
+        let index = caretStyleStates.indexOf(switchCaretStyle.innerHTML);
+        if (index === caretStyleStates.length - 1) {
+                caretStyleState = caretStyleStates[0];
+                localStorage.setItem("caretStyleState", caretStyleState);
+                switchCaretStyle.innerHTML = caretStyleState.toUpperCase();
+        } else {
+                caretStyleState = caretStyleStates[index + 1];
+                localStorage.setItem("caretStyleState", caretStyleState);
+                switchCaretStyle.innerHTML = caretStyleState.toUpperCase();
+        }
+        addCaretStyleOnScreen();
+        positionUpdate();
+        updateCaretOnScreen();
+});
+
 function ofButtonStyle(elem) {
         if (elem.innerHTML === "OFF") {
                 if (elem.classList.contains("on-color")) {
@@ -1592,6 +1713,7 @@ function spaceToNextWordHandler(nextPosition) {
 
         POSITION = nextPosition;
         positioningTypeFieldOnCaret();
+        updateCaretOnScreen();
 }
 
 function checkWordForHighlight() {
@@ -1626,7 +1748,7 @@ function checkNextWordForHighlight() {
         let pos = document.querySelector(".position");
         let parent = pos.parentNode;
         let nextParent = parent.nextSibling;
-        if (nextParent == null) {
+        if (nextParent == null || "span" in nextParent) {
                 for (let i = 0; i < parent.children.length; i++) {
                         if (parent.children[i].classList.contains("next-highlight")) {
                                 parent.children[i].classList.remove("next-highlight");
@@ -1634,7 +1756,7 @@ function checkNextWordForHighlight() {
                 }
                 return;
         }
-        if (nextParent.children[0].classList.contains("next-highlight") === false) {
+        if ("span" in nextParent && nextParent.children[0].classList.contains("next-highlight") === false) {
                 if (isFirstChild(nextParent) === false) {
                         for (let i = 0; i < parent.children.length; i++) {
                                 if (parent.children[i].classList.contains("next-highlight")) {
@@ -1669,3 +1791,49 @@ resetCustomTheme.addEventListener("click", () => {
         });
         themeUpdateOnScreen();
 });
+
+function addCaretStyleOnScreen() {
+        try {
+                if (caretStyleState === "LINE") {
+                        let pos = document.querySelector(".position");
+                        while (document.querySelector(".block-caret") != undefined) {
+                                document.querySelector(".block-caret").remove();
+                        }
+                        while (document.querySelector(".line-caret") != undefined) {
+                                document.querySelector(".line-caret").remove();
+                        }
+                        let elem = document.createElement("span");
+                        elem.classList.add("line-caret");
+                        typeField.appendChild(elem);
+                        if (smoothCaretState === "ON") {
+                                elem.classList.add("smooth-caret");
+                        } else {
+                                elem.classList.add("flash-caret");
+                        }
+                } else if (caretStyleState === "BLOCK") {
+                        if (smoothCaretState === "ON") {
+                                let pos = document.querySelector(".position");
+                                while (document.querySelector(".block-caret") != undefined) {
+                                        document.querySelector(".block-caret").remove();
+                                }
+                                while (document.querySelector(".line-caret") != undefined) {
+                                        document.querySelector(".line-caret").remove();
+                                }
+                                let elem = document.createElement("span");
+                                elem.classList.add("block-caret");
+                                typeField.appendChild(elem);
+                                elem.classList.add("smooth-caret");
+                        } else {
+                                let pos = document.querySelector(".position");
+                                if (document.querySelector(".line-caret") != undefined) {
+                                        document.querySelector(".line-caret").remove();
+                                }
+                        }
+                }
+        } catch (err) {
+                console.error(err);
+        }
+}
+
+// TEST //
+// TEST //

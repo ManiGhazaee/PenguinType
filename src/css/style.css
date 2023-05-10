@@ -934,18 +934,22 @@ a:visited {
 ::-webkit-scrollbar {
         width: 3px;
 }
+
 .field:hover::-webkit-scrollbar {
         width: 6px;
 }
+
 ::-webkit-scrollbar-thumb {
         border-radius: 6px;
         background-color: var(--first-color);
         transition: 200ms;
         cursor: pointer;
 }
+
 ::-webkit-scrollbar-thumb:hover {
         background-color: var(--fourth-color);
 }
+
 ::-webkit-scrollbar-thumb:active {
         background-color: var(--second-color);
 }
@@ -1087,4 +1091,46 @@ input[type="color"] {
 .reset-custom-theme:hover {
         color: var(--fourth-color);
         background-color: var(--background-color);
+}
+
+.switch-button {
+        position: absolute;
+        text-align: right;
+        right: 13px;
+}
+.line-caret {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 2px;
+        height: 25px;
+        background-color: var(--caret-color);
+        z-index: 100;
+}
+.block-caret {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 10px;
+        height: 25px;
+        background-color: var(--caret-color);
+        z-index: 100;
+}
+.smooth-caret {
+        animation: smooth-blinker 1s infinite;
+        transition: 100ms;
+}
+
+.flash-caret {
+        animation: blinker 1s infinite;
+}
+
+@keyframes smooth-blinker {
+        0% {
+                background-color: var(--caret-color);
+        } 20% {
+                background-color: var(--caret-color);
+        } 50% {
+                background-color: #00000000;
+        }        
 }

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="src/css/loading.css">
 
     <style id="new-animation" type="text/css"></style>
+    <style id="new-position" type="text/css"></style>
+
     <link rel="icon" href="src/icon/favicon-32x32.png">
     <link rel="stylesheet" href="https://pvinis.github.io/iosevka-webfont/3.4.1/iosevka.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,7 +84,8 @@
     <div class="buttons-about" id="buttons-about" style="display: block;">
         <div class="button-large-right uifont" id="about-button" tabindex="0">ABOUT</div>
         <div class="button-large-right uifont" id="themes-button" tabindex="0">THEMES</div>
-        <div class="button-large-right uifont" id="github-button" tabindex="0"><a id="github-link" href="https://github.com/ManiGhazaee/PenguinType" target="_blank" rel="noopener noreferrer">GITHUB</a>
+        <div class="button-large-right uifont" id="github-button" tabindex="0"><a id="github-link" href="https://github.com/ManiGhazaee/PenguinType" target="_blank"
+                rel="noopener noreferrer">GITHUB</a>
         </div>
     </div>
     <div class="language uifont" id="language">language</div>
@@ -107,6 +110,14 @@
                 <div class="setting-items uifont onoffsettings" id="next-word-highlight">
                     <span class="setting-items-text">Next word highlight</span>
                     <span class="of-button" id="of-next-word-highlight">OFF</span>
+                </div>
+                <div class="setting-items uifont onoffsettings" id="smooth-caret">
+                    <span class="setting-items-text">Smooth caret</span>
+                    <span class="of-button" id="of-smooth-caret">OFF</span>
+                </div>
+                <div class="setting-items uifont switchSettings" id="caret-style">
+                    <span class="setting-items-text">Caret style</span>
+                    <span class="switch-button" id="switch-caret-style">BLOCK</span>
                 </div>
             </div>
 
@@ -191,12 +202,10 @@
             </div>
         </div>
     </div>
-    </div>
     <div class="pop-up" id="language-popup" style="display: none;">
         <div class="field" id="language-settings" style="display: block;">
             <div class="setting-items search-bar uifont" id="language-search-bar">
                 <input type="text" id='language-item-search' class="setting-items-text item-search uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
-                </input>
             </div>
             <div id="language-settings-items-display" style="display: block;">
                 <div class="setting-items lang uifont" id="english-200"><span class="setting-items-text">ENGLISH
