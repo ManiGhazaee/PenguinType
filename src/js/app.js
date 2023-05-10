@@ -892,7 +892,6 @@ function correctHandler() {
                 if (isLastChild(parent) || parent.nextElementSibling.tagName === "SPAN") {
                         finished();
                 } else {
-                        console.log(parent.nextElementSibling.children[0]);
                         parent.nextElementSibling.children[0].classList.add("position");
                         position.classList.remove("position");
                 }
@@ -1749,8 +1748,9 @@ function checkWordForHighlight() {
 function checkNextWordForHighlight() {
         let pos = document.querySelector(".position");
         let parent = pos.parentNode;
+        let parentElem = pos.parentElement;
         let nextParent = parent.nextSibling;
-        if (nextParent == null || "span" in nextParent) {
+        if (nextParent == null || parentElem.nextElementSibling.tagName === "SPAN") {
                 for (let i = 0; i < parent.children.length; i++) {
                         if (parent.children[i].classList.contains("next-highlight")) {
                                 parent.children[i].classList.remove("next-highlight");
@@ -1758,7 +1758,7 @@ function checkNextWordForHighlight() {
                 }
                 return;
         }
-        if ("span" in nextParent && nextParent.children[0].classList.contains("next-highlight") === false) {
+        if (parentElem.nextElementSibling.tagName !== "SPAN" && nextParent.children[0].classList.contains("next-highlight") === false) {
                 if (isFirstChild(nextParent) === false) {
                         for (let i = 0; i < parent.children.length; i++) {
                                 if (parent.children[i].classList.contains("next-highlight")) {
