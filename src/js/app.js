@@ -581,9 +581,6 @@ textGenerator();
 
 function textGeneratorToHtmlTimeTypeMode() {
         let result = [];
-        const random = (n) => {
-                return Math.floor(Math.random() * n);
-        };
         for (let i = 0; i < 25; i++) {
                 result.push(LANGUAGE[random(LANGUAGE.length)]);
         }
