@@ -270,7 +270,7 @@ let NUMBERS = numbersLocalStorage || false;
 let caretStyleElem = document.getElementById("caret-style");
 let switchCaretStyle = document.getElementById("switch-caret-style");
 let caretStyleLocalStorage = localStorage.getItem("caretStyleState");
-let caretStyleStates = ["LINE", "BLOCK", "OUTLINE-BLOCK"];
+let caretStyleStates = ["LINE", "BLOCK", "OUTLINE-BLOCK", "UNDERLINE"];
 let caretStyleState = caretStyleLocalStorage || "BLOCK";
 switchCaretStyle.innerHTML = caretStyleState;
 
@@ -1406,7 +1406,10 @@ function updateCaretOnScreen() {
                         caret = document.querySelector(".line-caret");
                 } else if (caretStyleState === "OUTLINE-BLOCK") {
                         caret = document.querySelector(".outline-block-caret");
+                } else if (caretStyleState === "UNDERLINE") {
+                        caret = document.querySelector(".underline-block-caret");
                 }
+
                 if (caret != undefined) {
                         caret.style.top = posY + "px";
                         caret.style.left = posX + "px";
@@ -1508,7 +1511,7 @@ function positionUpdate() {
                         `
                         );
                 }
-        } else if (caretStyleState === "LINE" || caretStyleState === "OUTLINE-BLOCK") {
+        } else if (caretStyleState === "LINE" || caretStyleState === "OUTLINE-BLOCK" || caretStyleState === "UNDERLINE") {
                 head.insertAdjacentHTML(
                         "beforeend",
                         `<style id="new-position" type="text/css">
@@ -1799,15 +1802,7 @@ resetCustomTheme.addEventListener("click", () => {
 function addCaretStyleOnScreen() {
         try {
                 if (caretStyleState === "LINE") {
-                        while (document.querySelector(".block-caret") != undefined) {
-                                document.querySelector(".block-caret").remove();
-                        }
-                        while (document.querySelector(".line-caret") != undefined) {
-                                document.querySelector(".line-caret").remove();
-                        }
-                        while (document.querySelector(".outline-block-caret") != undefined) {
-                                document.querySelector(".outline-block-caret").remove();
-                        }
+                        caretClassRemove();
                         let elem = document.createElement("span");
                         elem.classList.add("line-caret");
                         typeField.appendChild(elem);
@@ -1818,40 +1813,16 @@ function addCaretStyleOnScreen() {
                         }
                 } else if (caretStyleState === "BLOCK") {
                         if (smoothCaretState === "ON") {
-                                while (document.querySelector(".block-caret") != undefined) {
-                                        document.querySelector(".block-caret").remove();
-                                }
-                                while (document.querySelector(".line-caret") != undefined) {
-                                        document.querySelector(".line-caret").remove();
-                                }
-                                while (document.querySelector(".outline-block-caret") != undefined) {
-                                        document.querySelector(".outline-block-caret").remove();
-                                }
+                                caretClassRemove();
                                 let elem = document.createElement("span");
                                 elem.classList.add("block-caret");
                                 typeField.appendChild(elem);
                                 elem.classList.add("smooth-caret");
                         } else {
-                                while (document.querySelector(".block-caret") != undefined) {
-                                        document.querySelector(".block-caret").remove();
-                                }
-                                while (document.querySelector(".line-caret") != undefined) {
-                                        document.querySelector(".line-caret").remove();
-                                }
-                                while (document.querySelector(".outline-block-caret") != undefined) {
-                                        document.querySelector(".outline-block-caret").remove();
-                                }
+                                caretClassRemove();
                         }
                 } else if (caretStyleState === "OUTLINE-BLOCK") {
-                        while (document.querySelector(".block-caret") != undefined) {
-                                document.querySelector(".block-caret").remove();
-                        }
-                        while (document.querySelector(".line-caret") != undefined) {
-                                document.querySelector(".line-caret").remove();
-                        }
-                        while (document.querySelector(".outline-block-caret") != undefined) {
-                                document.querySelector(".outline-block-caret").remove();
-                        }
+                        caretClassRemove();
                         let elem = document.createElement("span");
                         elem.classList.add("outline-block-caret");
                         typeField.appendChild(elem);
@@ -1860,10 +1831,36 @@ function addCaretStyleOnScreen() {
                         } else {
                                 elem.classList.add("flash-outline-block-caret");
                         }
+                } else if (caretStyleState === "UNDERLINE") {
+                        caretClassRemove();
+                        let elem = document.createElement("span");
+                        elem.classList.add("underline-block-caret");
+                        typeField.appendChild(elem);
+                        if (smoothCaretState === "ON") {
+                                elem.classList.add("smooth-caret");
+                        } else {
+                                elem.classList.add("flash-caret");
+                        }
                 }
         } catch (err) {
                 console.error(err);
         }
+}
+
+function caretClassRemove() {
+        while (document.querySelector(".block-caret") != undefined) {
+                document.querySelector(".block-caret").remove();
+        }
+        while (document.querySelector(".line-caret") != undefined) {
+                document.querySelector(".line-caret").remove();
+        }
+        while (document.querySelector(".outline-block-caret") != undefined) {
+                document.querySelector(".outline-block-caret").remove();
+        }
+        while (document.querySelector(".underline-block-caret") != undefined) {
+                document.querySelector(".underline-block-caret").remove();
+        }
+        return 0;
 }
 
 // TEST //

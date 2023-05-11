@@ -1132,10 +1132,22 @@ input[type="color"] {
         border-style: solid;
 }
 
+.underline-block-caret {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 10px;
+        margin-top: 20px;
+        height: 4px;
+        background-color: var(--caret-color);
+        z-index: 100;
+}
+
 .smooth-caret {
         animation: smooth-blinker 1s infinite;
         transition: 100ms;
 }
+
 .smooth-outline-block-caret {
         animation: smooth-blinker-outline-block 1s infinite;
         transition: 100ms;
@@ -1144,6 +1156,7 @@ input[type="color"] {
 .flash-caret {
         animation: blinker 1s infinite;
 }
+
 .flash-outline-block-caret {
         animation: flash-blinker-outline-block 1s infinite;
 }
@@ -1176,6 +1189,7 @@ input[type="color"] {
                 border-color: var(--background-color);
         }
 }
+
 @keyframes flash-blinker-outline-block {
         0% {
                 border-color: var(--caret-color);
