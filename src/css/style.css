@@ -1097,7 +1097,9 @@ input[type="color"] {
         position: absolute;
         text-align: right;
         right: 13px;
+        color: var(--third-color);
 }
+
 .line-caret {
         position: absolute;
         top: 0px;
@@ -1107,6 +1109,7 @@ input[type="color"] {
         background-color: var(--caret-color);
         z-index: 100;
 }
+
 .block-caret {
         position: absolute;
         top: 0px;
@@ -1116,21 +1119,81 @@ input[type="color"] {
         background-color: var(--caret-color);
         z-index: 100;
 }
+
+.outline-block-caret {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 10px;
+        height: 25px;
+        z-index: 100;
+        border-color: var(--caret-color);
+        border-width: 1px;
+        border-style: solid;
+}
+
 .smooth-caret {
         animation: smooth-blinker 1s infinite;
+        transition: 100ms;
+}
+.smooth-outline-block-caret {
+        animation: smooth-blinker-outline-block 1s infinite;
         transition: 100ms;
 }
 
 .flash-caret {
         animation: blinker 1s infinite;
 }
+.flash-outline-block-caret {
+        animation: flash-blinker-outline-block 1s infinite;
+}
 
 @keyframes smooth-blinker {
         0% {
                 background-color: var(--caret-color);
-        } 20% {
+        }
+
+        20% {
                 background-color: var(--caret-color);
-        } 50% {
+        }
+
+        50% {
                 background-color: #00000000;
-        }        
+        }
+}
+
+@keyframes smooth-blinker-outline-block {
+        0% {
+                border-color: var(--caret-color);
+        }
+
+        20% {
+                border-color: var(--caret-color);
+        }
+
+        50% {
+                background-color: #00000000;
+                border-color: var(--background-color);
+        }
+}
+@keyframes flash-blinker-outline-block {
+        0% {
+                border-color: var(--caret-color);
+                color: var(--background-color);
+        }
+
+        49% {
+                border-color: var(--caret-color);
+                color: var(--background-color);
+        }
+
+        50% {
+                border-color: rgb(255, 255, 255, 0);
+                color: var(--first-color);
+        }
+
+        100% {
+                border-color: rgb(255, 255, 255, 0);
+                color: var(--first-color);
+        }
 }

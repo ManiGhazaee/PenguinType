@@ -270,7 +270,7 @@ let NUMBERS = numbersLocalStorage || false;
 let caretStyleElem = document.getElementById("caret-style");
 let switchCaretStyle = document.getElementById("switch-caret-style");
 let caretStyleLocalStorage = localStorage.getItem("caretStyleState");
-let caretStyleStates = ["LINE", "BLOCK"];
+let caretStyleStates = ["LINE", "BLOCK", "OUTLINE-BLOCK"];
 let caretStyleState = caretStyleLocalStorage || "BLOCK";
 switchCaretStyle.innerHTML = caretStyleState;
 
@@ -1404,6 +1404,8 @@ function updateCaretOnScreen() {
                         caret = document.querySelector(".block-caret");
                 } else if (caretStyleState === "LINE") {
                         caret = document.querySelector(".line-caret");
+                } else if (caretStyleState === "OUTLINE-BLOCK") {
+                        caret = document.querySelector(".outline-block-caret");
                 }
                 if (caret != undefined) {
                         caret.style.top = posY + "px";
@@ -1506,7 +1508,7 @@ function positionUpdate() {
                         `
                         );
                 }
-        } else if (caretStyleState === "LINE") {
+        } else if (caretStyleState === "LINE" || caretStyleState === "OUTLINE-BLOCK") {
                 head.insertAdjacentHTML(
                         "beforeend",
                         `<style id="new-position" type="text/css">
@@ -1803,6 +1805,9 @@ function addCaretStyleOnScreen() {
                         while (document.querySelector(".line-caret") != undefined) {
                                 document.querySelector(".line-caret").remove();
                         }
+                        while (document.querySelector(".outline-block-caret") != undefined) {
+                                document.querySelector(".outline-block-caret").remove();
+                        }
                         let elem = document.createElement("span");
                         elem.classList.add("line-caret");
                         typeField.appendChild(elem);
@@ -1819,6 +1824,9 @@ function addCaretStyleOnScreen() {
                                 while (document.querySelector(".line-caret") != undefined) {
                                         document.querySelector(".line-caret").remove();
                                 }
+                                while (document.querySelector(".outline-block-caret") != undefined) {
+                                        document.querySelector(".outline-block-caret").remove();
+                                }
                                 let elem = document.createElement("span");
                                 elem.classList.add("block-caret");
                                 typeField.appendChild(elem);
@@ -1830,6 +1838,27 @@ function addCaretStyleOnScreen() {
                                 while (document.querySelector(".line-caret") != undefined) {
                                         document.querySelector(".line-caret").remove();
                                 }
+                                while (document.querySelector(".outline-block-caret") != undefined) {
+                                        document.querySelector(".outline-block-caret").remove();
+                                }
+                        }
+                } else if (caretStyleState === "OUTLINE-BLOCK") {
+                        while (document.querySelector(".block-caret") != undefined) {
+                                document.querySelector(".block-caret").remove();
+                        }
+                        while (document.querySelector(".line-caret") != undefined) {
+                                document.querySelector(".line-caret").remove();
+                        }
+                        while (document.querySelector(".outline-block-caret") != undefined) {
+                                document.querySelector(".outline-block-caret").remove();
+                        }
+                        let elem = document.createElement("span");
+                        elem.classList.add("outline-block-caret");
+                        typeField.appendChild(elem);
+                        if (smoothCaretState === "ON") {
+                                elem.classList.add("smooth-outline-block-caret");
+                        } else {
+                                elem.classList.add("flash-outline-block-caret");
                         }
                 }
         } catch (err) {
