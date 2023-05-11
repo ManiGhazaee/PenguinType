@@ -586,7 +586,6 @@ function textGeneratorToHtmlTimeTypeMode() {
         }
         result = " " + result.join(" ");
         TEXT += result;
-        //console.log(TEXT);
 
         let firstWordTop = document.querySelector(".word").style.top;
 
@@ -594,12 +593,19 @@ function textGeneratorToHtmlTimeTypeMode() {
         x.classList.add("letter");
         x.classList.add("space");
         x.innerHTML = " ";
-        typeField.lastChild.appendChild(x);
+        if (typeField.lastElementChild.tagName === "SPAN") {
+                let last = typeField.lastChild;
+                let before = last.previousSibling;
+                before.appendChild(x);
+        } else {
+                typeField.lastChild.appendChild(x);
+        }
 
         let w = document.createElement("div");
         w.classList.add("word");
         w.style.position = "inherit";
         w.style.top = firstWordTop;
+        typeField.appendChild(w);
         let word = typeField.lastChild;
 
         for (let i = 1; i < result.length; i++) {
@@ -620,6 +626,22 @@ function textGeneratorToHtmlTimeTypeMode() {
                         word = typeField.lastChild;
                 }
         }
+        moveCaretElemToEnd();
+}
+
+function moveCaretElemToEnd() {
+        if (caretStyleState === "BLOCK" && smoothCaretState === "OFF") return;
+        let caret = typeField.querySelector("span");
+        typeField.appendChild(caret);
+}
+
+function textGenToHTMLTimeTypeMode() {
+        let result = [];
+        for (let i = 0; i < 25; i++) {
+                result.push(LANGUAGE[random(LANGUAGE.length)]);
+        }
+        result = " " + result.join(" ");
+        TEXT += result;
 }
 
 function textToHTML(str) {
