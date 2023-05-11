@@ -515,7 +515,6 @@ fieldset {
 
 .position {
         background-color: var(--caret-color);
-        color: var(--first-color);
         animation: blinker 1s infinite;
         z-index: 99;
 }

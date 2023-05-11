@@ -1522,7 +1522,7 @@ function positionUpdate() {
                                 `<style id="new-position" type="text/css">
                                 .position {
                                                 background-color: var(--caret-color);
-                                                color: var(--first-color);
+                                                /* color: var(--first-color); */
                                                 animation: blinker 1s infinite;
                                                 z-index: 99;
                                 }
