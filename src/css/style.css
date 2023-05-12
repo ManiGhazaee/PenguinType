@@ -772,7 +772,7 @@ h1 {
         left: 50%;
         top: 20vh;
         transform: translate(-50%, 0);
-        color: var(--red-color);
+        color: var(--error-color);
         font-size: 20px;
         line-height: 20px;
 
