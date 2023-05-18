@@ -250,6 +250,14 @@ let smoothCaretState = smoothCaretLocalStorage || "OFF";
 ofSmoothCaret.innerHTML = smoothCaretState;
 console.log(smoothCaretState);
 
+let showTypedWordOnTop = document.getElementById("show-typed-word-on-top");
+let ofshowTypedWordOnTop  = document.getElementById("of-show-typed-word-on-top");
+
+let showTypedWordOnTopLocalStorage  = localStorage.getItem("showTypedWordOnTopState");
+let showTypedWordOnTopState = showTypedWordOnTopLocalStorage || "OFF";
+ofshowTypedWordOnTop.innerHTML = showTypedWordOnTopState;
+console.log(showTypedWordOnTopState);
+
 let allOnOffBtns = document.querySelectorAll(".of-button");
 allOnOffBtns.forEach((elem) => {
         ofButtonStyle(elem);
@@ -1699,6 +1707,20 @@ caretStyleElem.addEventListener("click", () => {
         addCaretStyleOnScreen();
         positionUpdate();
         updateCaretOnScreen();
+});
+
+showTypedWordOnTop.addEventListener("click", () => {
+        if (ofshowTypedWordOnTop.innerHTML === "OFF") {
+                ofshowTypedWordOnTop.innerHTML = "ON";
+                localStorage.setItem("showTypedWordOnTopState", "ON");
+                showTypedWordOnTopState = "ON";
+        } else {
+                ofshowTypedWordOnTop.innerHTML = "OFF";
+                localStorage.setItem("showTypedWordOnTopState", "OFF");
+                showTypedWordOnTopState = "OFF";
+        }
+        ofButtonStyle(ofshowTypedWordOnTop);
+        console.log(smoothCaretState);
 });
 
 function ofButtonStyle(elem) {
