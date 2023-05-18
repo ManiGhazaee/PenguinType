@@ -251,9 +251,9 @@ ofSmoothCaret.innerHTML = smoothCaretState;
 console.log(smoothCaretState);
 
 let showTypedWordOnTop = document.getElementById("show-typed-word-on-top");
-let ofshowTypedWordOnTop  = document.getElementById("of-show-typed-word-on-top");
+let ofshowTypedWordOnTop = document.getElementById("of-show-typed-word-on-top");
 
-let showTypedWordOnTopLocalStorage  = localStorage.getItem("showTypedWordOnTopState");
+let showTypedWordOnTopLocalStorage = localStorage.getItem("showTypedWordOnTopState");
 let showTypedWordOnTopState = showTypedWordOnTopLocalStorage || "OFF";
 ofshowTypedWordOnTop.innerHTML = showTypedWordOnTopState;
 console.log(showTypedWordOnTopState);
@@ -699,6 +699,9 @@ function addPunctuation(arr) {
                         }
                 }
         }
+        let lastCharOfLastWord = arr[arr.length - 1][arr[arr.length - 1].length - 1];
+        let addDotExeptions = [".", ",", ";", ":", "-", "!", "?"];
+        if (addDotExeptions.indexOf(lastCharOfLastWord) === -1) arr[arr.length - 1] += ".";
         return arr;
 }
 
