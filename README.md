@@ -13,14 +13,17 @@ PenguinType is a minimalistic typing test site that allows you to test your typi
  - Blazingly fast
  - Custom theme
  - Color-coded result scores to easily indentify performance
- - Glowing caret in certain themes
+ - Caret style (block | outline-block | underline | line)
  - Calculates WPM, raw WPM, accuracy, consistency, errors, time
  - Word and time type mode
+ - Punctuation (on | off)
+ - Numbers (on | off)
  - Shortcut for fast restart and repeat
  - Changeable font size
  - Space to next word (on | off)
  - Next word highlight (on | off)
  - Current word highlight (on | off)
+ - Smooth caret (on | off)
  - Control + Backspace delete
  
 #
