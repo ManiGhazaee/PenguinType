@@ -1022,18 +1022,12 @@ function finished() {
         if (TYPEMODE === "time-type-mode") {
                 const allCorrects = document.querySelectorAll(".correct");
                 const allLetters = document.querySelectorAll(".letter");
-                let numberOfCorrectOrIncorrect = 0;
-                for (let i = 0; i < allLetters.length; i++) {
-                        if (allLetters[i].classList.contains("correct") === false && allLetters[i].classList.contains("incorrect") === false) {
-                                break;
-                        }
-                        numberOfCorrectOrIncorrect++;
-                }
+
                 rawWpm = rawCharacterCount / 5 / Number(nTimeInput);
                 wpm = (allCorrects.length / 5 / Number(nTimeInput)) * 60;
                 wpm = Math.round(wpm);
                 rawWpm = Math.round(rawWpm * 60);
-                accuracy = (allCorrects.length / numberOfCorrectOrIncorrect) * 100;
+                accuracy = (allCorrects.length / (POSITION + 1)) * 100;
                 accuracy = Math.floor(accuracy);
 
                 errors = numberOfErrors;
