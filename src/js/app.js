@@ -1018,16 +1018,17 @@ function finished() {
 
         typeTestStarted = false;
         readyToStart = false;
-        //console.log("finished");
+
+        let allIncorrects = document.querySelectorAll(".incorrect").length;
+
         if (TYPEMODE === "time-type-mode") {
-                const allCorrects = document.querySelectorAll(".correct");
-                const allLetters = document.querySelectorAll(".letter");
+                const allChars = POSITION + 1;
 
                 rawWpm = rawCharacterCount / 5 / Number(nTimeInput);
-                wpm = (allCorrects.length / 5 / Number(nTimeInput)) * 60;
+                wpm = ((allChars - allIncorrects) / 5 / Number(nTimeInput)) * 60;
                 wpm = Math.round(wpm);
                 rawWpm = Math.round(rawWpm * 60);
-                accuracy = (allCorrects.length / (POSITION + 1)) * 100;
+                accuracy = ((allChars - numberOfErrors) / allChars) * 100;
                 accuracy = Math.floor(accuracy);
 
                 errors = numberOfErrors;
@@ -1038,8 +1039,6 @@ function finished() {
         }
         typeTime = finishTime - startTime;
         typeTime /= second;
-
-        let allIncorrects = document.querySelectorAll(".incorrect").length;
 
         rawWpm = rawCharacterCount / 5 / typeTime;
         wpm = ((numberOfCharacters - allIncorrects) / 5 / typeTime) * 60;
