@@ -93,6 +93,7 @@ const repeatButton = document.getElementById("repeat-button");
 const logo = document.getElementById("logo");
 const typeModeBar = document.getElementById("type-mode-bar");
 const timerTimeTypeMode = document.getElementById("timer-time-type-mode");
+const liveRawWpmElem = document.getElementById("live-raw-wpm");
 const gitHubButton = document.getElementById("github-button");
 
 const capsLockState = document.getElementById("caps-lock-state");
@@ -257,6 +258,14 @@ let showTypedWordOnTopLocalStorage = localStorage.getItem("showTypedWordOnTopSta
 let showTypedWordOnTopState = showTypedWordOnTopLocalStorage || "OFF";
 ofshowTypedWordOnTop.innerHTML = showTypedWordOnTopState;
 console.log(showTypedWordOnTopState);
+
+let showLiveRawWpm = document.getElementById("show-live-raw-wpm");
+let ofshowLiveRawWpm = document.getElementById("of-show-live-raw-wpm");
+
+let showLiveRawWpmLocalStorage = localStorage.getItem("showLiveRawWpmState");
+let showLiveRawWpmState = showLiveRawWpmLocalStorage || "OFF";
+ofshowLiveRawWpm.innerHTML = showLiveRawWpmState;
+console.log(showLiveRawWpmState);
 
 let allOnOffBtns = document.querySelectorAll(".of-button");
 allOnOffBtns.forEach((elem) => {
@@ -746,6 +755,10 @@ document.addEventListener("keydown", (event) => {
                         if (TYPEMODE === "time-type-mode") {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
+                        if (showLiveRawWpmState === "ON") {
+                                liveRawWpmShowOnPage();
+                                liveRawWpmStart();
+                        }
                 }
 
                 let pos = document.querySelector(".position");
@@ -771,6 +784,10 @@ document.addEventListener("keydown", (event) => {
                         if (TYPEMODE === "time-type-mode") {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
+                        if (showLiveRawWpmState === "ON") {
+                                liveRawWpmShowOnPage();
+                                liveRawWpmStart();
+                        }
                 }
                 POSITION++;
                 STATE = true;
@@ -784,6 +801,10 @@ document.addEventListener("keydown", (event) => {
                         focusMode(true);
                         if (TYPEMODE === "time-type-mode") {
                                 timerForTimeTypeMode(Number(nTimeInput));
+                        }
+                        if (showLiveRawWpmState === "ON") {
+                                liveRawWpmShowOnPage();
+                                liveRawWpmStart();
                         }
                 }
                 numberOfErrors++;
@@ -1065,6 +1086,7 @@ function finished() {
 function result() {
         typeField.style.display = "none";
         languageButton.style.display = "none";
+        liveRawWpmElem.style.display = "none";
         docWpm.innerHTML = wpm;
         docAcc.innerHTML = accuracy + "%";
         docRaw.innerHTML = rawWpm;
@@ -1156,6 +1178,9 @@ function restart() {
         languageButton.style.display = "block";
 
         textGenerator();
+        clearLiveArrays();
+        clearLiveRawWpmInter();
+        liveRawWpmShowOnPage();
 }
 
 function repeat() {
@@ -1184,6 +1209,9 @@ function repeat() {
         typeField.style.display = "block";
         languageButton.style.display = "block";
         textToHTML(TEXT);
+        clearLiveArrays();
+        clearLiveRawWpmInter();
+        liveRawWpmShowOnPage();
 }
 
 restartButton.addEventListener("keydown", (e) => {
@@ -1716,7 +1744,22 @@ showTypedWordOnTop.addEventListener("click", () => {
                 showTypedWordOnTopState = "OFF";
         }
         ofButtonStyle(ofshowTypedWordOnTop);
-        console.log(smoothCaretState);
+        console.log(showTypedWordOnTopState);
+});
+
+showLiveRawWpm.addEventListener("click", () => {
+        if (ofshowLiveRawWpm.innerHTML === "OFF") {
+                ofshowLiveRawWpm.innerHTML = "ON";
+                localStorage.setItem("showLiveRawWpmState", "ON");
+                showLiveRawWpmState = "ON";
+        } else {
+                ofshowLiveRawWpm.innerHTML = "OFF";
+                localStorage.setItem("showLiveRawWpmState", "OFF");
+                showLiveRawWpmState = "OFF";
+        }
+        ofButtonStyle(ofshowLiveRawWpm);
+        liveRawWpmShowOnPage();
+        console.log(showLiveRawWpmState);
 });
 
 function ofButtonStyle(elem) {
@@ -1898,6 +1941,74 @@ function caretClassRemove() {
                 document.querySelector(".underline-block-caret").remove();
         }
         return 0;
+}
+
+let liveRawWpmArray = [];
+let prevRawCharCount = 0;
+
+function calculateRawWpmSecond() {
+        let rawCharCountInOneSecond = rawCharacterCount - prevRawCharCount;
+        prevRawCharCount = rawCharacterCount;
+        liveRawWpmArray.push(rawCharCountInOneSecond);
+        let liveRawWpm;
+        let sum = 0;
+        for (let i = 0; i < liveRawWpmArray.length; i++) {
+                sum += liveRawWpmArray[i];
+        }
+        if (liveRawWpmArray.length === 0) {
+                showLiveRawWpm(0);
+                return;
+        }
+        liveRawWpm = sum / liveRawWpmArray.length;
+        showLiveRawWpmHandler(Math.round((liveRawWpm * 120) / 5));
+}
+
+function clearLiveArrays() {
+        liveRawWpmArray = [];
+        prevRawCharCount = 0;
+        liveRawWpmElem.innerHTML = "RAW";
+}
+
+function liveRawWpmShowOnPage() {
+        if (showLiveRawWpmState === "ON") {
+                liveRawWpmElem.style.display = "block";
+        } else {
+                liveRawWpmElem.style.display = "none";
+        }
+}
+liveRawWpmShowOnPage();
+
+let liveRawWpmInter;
+function liveRawWpmStart() {
+        liveRawWpmInter = setInterval(() => {
+                if (resultField.style.display === "block") clearInterval(liveRawWpmInter);
+                calculateRawWpmSecond();
+        }, 500);
+}
+
+function clearLiveRawWpmInter() {
+        clearInterval(liveRawWpmInter);
+}
+
+function showLiveRawWpmHandler(wpm) {
+        liveRawWpmColoring(wpm);
+        liveRawWpmElem.innerHTML = wpm;
+}
+
+function liveRawWpmColoring(wpm) {
+        let rwdiff = resultBestWpmRaw - resultWorstWpmRaw;
+        let wpmrawperc = ((wpm - resultWorstWpmRaw) / rwdiff) * 100;
+
+        if (wpm > resultBestWpmRaw) wpmrawperc = 100;
+        else if (wpm < resultWorstWpmRaw) wpmrawperc = 0;
+
+        let color1 = rgbToArray(hexToRgb(resultWorstColorHEX));
+        let color2 = rgbToArray(hexToRgb(resultBestColorHEX));
+
+        let rawwpmC = betweenTwoColor(color1, color2, wpmrawperc);
+
+        rawwpmC = arrayToRgb(rawwpmC);
+        liveRawWpmElem.style.color = rawwpmC;
 }
 
 // TEST //

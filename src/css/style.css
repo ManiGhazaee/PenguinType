@@ -823,6 +823,17 @@ h1 {
         text-align: left;
 
 }
+#live-raw-wpm {
+        height: 20px;
+        position: fixed;
+        top: 28vh;
+        left: 26.5%;
+        transform: translate(23%, 0);
+        font-size: 20px;
+        color: var(--second-color);
+        text-align: left;
+
+}
 
 #language {
         display: block;
