@@ -764,9 +764,13 @@ document.addEventListener("keydown", (event) => {
                         if (TYPEMODE === "time-type-mode") {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
+
+                        liveShowOnPage();
+
                         if (showLiveRawWpmState === "ON") {
-                                liveShowOnPage();
                                 liveRawWpmStart();
+                        }
+                        if (showLiveAccuracyState === "ON") {
                                 liveAccuracyStart();
                         }
                 }
@@ -794,9 +798,13 @@ document.addEventListener("keydown", (event) => {
                         if (TYPEMODE === "time-type-mode") {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
+
+                        liveShowOnPage();
+
                         if (showLiveRawWpmState === "ON") {
-                                liveShowOnPage();
                                 liveRawWpmStart();
+                        }
+                        if (showLiveAccuracyState === "ON") {
                                 liveAccuracyStart();
                         }
                 }
@@ -813,9 +821,13 @@ document.addEventListener("keydown", (event) => {
                         if (TYPEMODE === "time-type-mode") {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
+
+                        liveShowOnPage();
+
                         if (showLiveRawWpmState === "ON") {
-                                liveShowOnPage();
                                 liveRawWpmStart();
+                        }
+                        if (showLiveAccuracyState === "ON") {
                                 liveAccuracyStart();
                         }
                 }
@@ -2077,7 +2089,6 @@ function liveAccuracyColoring(acc) {
         accC = arrayToRgb(accC);
         liveAccuracyElem.style.color = accC;
 }
-
 
 // TEST //
 // TEST //
