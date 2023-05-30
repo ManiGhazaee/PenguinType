@@ -819,7 +819,7 @@ h1 {
         left: 20.5%;
         transform: translate(23%, 0);
         font-size: 20px;
-        color: var(--second-color);
+        color: var(--best-score-color);
         text-align: left;
 }
 
@@ -830,7 +830,7 @@ h1 {
         left: 26.5%;
         transform: translate(23%, 0);
         font-size: 20px;
-        color: var(--second-color);
+        color: var(--best-score-color);
         text-align: left;
 
 }
@@ -842,7 +842,7 @@ h1 {
         left: 32.5%;
         transform: translate(23%, 0);
         font-size: 20px;
-        color: var(--second-color);
+        color: var(--best-score-color);
         text-align: left;
 
 }

@@ -1172,6 +1172,12 @@ function resultColoring() {
         if (consistency == "0%") docConsis.style.color = resultWorstColorHEX;
 }
 
+function resetLiveColors() {
+        timerTimeTypeMode.style.color = resultBestColorHEX;
+        liveAccuracyElem.style.color = resultBestColorHEX;
+        liveRawWpmElem.style.color = resultBestColorHEX;
+}
+
 function restart() {
         if (TYPEMODE === "time-type-mode") {
                 clearInterval(inter);
@@ -1545,6 +1551,7 @@ document.querySelectorAll(".theme").forEach((e) => {
                 resultWorstColorHEX = THEME["--worst-score-color"] || themeObj["tokyo-night-dark"];
                 themeUpdateOnScreen();
                 resultColoring();
+
         });
 });
 themeUpdateOnScreen();
@@ -1578,6 +1585,7 @@ function themeUpdateOnScreen() {
                         sheet.insertRule(rule, 0);
                 }
         }
+        resetLiveColors();        
 }
 function positionUpdate() {
         let head = document.querySelector("head");
@@ -1697,6 +1705,7 @@ document.querySelectorAll(".color-input").forEach((e) => {
                 resultBestColorHEX = THEME["--best-score-color"];
                 resultWorstColorHEX = THEME["--worst-score-color"];
                 themeUpdateOnScreen();
+                resetLiveColors();
         });
 });
 
