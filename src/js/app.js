@@ -94,6 +94,7 @@ const logo = document.getElementById("logo");
 const typeModeBar = document.getElementById("type-mode-bar");
 const timerTimeTypeMode = document.getElementById("timer-time-type-mode");
 const liveRawWpmElem = document.getElementById("live-raw-wpm");
+const liveAccuracyElem = document.getElementById("live-accuracy");
 const gitHubButton = document.getElementById("github-button");
 
 const capsLockState = document.getElementById("caps-lock-state");
@@ -266,6 +267,14 @@ let showLiveRawWpmLocalStorage = localStorage.getItem("showLiveRawWpmState");
 let showLiveRawWpmState = showLiveRawWpmLocalStorage || "OFF";
 ofshowLiveRawWpm.innerHTML = showLiveRawWpmState;
 console.log(showLiveRawWpmState);
+
+let showLiveAccuracy = document.getElementById("show-live-accuracy");
+let ofshowLiveAccuracy = document.getElementById("of-show-live-accuracy");
+
+let showLiveAccuracyLocalStorage = localStorage.getItem("showLiveAccuracyState");
+let showLiveAccuracyState = showLiveAccuracyLocalStorage || "OFF";
+ofshowLiveAccuracy.innerHTML = showLiveAccuracyState;
+console.log(showLiveAccuracyState);
 
 let allOnOffBtns = document.querySelectorAll(".of-button");
 allOnOffBtns.forEach((elem) => {
@@ -756,8 +765,9 @@ document.addEventListener("keydown", (event) => {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
                         if (showLiveRawWpmState === "ON") {
-                                liveRawWpmShowOnPage();
+                                liveShowOnPage();
                                 liveRawWpmStart();
+                                liveAccuracyStart();
                         }
                 }
 
@@ -785,8 +795,9 @@ document.addEventListener("keydown", (event) => {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
                         if (showLiveRawWpmState === "ON") {
-                                liveRawWpmShowOnPage();
+                                liveShowOnPage();
                                 liveRawWpmStart();
+                                liveAccuracyStart();
                         }
                 }
                 POSITION++;
@@ -803,8 +814,9 @@ document.addEventListener("keydown", (event) => {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
                         if (showLiveRawWpmState === "ON") {
-                                liveRawWpmShowOnPage();
+                                liveShowOnPage();
                                 liveRawWpmStart();
+                                liveAccuracyStart();
                         }
                 }
                 numberOfErrors++;
@@ -1087,6 +1099,7 @@ function result() {
         typeField.style.display = "none";
         languageButton.style.display = "none";
         liveRawWpmElem.style.display = "none";
+        liveAccuracyElem.style.display = "none";
         docWpm.innerHTML = wpm;
         docAcc.innerHTML = accuracy + "%";
         docRaw.innerHTML = rawWpm;
@@ -1179,8 +1192,8 @@ function restart() {
 
         textGenerator();
         clearLiveArrays();
-        clearLiveRawWpmInter();
-        liveRawWpmShowOnPage();
+        clearLiveInters();
+        liveShowOnPage();
 }
 
 function repeat() {
@@ -1210,8 +1223,8 @@ function repeat() {
         languageButton.style.display = "block";
         textToHTML(TEXT);
         clearLiveArrays();
-        clearLiveRawWpmInter();
-        liveRawWpmShowOnPage();
+        clearLiveInters();
+        liveShowOnPage();
 }
 
 restartButton.addEventListener("keydown", (e) => {
@@ -1758,8 +1771,23 @@ showLiveRawWpm.addEventListener("click", () => {
                 showLiveRawWpmState = "OFF";
         }
         ofButtonStyle(ofshowLiveRawWpm);
-        liveRawWpmShowOnPage();
+        liveShowOnPage();
         console.log(showLiveRawWpmState);
+});
+
+showLiveAccuracy.addEventListener("click", () => {
+        if (ofshowLiveAccuracy.innerHTML === "OFF") {
+                ofshowLiveAccuracy.innerHTML = "ON";
+                localStorage.setItem("showLiveAccuracyState", "ON");
+                showLiveAccuracyState = "ON";
+        } else {
+                ofshowLiveAccuracy.innerHTML = "OFF";
+                localStorage.setItem("showLiveAccuracyState", "OFF");
+                showLiveAccuracyState = "OFF";
+        }
+        ofButtonStyle(ofshowLiveAccuracy);
+        liveShowOnPage();
+        console.log(showLiveAccuracyState);
 });
 
 function ofButtonStyle(elem) {
@@ -1963,36 +1991,59 @@ function calculateRawWpmSecond() {
         showLiveRawWpmHandler(Math.round((liveRawWpm * 120) / 5));
 }
 
+function calculateAccuracySecond() {
+        let accuracy = ((POSITION + 1 - numberOfErrors) / (POSITION + 1)) * 100;
+        showLiveAccuracyHandler(Math.round(accuracy));
+}
+
 function clearLiveArrays() {
         liveRawWpmArray = [];
         prevRawCharCount = 0;
         liveRawWpmElem.innerHTML = "RAW";
+        liveAccuracyElem.innerHTML = "ACC";
 }
 
-function liveRawWpmShowOnPage() {
+function liveShowOnPage() {
         if (showLiveRawWpmState === "ON") {
                 liveRawWpmElem.style.display = "block";
         } else {
                 liveRawWpmElem.style.display = "none";
         }
+        if (showLiveAccuracyState === "ON") {
+                liveAccuracyElem.style.display = "block";
+        } else {
+                liveAccuracyElem.style.display = "none";
+        }
 }
-liveRawWpmShowOnPage();
+liveShowOnPage();
 
 let liveRawWpmInter;
+let liveAccuracyInter;
 function liveRawWpmStart() {
         liveRawWpmInter = setInterval(() => {
                 if (resultField.style.display === "block") clearInterval(liveRawWpmInter);
                 calculateRawWpmSecond();
         }, 500);
 }
+function liveAccuracyStart() {
+        liveAccuracyInter = setInterval(() => {
+                if (resultField.style.display === "block") clearInterval(liveAccuracyInter);
+                calculateAccuracySecond();
+        }, 500);
+}
 
-function clearLiveRawWpmInter() {
+function clearLiveInters() {
         clearInterval(liveRawWpmInter);
+        clearInterval(liveAccuracyInter);
 }
 
 function showLiveRawWpmHandler(wpm) {
         liveRawWpmColoring(wpm);
         liveRawWpmElem.innerHTML = wpm;
+}
+function showLiveAccuracyHandler(acc) {
+        liveAccuracyColoring(acc);
+        liveAccuracyElem.innerHTML = acc;
 }
 
 function liveRawWpmColoring(wpm) {
@@ -2010,6 +2061,23 @@ function liveRawWpmColoring(wpm) {
         rawwpmC = arrayToRgb(rawwpmC);
         liveRawWpmElem.style.color = rawwpmC;
 }
+
+function liveAccuracyColoring(acc) {
+        let accdiff = resultBestAcc - resultWorstAcc;
+        let accperc = ((acc - resultWorstAcc) / accdiff) * 100;
+
+        if (acc > resultBestAcc) accperc = 100;
+        else if (acc < resultWorstAcc) accperc = 0;
+
+        let color1 = rgbToArray(hexToRgb(resultWorstColorHEX));
+        let color2 = rgbToArray(hexToRgb(resultBestColorHEX));
+
+        let accC = betweenTwoColor(color1, color2, accperc);
+
+        accC = arrayToRgb(accC);
+        liveAccuracyElem.style.color = accC;
+}
+
 
 // TEST //
 // TEST //
