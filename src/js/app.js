@@ -215,8 +215,6 @@ const worstColorInput = document.getElementById("worst-color-input");
 
 let caretBloom = "box-shadow: var(--caret-color.3) 0px 0px 34px 14px;";
 
-const validKeyDownSet = new Set(validKeyDownArray);
-
 const resetCustomTheme = document.getElementById("reset-custom-theme");
 
 // on-off settings
@@ -1110,6 +1108,7 @@ function finished() {
 function result() {
         typeField.style.display = "none";
         languageButton.style.display = "none";
+        timerTimeTypeMode.style.display = "none";
         liveRawWpmElem.style.display = "none";
         liveAccuracyElem.style.display = "none";
         docWpm.innerHTML = wpm;
@@ -1176,7 +1175,7 @@ function resultColoring() {
 function restart() {
         if (TYPEMODE === "time-type-mode") {
                 clearInterval(inter);
-                timerTimeTypeMode.style.display = "none";
+                // timerTimeTypeMode.style.display = "none";
         }
         POSITION = 0;
         STATE = null;
@@ -1206,12 +1205,13 @@ function restart() {
         clearLiveArrays();
         clearLiveInters();
         liveShowOnPage();
+        showTimerOnPage();
 }
 
 function repeat() {
         if (TYPEMODE === "time-type-mode") {
                 clearInterval(inter);
-                timerTimeTypeMode.style.display = "none";
+                // timerTimeTypeMode.style.display = "none";
         }
         POSITION = 0;
         STATE = null;
@@ -1237,6 +1237,7 @@ function repeat() {
         clearLiveArrays();
         clearLiveInters();
         liveShowOnPage();
+        showTimerOnPage();
 }
 
 restartButton.addEventListener("keydown", (e) => {
@@ -1413,6 +1414,7 @@ function afterTypeModeHandler() {
 document.querySelectorAll(".type-mode-item").forEach((e) => {
         e.addEventListener("click", () => {
                 selectTypeMode(e);
+                showTimerOnPage();
         });
 });
 
@@ -1426,6 +1428,9 @@ let inter;
 
 function timerForTimeTypeMode(time) {
         timerTimeTypeMode.style.display = "block";
+        timerTimeTypeMode.innerHTML = time;
+        timerTimeTypeMode.style.color = timerColoring(time, time);
+        let initTime = time;
         let t = time;
         timerTimeTypeMode.innerHTML = time;
         inter = setInterval(() => {
@@ -1435,10 +1440,22 @@ function timerForTimeTypeMode(time) {
                         timerTimeTypeMode.style.display = "none";
                         finished();
                 } else {
+                        timerColoring(initTime, t);
                         timerTimeTypeMode.innerHTML = t;
                 }
         }, second);
 }
+
+function showTimerOnPage() {
+        if (TYPEMODE === "time-type-mode") {
+                timerTimeTypeMode.style.display = "block";
+                timerTimeTypeMode.innerHTML = "TIME";
+                timerTimeTypeMode.style.color = resultBestColorHEX;
+        } else {
+                timerTimeTypeMode.style.display = "none";
+        }
+}
+showTimerOnPage();
 
 function positioningTypeFieldOnCaret() {
         ////console.log("positioning called");
@@ -2013,6 +2030,7 @@ function clearLiveArrays() {
         prevRawCharCount = 0;
         liveRawWpmElem.innerHTML = "RAW";
         liveAccuracyElem.innerHTML = "ACC";
+        timerTimeTypeMode.innerHTML = "TIME";
 }
 
 function liveShowOnPage() {
@@ -2090,5 +2108,19 @@ function liveAccuracyColoring(acc) {
         liveAccuracyElem.style.color = accC;
 }
 
+function timerColoring(time, now) {
+        let perc = (now / time) * 100;
+
+        if (now >= time) perc = 100;
+        else if (now <= 0) perc = 0;
+
+        let color1 = rgbToArray(hexToRgb(resultWorstColorHEX));
+        let color2 = rgbToArray(hexToRgb(resultBestColorHEX));
+
+        let color = betweenTwoColor(color1, color2, perc);
+
+        color = arrayToRgb(color);
+        timerTimeTypeMode.style.color = color;
+}
 // TEST //
 // TEST //

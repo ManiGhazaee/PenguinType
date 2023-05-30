@@ -819,9 +819,8 @@ h1 {
         left: 20.5%;
         transform: translate(23%, 0);
         font-size: 20px;
-        color: var(--error-color);
+        color: var(--second-color);
         text-align: left;
-
 }
 
 #live-raw-wpm {

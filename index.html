@@ -23,6 +23,8 @@
 </head>
 
 <body>
+    <div id="loading" style="z-index: 999;">
+    </div>
     <div id="logo" class="logo">
         <div id="penguin-title" class="uifont">Penguin</div>
         <div id="type-title" class="uifont">Type</div>
@@ -30,7 +32,7 @@
     <div id="settings" tabindex="-1">
         <div class="gg-menu"></div>
     </div>
-    <div class="timer-time-type-mode uifont" id="timer-time-type-mode" style="display: none;"></div>
+    <div class="timer-time-type-mode uifont" id="timer-time-type-mode" style="display: none;">TIME</div>
     <div class="timer-time-type-mode uifont" id="live-raw-wpm" style="display: none;">RAW</div>
     <div class="timer-time-type-mode uifont" id="live-accuracy" style="display: none;">ACC</div>
     <div class="type-mode-bar uifont" id="type-mode-bar">
@@ -250,10 +252,8 @@
             </p>
         </div>
     </div>
-    <div id="loading">
-    </div>
+
     <div id="notif" class="uifont" style="display: block;"><span class="notif-text"></span></div>
-    <script src="src/js/valid-key-down.js"></script>
     <script src="public/themes/themes.js"></script>
     <script src="public/languages/language-english.js"></script>
     <script src="src/js/app.js"></script>
