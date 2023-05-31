@@ -311,8 +311,6 @@ document.getElementById("font-size").addEventListener("click", () => {
         setttingsFontSizeDisplay.style.display = "block";
 });
 
-function displayHandler() {}
-
 Array.from(plusBtns).forEach((e) => {
         e.addEventListener("click", () => inputNumberQuantity(e.nextElementSibling, e.className), { once: true });
 });
