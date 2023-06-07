@@ -3,44 +3,17 @@ const minute = second * 60;
 const hour = minute * 60;
 const day = hour * 24;
 
-const timerHours = document.getElementById("timer-hour");
-const timerMinutes = document.getElementById("timer-minute");
-const timerSeconds = document.getElementById("timer-second");
-const queryAllTimer = document.querySelectorAll(".timer");
-
-const colorGrey = "rgba(255, 255, 255, 0.24)";
-
-let timerInHours = 3.5;
-let timerInMs = timerInHours * hour;
-let blinker = false;
-
-let started = false;
-let timerInterval;
-let mouseDown = false;
-
-let resetTimeOut;
-
-const body = document.getElementsByTagName("body")[0];
-const settingItems = document.querySelectorAll(".setting-items");
 const settings = document.getElementById("settings");
 const settingsItemsDisplay = document.getElementById("settings-items-display");
-const settingsTimerAdjustDisplay = document.getElementById("settings-timer-adjust-display");
 const popUps = document.getElementById("popups");
 const darkBack = document.getElementById("dark-back");
 const setttingsFontSizeDisplay = document.getElementById("settings-font-size-display");
 
 const plusBtns = document.getElementsByClassName("plus-btn");
-const saveTimerAdjust = document.getElementById("save-timer-adjust");
-
 const backSpace = document.getElementById("back-space");
 
 const notifElem = document.getElementById("notif");
 const notifText = document.querySelector(".notif-text");
-
-// items in setting
-const timerAdjust = document.getElementById("timer-adjust");
-const countDownMainAdjust = document.getElementById("countdown-main-adjust");
-//
 
 let itemsListObject = {};
 let itemsListKeys = [];
@@ -66,7 +39,6 @@ let numberOfWords;
 let numberOfCharacters = 0;
 
 let POSITION = 0;
-let STATE;
 let rawCharacterCount = 0;
 let numberOfErrors = 0;
 
@@ -94,6 +66,7 @@ const logo = document.getElementById("logo");
 const typeModeBar = document.getElementById("type-mode-bar");
 const timerTimeTypeMode = document.getElementById("timer-time-type-mode");
 const liveRawWpmElem = document.getElementById("live-raw-wpm");
+const liveAccuracyElem = document.getElementById("live-accuracy");
 const gitHubButton = document.getElementById("github-button");
 
 const capsLockState = document.getElementById("caps-lock-state");
@@ -214,8 +187,6 @@ const worstColorInput = document.getElementById("worst-color-input");
 
 let caretBloom = "box-shadow: var(--caret-color.3) 0px 0px 34px 14px;";
 
-const validKeyDownSet = new Set(validKeyDownArray);
-
 const resetCustomTheme = document.getElementById("reset-custom-theme");
 
 // on-off settings
@@ -225,7 +196,6 @@ let ofSpaceToNextWord = document.getElementById("of-space-to-next-word");
 let spaceToNextWordLocalStorage = localStorage.getItem("spaceToNextWordState");
 let spaceToNextWordState = spaceToNextWordLocalStorage || "OFF";
 ofSpaceToNextWord.innerHTML = spaceToNextWordState;
-console.log(spaceToNextWordState);
 
 let currentWordHighlight = document.getElementById("current-word-highlight");
 let ofCurrentWordHighlight = document.getElementById("of-current-word-highlight");
@@ -233,7 +203,6 @@ let ofCurrentWordHighlight = document.getElementById("of-current-word-highlight"
 let currentWordHighlightLocalStorage = localStorage.getItem("currentWordHighlightState");
 let currentWordHighlightState = currentWordHighlightLocalStorage || "OFF";
 ofCurrentWordHighlight.innerHTML = currentWordHighlightState;
-console.log(currentWordHighlightState);
 
 let nextWordHighlight = document.getElementById("next-word-highlight");
 let ofNextWordHighlight = document.getElementById("of-next-word-highlight");
@@ -241,7 +210,6 @@ let ofNextWordHighlight = document.getElementById("of-next-word-highlight");
 let nextWordHighlightLocalStorage = localStorage.getItem("nextWordHighlightState");
 let nextWordHighlightState = nextWordHighlightLocalStorage || "OFF";
 ofNextWordHighlight.innerHTML = nextWordHighlightState;
-console.log(nextWordHighlightState);
 
 let smoothCaret = document.getElementById("smooth-caret");
 let ofSmoothCaret = document.getElementById("of-smooth-caret");
@@ -249,7 +217,6 @@ let ofSmoothCaret = document.getElementById("of-smooth-caret");
 let smoothCaretLocalStorage = localStorage.getItem("smoothCaretState");
 let smoothCaretState = smoothCaretLocalStorage || "OFF";
 ofSmoothCaret.innerHTML = smoothCaretState;
-console.log(smoothCaretState);
 
 let showTypedWordOnTop = document.getElementById("show-typed-word-on-top");
 let ofshowTypedWordOnTop = document.getElementById("of-show-typed-word-on-top");
@@ -257,7 +224,6 @@ let ofshowTypedWordOnTop = document.getElementById("of-show-typed-word-on-top");
 let showTypedWordOnTopLocalStorage = localStorage.getItem("showTypedWordOnTopState");
 let showTypedWordOnTopState = showTypedWordOnTopLocalStorage || "OFF";
 ofshowTypedWordOnTop.innerHTML = showTypedWordOnTopState;
-console.log(showTypedWordOnTopState);
 
 let showLiveRawWpm = document.getElementById("show-live-raw-wpm");
 let ofshowLiveRawWpm = document.getElementById("of-show-live-raw-wpm");
@@ -265,7 +231,13 @@ let ofshowLiveRawWpm = document.getElementById("of-show-live-raw-wpm");
 let showLiveRawWpmLocalStorage = localStorage.getItem("showLiveRawWpmState");
 let showLiveRawWpmState = showLiveRawWpmLocalStorage || "OFF";
 ofshowLiveRawWpm.innerHTML = showLiveRawWpmState;
-console.log(showLiveRawWpmState);
+
+let showLiveAccuracy = document.getElementById("show-live-accuracy");
+let ofshowLiveAccuracy = document.getElementById("of-show-live-accuracy");
+
+let showLiveAccuracyLocalStorage = localStorage.getItem("showLiveAccuracyState");
+let showLiveAccuracyState = showLiveAccuracyLocalStorage || "OFF";
+ofshowLiveAccuracy.innerHTML = showLiveAccuracyState;
 
 let allOnOffBtns = document.querySelectorAll(".of-button");
 allOnOffBtns.forEach((elem) => {
@@ -339,8 +311,6 @@ document.getElementById("font-size").addEventListener("click", () => {
         setttingsFontSizeDisplay.style.display = "block";
 });
 
-function displayHandler() { }
-
 Array.from(plusBtns).forEach((e) => {
         e.addEventListener("click", () => inputNumberQuantity(e.nextElementSibling, e.className), { once: true });
 });
@@ -367,7 +337,6 @@ function inputNumberQuantity(node, sign) {
         }
 
         num = num.toString();
-        //console.log(num);
         if (num.length === 1) num = "0" + num;
         node.innerHTML = num;
 }
@@ -386,46 +355,20 @@ backSpace.addEventListener("click", () => {
         }
 });
 
-function saveTrigger() { }
-
 function save(node) {
-        //console.log("save function triggerd");
-        //console.log(`node.id: ${node.id}`);
         let obj = {};
-        if (node.id === "save-timer-adjust") {
-                document.querySelectorAll(".setting-input-number").forEach((e) => {
-                        //console.log(`e.id: ${e.id}`);
-                        //console.log(`e.innerHTML: ${e.innerHTML}`);
-                        obj[e.id.toString()] = e.innerHTML.toString();
-                });
-                timerInHours = 0;
-        } else if (node.id === "save-font-size") {
+        if (node.id === "save-font-size") {
                 document.querySelectorAll(".setting-input-number-font-size").forEach((e) => {
-                        //console.log(`e.id: ${e.id}`);
-                        //console.log(`e.innerHTML: ${e.innerHTML}`);
                         obj[e.id.toString()] = e.innerHTML.toString();
                 });
         }
-        //console.log(obj);
 
         changeSaves(obj);
 }
 
 function changeSaves(obj) {
         for (const key in obj) {
-                if (key === "input-number-hours") {
-                        timerInHours += Number(obj[key]);
-                        timerInMs = timerInHours * hour;
-                        //console.log(timerInHours);
-                } else if (key === "input-number-minutes") {
-                        timerInHours += Number(obj[key]) / 60;
-                        timerInMs = timerInHours * hour;
-                        //console.log(timerInHours);
-                } else if (key === "input-number-seconds") {
-                        timerInHours += Number(obj[key]) / 60 / 60;
-                        timerInMs = timerInHours * hour;
-                        //console.log(timerInHours);
-                } else if (key === "input-number-font-size") {
+                if (key === "input-number-font-size") {
                         typeField.style.fontSize = obj[key].toString() + "px";
                 }
         }
@@ -509,49 +452,6 @@ function matchSearch(node) {
         for (let i = 0; i < copyOfList.length; i++) {
                 document.getElementById(LO[copyOfList[i]]).style.display = "block";
         }
-}
-
-function rankingSearch(node) {
-        let txt = node.value;
-        //console.log(txt);
-        let matched = 0;
-        let k = 0;
-        let keysWithMatched = {};
-        let keysWithMatchedArray = [];
-        for (let i = 0; i < itemsListKeys.length; i++) {
-                for (let j = 0; j < itemsListKeys[i].length; j++) {
-                        if (tolowercase(itemsListKeys[i][j]) === tolowercase(txt[k])) {
-                                k++;
-                                matched++;
-                        } else {
-                                if (itemsListKeys[i] in keysWithMatched) {
-                                        if (keysWithMatched[itemsListKeys[i]] < matched) {
-                                                keysWithMatched[itemsListKeys[i]] = matched;
-                                                k = 0;
-                                                matched = 0;
-                                        }
-                                } else {
-                                        keysWithMatched[itemsListKeys[i]] = matched;
-                                        k = 0;
-                                        matched = 0;
-                                }
-                        }
-                }
-                k = 0;
-                matched = 0;
-        }
-        for (const key in keysWithMatched) {
-                keysWithMatchedArray.push([key, keysWithMatched[key]]);
-        }
-        let newChilds = [];
-        keysWithMatchedArray.sort((a, b) => b[1] - a[1]);
-        //console.log(keysWithMatchedArray);
-
-        for (let i = 0; i < keysWithMatchedArray.length; i++) {
-                let child = document.getElementById(itemsListObject[keysWithMatchedArray[i][0]]);
-                newChilds.push(child);
-        }
-        settingsItemsDisplay.replaceChildren(...newChilds);
 }
 
 // WHY?
@@ -724,7 +624,6 @@ function addNumbers(arr) {
 }
 
 document.addEventListener("keydown", (event) => {
-        //if (validKeyDownSet.has(event.key) === false) return;
         if (event.key === "Shift" || event.key === "Tab" || event.key === "Enter" || event.key === "Alt" || event.key === "F11" || event.key === "CapsLock") {
                 return;
         }
@@ -734,7 +633,6 @@ document.addEventListener("keydown", (event) => {
         if (languagePopup.style.display === "block") return;
         if (aboutPopup.style.display === "block") return;
         if (themePopup.style.display === "block") return;
-        //console.log(event.key);
 
         rawCharacterCount++;
         everyCharTimeBetween();
@@ -755,9 +653,14 @@ document.addEventListener("keydown", (event) => {
                         if (TYPEMODE === "time-type-mode") {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
+
+                        liveShowOnPage();
+
                         if (showLiveRawWpmState === "ON") {
-                                liveRawWpmShowOnPage();
                                 liveRawWpmStart();
+                        }
+                        if (showLiveAccuracyState === "ON") {
+                                liveAccuracyStart();
                         }
                 }
 
@@ -772,9 +675,7 @@ document.addEventListener("keydown", (event) => {
                 spaceToNextWordHandler(nextPosition);
         } else if (event.key === "Backspace") {
                 POSITION--;
-                STATE = null;
-                //console.log(STATE);
-                //console.log(POSITION);
+
                 backSpaceHandler();
         } else if (event.key === TEXT[POSITION]) {
                 if (typeTestStarted === false && readyToStart === true) {
@@ -784,15 +685,18 @@ document.addEventListener("keydown", (event) => {
                         if (TYPEMODE === "time-type-mode") {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
+
+                        liveShowOnPage();
+
                         if (showLiveRawWpmState === "ON") {
-                                liveRawWpmShowOnPage();
                                 liveRawWpmStart();
+                        }
+                        if (showLiveAccuracyState === "ON") {
+                                liveAccuracyStart();
                         }
                 }
                 POSITION++;
-                STATE = true;
-                //console.log(STATE);
-                //console.log(POSITION);
+
                 correctHandler();
         } else if (event.key !== TEXT[POSITION]) {
                 if (typeTestStarted === false && readyToStart === true) {
@@ -802,16 +706,19 @@ document.addEventListener("keydown", (event) => {
                         if (TYPEMODE === "time-type-mode") {
                                 timerForTimeTypeMode(Number(nTimeInput));
                         }
+
+                        liveShowOnPage();
+
                         if (showLiveRawWpmState === "ON") {
-                                liveRawWpmShowOnPage();
                                 liveRawWpmStart();
+                        }
+                        if (showLiveAccuracyState === "ON") {
+                                liveAccuracyStart();
                         }
                 }
                 numberOfErrors++;
                 POSITION++;
-                STATE = false;
-                //console.log(STATE);
-                //console.log(POSITION);
+
                 incorrectHandler();
         }
 
@@ -848,7 +755,6 @@ function everyCharTimeBetween() {
 
 function consistencyCalculator() {
         everyCharTimeBetweenArray.shift();
-        //console.log(everyCharTimeBetweenArray);
 
         let length = everyCharTimeBetweenArray.length;
         let SdSquared = 0;
@@ -906,7 +812,7 @@ function backSpaceHandler() {
 
         if (isFirstChild(position)) {
                 let parent = position.parentNode;
-                //console.log();
+
                 let classlist = parent.previousElementSibling.children[parent.previousElementSibling.children.length - 1].classList;
                 if (classlist.contains("incorrect")) {
                         parent.previousElementSibling.children[parent.previousElementSibling.children.length - 1].classList.remove("incorrect");
@@ -1086,7 +992,9 @@ function finished() {
 function result() {
         typeField.style.display = "none";
         languageButton.style.display = "none";
+        timerTimeTypeMode.style.display = "none";
         liveRawWpmElem.style.display = "none";
+        liveAccuracyElem.style.display = "none";
         docWpm.innerHTML = wpm;
         docAcc.innerHTML = accuracy + "%";
         docRaw.innerHTML = rawWpm;
@@ -1148,10 +1056,16 @@ function resultColoring() {
         if (consistency == "0%") docConsis.style.color = resultWorstColorHEX;
 }
 
+function resetLiveColors() {
+        timerTimeTypeMode.style.color = resultBestColorHEX;
+        liveAccuracyElem.style.color = resultBestColorHEX;
+        liveRawWpmElem.style.color = resultBestColorHEX;
+}
+
 function restart() {
         if (TYPEMODE === "time-type-mode") {
                 clearInterval(inter);
-                timerTimeTypeMode.style.display = "none";
+                // timerTimeTypeMode.style.display = "none";
         }
         POSITION = 0;
         STATE = null;
@@ -1179,14 +1093,15 @@ function restart() {
 
         textGenerator();
         clearLiveArrays();
-        clearLiveRawWpmInter();
-        liveRawWpmShowOnPage();
+        clearLiveInters();
+        liveShowOnPage();
+        showTimerOnPage();
 }
 
 function repeat() {
         if (TYPEMODE === "time-type-mode") {
                 clearInterval(inter);
-                timerTimeTypeMode.style.display = "none";
+                // timerTimeTypeMode.style.display = "none";
         }
         POSITION = 0;
         STATE = null;
@@ -1210,8 +1125,9 @@ function repeat() {
         languageButton.style.display = "block";
         textToHTML(TEXT);
         clearLiveArrays();
-        clearLiveRawWpmInter();
-        liveRawWpmShowOnPage();
+        clearLiveInters();
+        liveShowOnPage();
+        showTimerOnPage();
 }
 
 restartButton.addEventListener("keydown", (e) => {
@@ -1256,7 +1172,6 @@ document.addEventListener("keyup", function (event) {
 
 function typeModeToLocalStorage() {
         let typeModeItems = document.querySelectorAll(".type-mode-item");
-        ////console.log(typeModeItems);
         let actives = [];
         for (let i = 0; i < typeModeItems.length; i++) {
                 if (typeModeItems[i].classList.contains("mode-active")) {
@@ -1366,10 +1281,7 @@ function selectTypeMode(node) {
                         return;
                 }
         }
-        //console.log(node);
         let parent = node.parentNode;
-        ////console.log(parent);
-        ////console.log(parent.children);
         let children = parent.children;
         for (let i = 0; i < children.length; i++) {
                 if (children[i].classList.contains("mode-active")) {
@@ -1388,6 +1300,7 @@ function afterTypeModeHandler() {
 document.querySelectorAll(".type-mode-item").forEach((e) => {
         e.addEventListener("click", () => {
                 selectTypeMode(e);
+                showTimerOnPage();
         });
 });
 
@@ -1401,6 +1314,9 @@ let inter;
 
 function timerForTimeTypeMode(time) {
         timerTimeTypeMode.style.display = "block";
+        timerTimeTypeMode.innerHTML = time;
+        timerTimeTypeMode.style.color = timerColoring(time, time);
+        let initTime = time;
         let t = time;
         timerTimeTypeMode.innerHTML = time;
         inter = setInterval(() => {
@@ -1410,25 +1326,33 @@ function timerForTimeTypeMode(time) {
                         timerTimeTypeMode.style.display = "none";
                         finished();
                 } else {
+                        timerColoring(initTime, t);
                         timerTimeTypeMode.innerHTML = t;
                 }
         }, second);
 }
 
+function showTimerOnPage() {
+        if (TYPEMODE === "time-type-mode") {
+                timerTimeTypeMode.style.display = "block";
+                timerTimeTypeMode.innerHTML = "TIME";
+                timerTimeTypeMode.style.color = resultBestColorHEX;
+        } else {
+                timerTimeTypeMode.style.display = "none";
+        }
+}
+showTimerOnPage();
+
 function positioningTypeFieldOnCaret() {
-        ////console.log("positioning called");
         let firstWord = document.querySelector(".word");
         let allWords = document.querySelectorAll(".word");
         let caretLetter = document.querySelector(".position");
         let caretWord = caretLetter.parentNode;
         let caretWordTop = caretWord.offsetTop;
 
-        ////console.log(typeField);
         let typeFieldFontSize = window.getComputedStyle(typeField).getPropertyValue("font-size").replace(/\D/g, "");
-        ////console.log(typeFieldFontSize);
         typeFieldFontSize = Number(typeFieldFontSize);
         let caretHeight = typeFieldFontSize * 1.25;
-        ////console.log(caretHeight, caretWordTop);
         if (caretWordTop > caretHeight) {
                 //console.log("word > caret");
                 let firstWordTop = parseInt(firstWord.style.top);
@@ -1481,7 +1405,6 @@ function updateCaretOnScreen() {
 window.addEventListener("resize", updateCaretOnScreen);
 
 document.querySelectorAll(".lang").forEach((e) => {
-        ////console.log(e.id);
         e.addEventListener("click", () => {
                 let langStr = e.id;
                 console.log(langStr);
@@ -1536,6 +1459,7 @@ function themeUpdateOnScreen() {
                         sheet.insertRule(rule, 0);
                 }
         }
+        resetLiveColors();
 }
 function positionUpdate() {
         let head = document.querySelector("head");
@@ -1655,6 +1579,7 @@ document.querySelectorAll(".color-input").forEach((e) => {
                 resultBestColorHEX = THEME["--best-score-color"];
                 resultWorstColorHEX = THEME["--worst-score-color"];
                 themeUpdateOnScreen();
+                resetLiveColors();
         });
 });
 
@@ -1669,7 +1594,6 @@ spaceToNextWord.addEventListener("click", () => {
                 spaceToNextWordState = "OFF";
         }
         ofButtonStyle(ofSpaceToNextWord);
-        console.log(spaceToNextWordState);
 });
 
 currentWordHighlight.addEventListener("click", () => {
@@ -1683,7 +1607,6 @@ currentWordHighlight.addEventListener("click", () => {
                 currentWordHighlightState = "OFF";
         }
         ofButtonStyle(ofCurrentWordHighlight);
-        console.log(currentWordHighlightState);
 });
 
 nextWordHighlight.addEventListener("click", () => {
@@ -1697,7 +1620,6 @@ nextWordHighlight.addEventListener("click", () => {
                 nextWordHighlightState = "OFF";
         }
         ofButtonStyle(ofNextWordHighlight);
-        console.log(nextWordHighlightState);
 });
 
 smoothCaret.addEventListener("click", () => {
@@ -1714,7 +1636,6 @@ smoothCaret.addEventListener("click", () => {
         addCaretStyleOnScreen();
         positionUpdate();
         updateCaretOnScreen();
-        console.log(smoothCaretState);
 });
 
 caretStyleElem.addEventListener("click", () => {
@@ -1744,7 +1665,6 @@ showTypedWordOnTop.addEventListener("click", () => {
                 showTypedWordOnTopState = "OFF";
         }
         ofButtonStyle(ofshowTypedWordOnTop);
-        console.log(showTypedWordOnTopState);
 });
 
 showLiveRawWpm.addEventListener("click", () => {
@@ -1758,8 +1678,21 @@ showLiveRawWpm.addEventListener("click", () => {
                 showLiveRawWpmState = "OFF";
         }
         ofButtonStyle(ofshowLiveRawWpm);
-        liveRawWpmShowOnPage();
-        console.log(showLiveRawWpmState);
+        liveShowOnPage();
+});
+
+showLiveAccuracy.addEventListener("click", () => {
+        if (ofshowLiveAccuracy.innerHTML === "OFF") {
+                ofshowLiveAccuracy.innerHTML = "ON";
+                localStorage.setItem("showLiveAccuracyState", "ON");
+                showLiveAccuracyState = "ON";
+        } else {
+                ofshowLiveAccuracy.innerHTML = "OFF";
+                localStorage.setItem("showLiveAccuracyState", "OFF");
+                showLiveAccuracyState = "OFF";
+        }
+        ofButtonStyle(ofshowLiveAccuracy);
+        liveShowOnPage();
 });
 
 function ofButtonStyle(elem) {
@@ -1965,37 +1898,60 @@ function calculateRawWpmSecond() {
         showLiveRawWpmHandler(roundedValue);
 }
 
+function calculateAccuracySecond() {
+        let accuracy = ((POSITION + 1 - numberOfErrors) / (POSITION + 1)) * 100;
+        showLiveAccuracyHandler(Math.round(accuracy));
+}
 
 function clearLiveArrays() {
         liveRawWpmArray = [];
         prevRawCharCount = 0;
         liveRawWpmElem.innerHTML = "RAW";
+        liveAccuracyElem.innerHTML = "ACC";
+        timerTimeTypeMode.innerHTML = "TIME";
 }
 
-function liveRawWpmShowOnPage() {
+function liveShowOnPage() {
         if (showLiveRawWpmState === "ON") {
                 liveRawWpmElem.style.display = "block";
         } else {
                 liveRawWpmElem.style.display = "none";
         }
+        if (showLiveAccuracyState === "ON") {
+                liveAccuracyElem.style.display = "block";
+        } else {
+                liveAccuracyElem.style.display = "none";
+        }
 }
-liveRawWpmShowOnPage();
+liveShowOnPage();
 
 let liveRawWpmInter;
+let liveAccuracyInter;
 function liveRawWpmStart() {
         liveRawWpmInter = setInterval(() => {
                 if (resultField.style.display === "block") clearInterval(liveRawWpmInter);
                 calculateRawWpmSecond();
         }, 500);
 }
+function liveAccuracyStart() {
+        liveAccuracyInter = setInterval(() => {
+                if (resultField.style.display === "block") clearInterval(liveAccuracyInter);
+                calculateAccuracySecond();
+        }, 500);
+}
 
-function clearLiveRawWpmInter() {
+function clearLiveInters() {
         clearInterval(liveRawWpmInter);
+        clearInterval(liveAccuracyInter);
 }
 
 function showLiveRawWpmHandler(wpm) {
         liveRawWpmColoring(wpm);
         liveRawWpmElem.innerHTML = wpm;
+}
+function showLiveAccuracyHandler(acc) {
+        liveAccuracyColoring(acc);
+        liveAccuracyElem.innerHTML = acc;
 }
 
 function liveRawWpmColoring(wpm) {
@@ -2014,5 +1970,35 @@ function liveRawWpmColoring(wpm) {
         liveRawWpmElem.style.color = rawwpmC;
 }
 
+function liveAccuracyColoring(acc) {
+        let accdiff = resultBestAcc - resultWorstAcc;
+        let accperc = ((acc - resultWorstAcc) / accdiff) * 100;
+
+        if (acc > resultBestAcc) accperc = 100;
+        else if (acc < resultWorstAcc) accperc = 0;
+
+        let color1 = rgbToArray(hexToRgb(resultWorstColorHEX));
+        let color2 = rgbToArray(hexToRgb(resultBestColorHEX));
+
+        let accC = betweenTwoColor(color1, color2, accperc);
+
+        accC = arrayToRgb(accC);
+        liveAccuracyElem.style.color = accC;
+}
+
+function timerColoring(time, now) {
+        let perc = (now / time) * 100;
+
+        if (now >= time) perc = 100;
+        else if (now <= 0) perc = 0;
+
+        let color1 = rgbToArray(hexToRgb(resultWorstColorHEX));
+        let color2 = rgbToArray(hexToRgb(resultBestColorHEX));
+
+        let color = betweenTwoColor(color1, color2, perc);
+
+        color = arrayToRgb(color);
+        timerTimeTypeMode.style.color = color;
+}
 // TEST //
 // TEST //
