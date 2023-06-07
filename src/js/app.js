@@ -339,7 +339,7 @@ document.getElementById("font-size").addEventListener("click", () => {
         setttingsFontSizeDisplay.style.display = "block";
 });
 
-function displayHandler() {}
+function displayHandler() { }
 
 Array.from(plusBtns).forEach((e) => {
         e.addEventListener("click", () => inputNumberQuantity(e.nextElementSibling, e.className), { once: true });
@@ -386,7 +386,7 @@ backSpace.addEventListener("click", () => {
         }
 });
 
-function saveTrigger() {}
+function saveTrigger() { }
 
 function save(node) {
         //console.log("save function triggerd");
@@ -1960,8 +1960,11 @@ function calculateRawWpmSecond() {
                 return;
         }
         liveRawWpm = sum / liveRawWpmArray.length;
-        showLiveRawWpmHandler(Math.round((liveRawWpm * 120) / 5));
+
+        let roundedValue = Math.round(liveRawWpm * 120 / 25) * 5; 
+        showLiveRawWpmHandler(roundedValue);
 }
+
 
 function clearLiveArrays() {
         liveRawWpmArray = [];
