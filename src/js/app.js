@@ -1893,7 +1893,9 @@ function calculateRawWpmSecond() {
                 return;
         }
         liveRawWpm = sum / liveRawWpmArray.length;
-        showLiveRawWpmHandler(Math.round((liveRawWpm * 120) / 5));
+
+        let roundedValue = Math.round(liveRawWpm * 120 / 25) * 5; 
+        showLiveRawWpmHandler(roundedValue);
 }
 
 function calculateAccuracySecond() {
