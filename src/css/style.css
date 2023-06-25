@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap');
+
 :root {
         --first-color: rgba(255, 255, 255, 0.24);
         --blue-gray-color: #4a5175;
@@ -13,8 +15,6 @@
 
 
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap');
 
 html {
         background-color: var(--background-color);

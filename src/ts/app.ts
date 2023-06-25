@@ -1,7 +1,8 @@
+import { tokyoNightDark, tokyoNightLight, darkBlue, dark, matrix, arch, modernInk, dracula, terminal, redDragon, theirTheme, jungle, sakura } from "./themes.js";
+
+import { punctuation, english1k, english200, javascript100 } from "./language-english.js";
+
 const second = 1000;
-const minute = second * 60;
-const hour = minute * 60;
-const day = hour * 24;
 
 const settings = document.getElementById("settings")!;
 const settingsItemsDisplay = document.getElementById("settings-items-display")!;
@@ -17,15 +18,12 @@ const notifText = document.querySelector(".notif-text")!;
 
 let itemsListObject: { [key: string]: string } = {};
 let itemsListKeys: string[] = [];
-let itemsListElements = [];
 
 let languageItemsListObject: { [key: string]: string } = {};
 let languageItemsListKeys: string[] = [];
-let languageItemsListElements = [];
 
 let themesItemsListOjbect: { [key: string]: string } = {};
 let themesItemsListKeys: string[] = [];
-let themesItemsListElements = [];
 
 const typeField = document.getElementById("type-field")!;
 
@@ -35,7 +33,6 @@ let typeTestStarted = false;
 let readyToStart = true;
 
 let TEXT: string;
-let numberOfWords;
 let numberOfCharacters = 0;
 
 let POSITION = 0;
@@ -71,7 +68,6 @@ const gitHubButton = document.getElementById("github-button")!;
 
 const capsLockState = document.getElementById("caps-lock-state")!;
 
-let TYPEMODEOBJECT = {};
 let TYPEMODE = "word-type-mode";
 let THEME = "tokyo-night-dark";
 
@@ -155,8 +151,6 @@ const languageButton = document.getElementById("language")!;
 const languagePopup = document.getElementById("language-popup")!;
 const themesSettingItemsDisplay = document.getElementById("themes-settings-items-display")!;
 const themePopup = document.getElementById("themes-popup")!;
-const docEnglish200 = document.getElementById("english200")!;
-const docJavascript100 = document.getElementById("javascript100")!;
 
 languageButton.innerHTML = languageLocalStorage?.replace("-", " ").toUpperCase() || "LANGUAGE";
 
@@ -171,21 +165,9 @@ const resultWorstAcc = 50;
 const resultAllCharToErrRatio = 0.04;
 const resultBestConsis = 90;
 const resultWorstConsis = 40;
-const consisVarMS = 100;
-const inConsisMaxMS = 300;
 
 const custom = document.getElementById("custom")!;
 const customTheme = document.getElementById("custom-theme")!;
-const bgColorInput = document.getElementById("bg-color-input")!;
-const firstColorInput = document.getElementById("first-color-input")!;
-const secondColorInput = document.getElementById("second-color-input")!;
-const thirdColorInput = document.getElementById("third-color-input")!;
-const fourthColorInput = document.getElementById("fourth-color-input")!;
-const errorColorInput = document.getElementById("error-color-input")!;
-const bestColorInput = document.getElementById("best-color-input")!;
-const worstColorInput = document.getElementById("worst-color-input")!;
-
-let caretBloom = "box-shadow: var(--caret-color.3) 0px 0px 34px 14px;";
 
 const resetCustomTheme = document.getElementById("reset-custom-theme")!;
 
@@ -246,9 +228,6 @@ allOnOffBtns.forEach((elem) => {
 // end of on-off settings
 
 let ctrlPressed = false;
-
-let puncElem = document.getElementById("punctuation");
-let numbersElem = document.getElementById("numbers");
 
 let puncLocalStorage = localStorage.getItem("PUNCTUATION");
 let numbersLocalStorage = localStorage.getItem("NUMBERS");
@@ -487,7 +466,6 @@ function textGenerator() {
                 result = addNumbers(result);
         }
 
-        numberOfWords = result.length;
         TEXT = result.join(" ");
         for (let i = 0; i < TEXT.length; i++) {
                 numberOfCharacters++;
@@ -550,15 +528,6 @@ function moveCaretElemToEnd() {
         if (caretStyleState === "BLOCK" && smoothCaretState === "OFF") return;
         let caret = typeField.querySelector("span")!;
         typeField.appendChild(caret);
-}
-
-function textGenToHTMLTimeTypeMode() {
-        let result = [];
-        for (let i = 0; i < 25; i++) {
-                result.push(LANGUAGE[random(LANGUAGE.length)]);
-        }
-        let resultString: string = " " + result.join(" ");
-        TEXT += resultString;
 }
 
 function textToHTML(str: string) {
@@ -1067,7 +1036,6 @@ function restart() {
         TEXT = "";
         focusMode(false);
 
-        numberOfWords = 0;
         numberOfCharacters = 0;
         numberOfErrors = 0;
         rawCharacterCount = 0;
@@ -1518,10 +1486,6 @@ function arrayToRgb(arr: [number, number, number]) {
         return `rgb(${arr[0]}, ${arr[1]}, ${arr[2]})`;
 }
 
-// not mine
-function rgbToHex(r: number, g: number, b: number) {
-        return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
 // not mine
 function hexToRgb(h: string) {
         let r: string, g: string, b: string;
