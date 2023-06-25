@@ -1,0 +1,19 @@
+{
+  "name": "penguintype",
+  "version": "2.0.0",
+  "description": "![PenguinType](https://github.com/ManiGhazaee/PenguinType/blob/main/static/images/penguintype/penguintypelogo.jpg)",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ManiGhazaee/PenguinType.git"
+  },
+  "author": "mani ghazaee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ManiGhazaee/PenguinType/issues"
+  },
+  "homepage": "https://github.com/ManiGhazaee/PenguinType#readme"
+}
