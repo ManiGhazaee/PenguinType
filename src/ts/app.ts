@@ -69,27 +69,39 @@ const gitHubButton = document.getElementById("github-button")!;
 const capsLockState = document.getElementById("caps-lock-state")!;
 
 let TYPEMODE = "word-type-mode";
-let THEME = "tokyo-night-dark";
 
 let nWordsInput = 20;
 let nTimeInput = 15;
-let LANGUAGE = english200;
 let nWordsInputLocalStorage = localStorage.getItem("nWordsInput");
 let nTimeInputLocalStorage = localStorage.getItem("nTimeInput");
 let TYPEMODELocalStorage = localStorage.getItem("TYPEMODE");
-let languageLocalStorage = localStorage.getItem("LANGUAGE");
-let themeLocalStorage = localStorage.getItem("THEME");
 
 const wordTypeModeOptions = document.getElementById("word-type-mode-options")!;
 const timeTypeModeOptions = document.getElementById("time-type-mode-options")!;
 const docTimeTypeMode = document.getElementById("time-type-mode")!;
 const docWordTypeMode = document.getElementById("word-type-mode")!;
 
-const LanguagesObj = {
+type LanguageNames = "english-200" | "english-1k" | "javascript-100";
+type LanguageNamesLS = LanguageNames | null;
+type LanguageObject = {
+        [key in LanguageNames]: string[];
+};
+
+let languageLocalStorage: LanguageNamesLS = localStorage.getItem("LANGUAGE") as LanguageNamesLS;
+let LANGUAGE = english200;
+let LANGUAGENAME: LanguageNames = languageLocalStorage || "english-200";
+
+const LanguagesObj: LanguageObject = {
         "english-200": english200,
         "javascript-100": javascript100,
         "english-1k": english1k,
 };
+
+LANGUAGE = LanguagesObj[LANGUAGENAME];
+
+const languageSettingsItemsDisplay = document.getElementById("language-settings-items-display")!;
+const languageButton = document.getElementById("language")!;
+const languagePopup = document.getElementById("language-popup")!;
 
 let localStorageBg = localStorage.getItem("bgC");
 let localStorageFst = localStorage.getItem("fstC");
@@ -123,7 +135,29 @@ let customThemeObj = {
         "--worst-score-color": wsC,
 };
 
-const themeObj = {
+type ThemeNames = "tokyo-night-dark" | "tokyo-night-light" | "dark-blue" | "dark" | "matrix" | "arch" | "modern-ink" | "sakura" | "dracula" | "terminal" | "red-dragon" | "their-theme" | "jungle" | "custom";
+type ThemeNamesLS = ThemeNames | null;
+type Theme = {
+        "--background-color": string;
+        "--first-color": string;
+        "--second-color": string;
+        "--third-color": string;
+        "--fourth-color": string;
+        "--caret-color": string;
+        "--error-color": string;
+        "--best-score-color": string;
+        "--worst-score-color": string;
+};
+type ThemeObject = {
+        [key in ThemeNames]: Theme;
+};
+
+let themeLocalStorage: ThemeNamesLS = localStorage.getItem("THEME") as ThemeNamesLS;
+let THEMENAME: ThemeNames = themeLocalStorage || "tokyo-night-dark";
+
+let THEME: Theme;
+
+const themeObj: ThemeObject = {
         "tokyo-night-dark": tokyoNightDark,
         "tokyo-night-light": tokyoNightLight,
         "dark-blue": darkBlue,
@@ -140,15 +174,12 @@ const themeObj = {
         custom: customThemeObj,
 };
 
+THEME = themeObj[THEMENAME];
+
 nWordsInput = Number(nWordsInputLocalStorage) || nWordsInput;
 nTimeInput = Number(nTimeInputLocalStorage) || nTimeInput;
 TYPEMODE = TYPEMODELocalStorage || TYPEMODE;
-LANGUAGE = LanguagesObj[languageLocalStorage] || LANGUAGE;
-THEME = themeObj[themeLocalStorage] || themeObj[THEME];
 
-const languageSettingsItemsDisplay = document.getElementById("language-settings-items-display")!;
-const languageButton = document.getElementById("language")!;
-const languagePopup = document.getElementById("language-popup")!;
 const themesSettingItemsDisplay = document.getElementById("themes-settings-items-display")!;
 const themePopup = document.getElementById("themes-popup")!;
 
@@ -1365,11 +1396,11 @@ window.addEventListener("resize", updateCaretOnScreen);
 
 document.querySelectorAll(".lang").forEach((e) => {
         e.addEventListener("click", () => {
-                let langStr = e.id;
+                let langStr: LanguageNames = e.id as LanguageNames;
                 console.log(langStr);
                 localStorage.setItem("LANGUAGE", langStr);
-                LANGUAGE = langStr;
-                LANGUAGE = LanguagesObj[LANGUAGE];
+                LANGUAGENAME = langStr;
+                LANGUAGE = LanguagesObj[LANGUAGENAME];
                 restart();
                 languagePopup.style.display = "none";
                 darkBack.style.display = "none";
@@ -1379,44 +1410,27 @@ document.querySelectorAll(".lang").forEach((e) => {
 
 document.querySelectorAll(".theme").forEach((e) => {
         e.addEventListener("click", () => {
-                THEME = themeObj[e.id];
+                THEME = themeObj[e.id as ThemeNames];
                 localStorage.setItem("THEME", e.id);
-                resultBestColorHEX = THEME["--best-score-color"] || themeObj["tokyo-night-dark"];
-                resultWorstColorHEX = THEME["--worst-score-color"] || themeObj["tokyo-night-dark"];
+                resultBestColorHEX = THEME["--best-score-color"] || themeObj["tokyo-night-dark"]["--best-score-color"];
+                resultWorstColorHEX = THEME["--worst-score-color"] || themeObj["tokyo-night-dark"]["--worst-score-color"];
                 themeUpdateOnScreen();
                 resultColoring();
         });
 });
 themeUpdateOnScreen();
 function themeUpdateOnScreen() {
-        let root = document.querySelector(":root");
+        let root = (document.querySelector(":root") as HTMLElement)!;
         let sheet = (document.getElementById("new-animation") as HTMLStyleElement)!.sheet;
         for (const key in THEME) {
-                root.style.setProperty(key, THEME[key]);
+                root.style.setProperty(key, THEME[key as keyof Theme]);
         }
-        if ("bloom-caret" in THEME) {
-                let rule;
-                if ("caret-animation" in THEME) {
-                        let animName = THEME["caret-animation"];
-                        rule = `.position { animation-name: ${animName}; }`;
-                } else {
-                        rule = ".position { animation-name: blinker-bloom; }";
-                }
-                if (sheet.cssRules.length > 0) {
-                        sheet.deleteRule(0);
-                        sheet.insertRule(rule, 0);
-                } else {
-                        sheet.insertRule(rule, 0);
-                }
-                root.style.setProperty("--caret-bloom-color", THEME["bloom-caret"]);
+        let rule = ".position { animation-name: blinker; }";
+        if (sheet!.cssRules.length > 0) {
+                sheet!.deleteRule(0);
+                sheet!.insertRule(rule, 0);
         } else {
-                let rule = ".position { animation-name: blinker; }";
-                if (sheet.cssRules.length > 0) {
-                        sheet.deleteRule(0);
-                        sheet.insertRule(rule, 0);
-                } else {
-                        sheet.insertRule(rule, 0);
-                }
+                sheet!.insertRule(rule, 0);
         }
         resetLiveColors();
 }
@@ -1507,7 +1521,25 @@ custom.addEventListener("click", () => {
         customTheme.style.display = "block";
 });
 
-const inputIdWithColorKey = {
+type InputIdWithColorKey = {
+        "bg-color-input": ["--background-color", "bgC"];
+        "first-color-input": ["--first-color", "fstC"];
+        "second-color-input": ["--second-color", "sC"];
+        "third-color-input": ["--third-color", "tC"];
+        "fourth-color-input": ["--fourth-color", "frthC"];
+        "error-color-input": ["--error-color", "eC"];
+        "caret-color-input": ["--caret-color", "cC"];
+        "best-color-input": ["--best-score-color", "bsC"];
+        "worst-color-input": ["--worst-score-color", "wsC"];
+};
+
+type InputIdWithColorKeyKeys = keyof InputIdWithColorKey;
+
+type InputIdWithColorKeyFirstElements = {
+        [key in keyof InputIdWithColorKey]: InputIdWithColorKey[key][0];
+}[keyof InputIdWithColorKey];
+
+const inputIdWithColorKey: InputIdWithColorKey = {
         "bg-color-input": ["--background-color", "bgC"],
         "first-color-input": ["--first-color", "fstC"],
         "second-color-input": ["--second-color", "sC"],
@@ -1520,12 +1552,12 @@ const inputIdWithColorKey = {
 };
 
 (document.querySelectorAll(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
-        e.value = THEME[inputIdWithColorKey[e.id][0]];
+        e.value = THEME[inputIdWithColorKey[e.id as InputIdWithColorKeyKeys][0] as InputIdWithColorKeyFirstElements];
 });
 
 (document.querySelectorAll(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
         e.addEventListener("input", () => {
-                let id = e.id;
+                let id: InputIdWithColorKeyKeys = e.id as InputIdWithColorKeyKeys;
                 let value = e.value;
 
                 THEME[inputIdWithColorKey[id][0]] = value;
@@ -1756,13 +1788,13 @@ function checkNextWordForHighlight() {
 
 resetCustomTheme.addEventListener("click", () => {
         for (const key in inputIdWithColorKey) {
-                if (inputIdWithColorKey[key][1] in localStorage) {
-                        localStorage.setItem(inputIdWithColorKey[key][1], tokyoNightDark[inputIdWithColorKey[key][0]]);
+                if (inputIdWithColorKey[key as InputIdWithColorKeyKeys][1] in localStorage) {
+                        localStorage.setItem(inputIdWithColorKey[key as InputIdWithColorKeyKeys][1], tokyoNightDark[inputIdWithColorKey[key as InputIdWithColorKeyKeys][0]]);
                 }
         }
         (document.querySelectorAll(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
-                e.value = tokyoNightDark[inputIdWithColorKey[e.id][0]];
-                customThemeObj[inputIdWithColorKey[e.id][0]] = e.value;
+                e.value = tokyoNightDark[inputIdWithColorKey[e.id as InputIdWithColorKeyKeys][0]];
+                customThemeObj[inputIdWithColorKey[e.id as InputIdWithColorKeyKeys][0]] = e.value;
         });
         themeUpdateOnScreen();
 });
