@@ -894,7 +894,7 @@ function ctrlbackSpaceHandler() {
         else {
                 let posToGo = ctrlBackspacePositionCal(TEXT, POSITION);
                 let posDiff = POSITION - posToGo;
-                let tempNode = pos;
+                let tempNode: Element = pos;
                 for (let i = 0; i < posDiff; i++) {
                         let parent = tempNode.parentElement!;
                         if (isFirstChild(tempNode)) {
@@ -920,7 +920,7 @@ function ctrlbackSpaceHandler() {
         updateCaretOnScreen();
 }
 
-function removeCorrOrIncorrClass(node: HTMLElement | null) {
+function removeCorrOrIncorrClass(node: HTMLElement | Element | null) {
         if (node?.classList.contains("correct")) {
                 node.classList.remove("correct");
         } else if (node?.classList.contains("incorrect")) {
