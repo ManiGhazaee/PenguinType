@@ -2,19 +2,21 @@ import { tokyoNightDark, tokyoNightLight, darkBlue, dark, matrix, arch, modernIn
 
 import { punctuation, english1k, english200, javascript100 } from "./language-english.js";
 
+import { byId, $, lsSet, lsGet, byClassName, displayBlock, displayNone, isNone, $$, addClasses, isBlock, opacity_0, opacity_1, rmClasses, color, switchClass } from "./lib/utils.js";
+
 const second = 1000;
 
-const settings = document.getElementById("settings")!;
-const settingsItemsDisplay = document.getElementById("settings-items-display")!;
-const popUps = document.getElementById("popups")!;
-const darkBack = document.getElementById("dark-back")!;
-const setttingsFontSizeDisplay = document.getElementById("settings-font-size-display")!;
+const settings = byId("settings")!;
+const settingsItemsDisplay = byId("settings-items-display")!;
+const popUps = byId("popups")!;
+const darkBack = byId("dark-back")!;
+const setttingsFontSizeDisplay = byId("settings-font-size-display")!;
 
 const plusBtns = document.getElementsByClassName("plus-btn")!;
-const backSpace = document.getElementById("back-space")!;
+const backSpace = byId("back-space")!;
 
-const notifElem = document.getElementById("notif")!;
-const notifText = document.querySelector(".notif-text")!;
+const notifElem = byId("notif")!;
+const notifText = $(".notif-text")!;
 
 let itemsListObject: { [key: string]: string } = {};
 let itemsListKeys: string[] = [];
@@ -25,7 +27,7 @@ let languageItemsListKeys: string[] = [];
 let themesItemsListOjbect: { [key: string]: string } = {};
 let themesItemsListKeys: string[] = [];
 
-const typeField = document.getElementById("type-field")!;
+const typeField = byId("type-field")!;
 
 let startTime: number;
 let finishTime;
@@ -46,40 +48,40 @@ let consistency: number | string;
 let accuracy: number;
 let errors: number;
 
-const docWpm = document.getElementById("wpm")!;
-const docAcc = document.getElementById("acc")!;
-const docRaw = document.getElementById("wpm-raw")!;
-const docConsis = document.getElementById("consistency")!;
-const docTime = document.getElementById("time")!;
-const docError = document.getElementById("error")!;
-const resultField = document.getElementById("result-field")!;
-const buttonsResult = document.getElementById("buttons-result")!;
-const aboutButton = document.getElementById("about-button")!;
-const aboutPopup = document.getElementById("about-popup")!;
-const themesButton = document.getElementById("themes-button")!;
-const restartButton = document.getElementById("restart-button")!;
-const repeatButton = document.getElementById("repeat-button")!;
-const logo = document.getElementById("logo")!;
-const typeModeBar = document.getElementById("type-mode-bar")!;
-const timerTimeTypeMode = document.getElementById("timer-time-type-mode")!;
-const liveRawWpmElem = document.getElementById("live-raw-wpm")!;
-const liveAccuracyElem = document.getElementById("live-accuracy")!;
-const gitHubButton = document.getElementById("github-button")!;
+const docWpm = byId("wpm")!;
+const docAcc = byId("acc")!;
+const docRaw = byId("wpm-raw")!;
+const docConsis = byId("consistency")!;
+const docTime = byId("time")!;
+const docError = byId("error")!;
+const resultField = byId("result-field")!;
+const buttonsResult = byId("buttons-result")!;
+const aboutButton = byId("about-button")!;
+const aboutPopup = byId("about-popup")!;
+const themesButton = byId("themes-button")!;
+const restartButton = byId("restart-button")!;
+const repeatButton = byId("repeat-button")!;
+const logo = byId("logo")!;
+const typeModeBar = byId("type-mode-bar")!;
+const timerTimeTypeMode = byId("timer-time-type-mode")!;
+const liveRawWpmElem = byId("live-raw-wpm")!;
+const liveAccuracyElem = byId("live-accuracy")!;
+const gitHubButton = byId("github-button")!;
 
-const capsLockState = document.getElementById("caps-lock-state")!;
+const capsLockState = byId("caps-lock-state")!;
 
 let TYPEMODE = "word-type-mode";
 
 let nWordsInput = 20;
 let nTimeInput = 15;
-let nWordsInputLocalStorage = localStorage.getItem("nWordsInput");
-let nTimeInputLocalStorage = localStorage.getItem("nTimeInput");
-let TYPEMODELocalStorage = localStorage.getItem("TYPEMODE");
+let nWordsInputLocalStorage = lsGet("nWordsInput");
+let nTimeInputLocalStorage = lsGet("nTimeInput");
+let TYPEMODELocalStorage = lsGet("TYPEMODE");
 
-const wordTypeModeOptions = document.getElementById("word-type-mode-options")!;
-const timeTypeModeOptions = document.getElementById("time-type-mode-options")!;
-const docTimeTypeMode = document.getElementById("time-type-mode")!;
-const docWordTypeMode = document.getElementById("word-type-mode")!;
+const wordTypeModeOptions = byId("word-type-mode-options")!;
+const timeTypeModeOptions = byId("time-type-mode-options")!;
+const docTimeTypeMode = byId("time-type-mode")!;
+const docWordTypeMode = byId("word-type-mode")!;
 
 type LanguageNames = "english-200" | "english-1k" | "javascript-100";
 type LanguageNamesLS = LanguageNames | null;
@@ -103,15 +105,15 @@ const languageSettingsItemsDisplay = document.getElementById("language-settings-
 const languageButton = document.getElementById("language")!;
 const languagePopup = document.getElementById("language-popup")!;
 
-let localStorageBg = localStorage.getItem("bgC");
-let localStorageFst = localStorage.getItem("fstC");
-let localStorageS = localStorage.getItem("sC");
-let localStorageT = localStorage.getItem("tC");
-let localStorageFrth = localStorage.getItem("frthC");
-let localStorageC = localStorage.getItem("cC");
-let localStorageE = localStorage.getItem("eC");
-let localStorageBs = localStorage.getItem("bsC");
-let localStorageWs = localStorage.getItem("wsC");
+let localStorageBg = lsGet("bgC");
+let localStorageFst = lsGet("fstC");
+let localStorageS = lsGet("sC");
+let localStorageT = lsGet("tC");
+let localStorageFrth = lsGet("frthC");
+let localStorageC = lsGet("cC");
+let localStorageE = lsGet("eC");
+let localStorageBs = lsGet("bsC");
+let localStorageWs = lsGet("wsC");
 
 let bgC = localStorageBg || tokyoNightDark["--background-color"];
 let fstC = localStorageFst || tokyoNightDark["--first-color"];
@@ -152,7 +154,7 @@ type ThemeObject = {
         [key in ThemeNames]: Theme;
 };
 
-let themeLocalStorage: ThemeNamesLS = localStorage.getItem("THEME") as ThemeNamesLS;
+let themeLocalStorage: ThemeNamesLS = lsGet("THEME") as ThemeNamesLS;
 let THEMENAME: ThemeNames = themeLocalStorage || "tokyo-night-dark";
 
 let THEME: Theme;
@@ -180,8 +182,8 @@ nWordsInput = Number(nWordsInputLocalStorage) || nWordsInput;
 nTimeInput = Number(nTimeInputLocalStorage) || nTimeInput;
 TYPEMODE = TYPEMODELocalStorage || TYPEMODE;
 
-const themesSettingItemsDisplay = document.getElementById("themes-settings-items-display")!;
-const themePopup = document.getElementById("themes-popup")!;
+const themesSettingItemsDisplay = byId("themes-settings-items-display")!;
+const themePopup = byId("themes-popup")!;
 
 languageButton.innerHTML = languageLocalStorage?.replace("-", " ").toUpperCase() || "LANGUAGE";
 
@@ -197,10 +199,10 @@ const resultAllCharToErrRatio = 0.04;
 const resultBestConsis = 90;
 const resultWorstConsis = 40;
 
-const custom = document.getElementById("custom")!;
-const customTheme = document.getElementById("custom-theme")!;
+const custom = byId("custom")!;
+const customTheme = byId("custom-theme")!;
 
-const resetCustomTheme = document.getElementById("reset-custom-theme")!;
+const resetCustomTheme = byId("reset-custom-theme")!;
 
 // on-off settings
 type onOffSettingsIds = "space-to-next-word" | "current-word-highlight" | "next-word-highlight" | "smooth-caret" | "smooth-caret" | "smooth-caret" | "show-typed-word-on-top" | "smooth-caret" | "show-live-raw-wpm" | "show-live-accuracy";
@@ -214,10 +216,10 @@ type OnOffSettings = {
         };
 };
 
-const onOffSettingsElements = document.getElementsByClassName("onoffsettings") as HTMLCollectionOf<HTMLElement>;
+const onOffSettingsElements = byClassName("onoffsettings");
 // const onOffSettingsElementsByIdObject = elementsArrayToByIdObject(onOffSettingsElements);
 
-const ofButtonsElements = document.getElementsByClassName("of-button") as HTMLCollectionOf<HTMLElement>;
+const ofButtonsElements = byClassName("of-button");
 const ofButtonsElementsByIdObject = elementsArrayToByIdObject(ofButtonsElements);
 
 const onoffsetttings: OnOffSettings = {
@@ -271,7 +273,6 @@ const onoffsetttings: OnOffSettings = {
 
 setupOnOffSettings();
 
-
 let spaceToNextWordState = onoffsetttings["space-to-next-word"].state;
 let currentWordHighlightState = onoffsetttings["current-word-highlight"].state;
 let nextWordHighlightState = onoffsetttings["next-word-highlight"].state;
@@ -294,65 +295,55 @@ function updateStates() {
 
 let ctrlPressed = false;
 
-let puncLocalStorage = localStorage.getItem("PUNCTUATION");
-let numbersLocalStorage = localStorage.getItem("NUMBERS");
+let puncLocalStorage = lsGet("PUNCTUATION");
+let numbersLocalStorage = lsGet("NUMBERS");
 
 let PUNCTUATION = puncLocalStorage || false;
 let NUMBERS = numbersLocalStorage || false;
 
-let caretStyleElem = document.getElementById("caret-style")!;
-let switchCaretStyle = document.getElementById("switch-caret-style")!;
-let caretStyleLocalStorage = localStorage.getItem("caretStyleState")!;
+let caretStyleElem = byId("caret-style")!;
+let switchCaretStyle = byId("switch-caret-style")!;
+let caretStyleLocalStorage = lsGet("caretStyleState")!;
 let caretStyleStates = ["LINE", "BLOCK", "OUTLINE-BLOCK", "UNDERLINE"];
 let caretStyleState = caretStyleLocalStorage || "BLOCK";
 switchCaretStyle!.innerHTML = caretStyleState;
 
 settings.addEventListener("click", () => {
-        if (popUps.style.display === "none") {
-                popUps.style.display = "block";
-                darkBack.style.display = "block";
+        if (isNone(popUps)) {
+                displayBlock([popUps, darkBack]);
         } else {
-                popUps.style.display = "none";
-                darkBack.style.display = "none";
+                displayNone([popUps, darkBack]);
         }
 });
 
 languageButton.addEventListener("click", () => {
-        if (languagePopup.style.display === "none") {
-                languagePopup.style.display = "block";
-                darkBack.style.display = "block";
+        if (isNone(languagePopup)) {
+                displayBlock([languagePopup, darkBack]);
         }
 });
 
 aboutButton.addEventListener("click", () => {
-        if (aboutPopup.style.display === "none") {
-                aboutPopup.style.display = "block";
-                darkBack.style.display = "block";
+        if (isNone(aboutPopup)) {
+                displayBlock([aboutPopup, darkBack]);
         }
 });
 
 themesButton.addEventListener("click", () => {
-        if (themePopup.style.display === "none") {
-                themePopup.style.display = "block";
-                darkBack.style.display = "block";
+        if (isNone(themePopup)) {
+                displayBlock([themePopup, darkBack]);
         }
 });
 
 darkBack.addEventListener("click", () => {
-        languagePopup.style.display = "none";
-        popUps.style.display = "none";
-        darkBack.style.display = "none";
-        aboutPopup.style.display = "none";
-        themePopup.style.display = "none";
-        customTheme.style.display = "none";
-        themesSettingItemsDisplay.style.display = "block";
+        displayNone([languagePopup, popUps, darkBack, aboutPopup, themePopup, customTheme]);
+        displayBlock(themesSettingItemsDisplay);
         settings.focus();
         settings.blur();
 });
 
 document.getElementById("font-size")!.addEventListener("click", () => {
-        settingsItemsDisplay.style.display = "none";
-        setttingsFontSizeDisplay.style.display = "block";
+        displayNone(settingsItemsDisplay);
+        displayBlock(setttingsFontSizeDisplay);
 });
 
 Array.from(plusBtns).forEach((e) => {
@@ -402,7 +393,7 @@ backSpace.addEventListener("click", () => {
 function save(node: HTMLElement) {
         let obj: { [key: string]: string } = {};
         if (node.id === "save-font-size") {
-                document.querySelectorAll(".setting-input-number-font-size").forEach((e) => {
+                $$(".setting-input-number-font-size").forEach((e) => {
                         obj[e.id.toString()] = e.innerHTML.toString();
                 });
         }
@@ -608,8 +599,7 @@ function textToHTML(str: string) {
         w.style.top = "0px";
         let word = typeField.lastChild;
         let l = document.createElement("div");
-        l.classList.add("letter");
-        l.classList.add("position");
+        addClasses(l, ["letter", "position"]);
         l.innerHTML = str[0];
         word?.appendChild(l);
         for (let i = 1; i < str.length; i++) {
@@ -665,10 +655,10 @@ document.addEventListener("keydown", (event) => {
         }
         if (POSITION === 0 && event.key === "Backspace") return;
         if (readyToStart === false) return;
-        if (popUps.style.display === "block") return;
-        if (languagePopup.style.display === "block") return;
-        if (aboutPopup.style.display === "block") return;
-        if (themePopup.style.display === "block") return;
+        if (isBlock(popUps)) return;
+        if (isBlock(languagePopup)) return;
+        if (isBlock(aboutPopup)) return;
+        if (isBlock(themePopup)) return;
 
         rawCharacterCount++;
         everyCharTimeBetween();
@@ -821,54 +811,35 @@ function consistencyCalculator() {
 
 function focusMode(state: boolean) {
         if (state) {
+                opacity_0([aboutButton, settings, typeModeBar, languageButton, themesButton, gitHubButton]);
                 buttonsResult.style.opacity = "0.5";
-                aboutButton.style.opacity = "0";
-                settings.style.opacity = "0";
                 logo.classList.add("focus-mode-logo");
                 logo.style.color = "var(--first-color)";
-                typeModeBar.style.opacity = "0";
-                languageButton.style.opacity = "0";
-                themesButton.style.opacity = "0";
-                gitHubButton.style.opacity = "0";
         } else {
-                buttonsResult.style.opacity = "1";
-                aboutButton.style.opacity = "1";
-                settings.style.opacity = "1";
+                opacity_1([buttonsResult, aboutButton, settings, typeModeBar, languageButton, themesButton, gitHubButton]);
                 logo.classList.remove("focus-mode-logo");
                 logo.style.color = "var(--second-color)";
-                typeModeBar.style.opacity = "1";
-                languageButton.style.opacity = "1";
-                themesButton.style.opacity = "1";
-                gitHubButton.style.opacity = "1";
         }
 }
 
 function backSpaceHandler() {
-        let position = document.querySelector(".position")!;
+        let position = $(".position")!;
 
         if (isFirstChild(position)) {
                 let parent = position.parentElement;
 
-                let classlist = parent?.previousElementSibling?.children[parent.previousElementSibling.children.length - 1].classList;
-                if (classlist?.contains("incorrect")) {
-                        classlist.remove("incorrect");
-                } else if (classlist?.contains("space-incorrect")) {
-                        classlist.remove("space-incorrect");
-                } else {
-                        classlist?.remove("correct");
-                }
-                classlist?.add("position");
+                let lastElemOfPrevParent = parent?.previousElementSibling?.children[parent.previousElementSibling.children.length - 1];
+
+                rmClasses(lastElemOfPrevParent, ["incorrect", "space-incorrect", "correct"]);
+
+                lastElemOfPrevParent?.classList.add("position");
                 position.classList.remove("position");
         } else {
-                let classlist = position?.previousElementSibling?.classList;
-                if (classlist?.contains("incorrect")) {
-                        classlist.remove("incorrect");
-                } else if (classlist?.contains("space-incorrect")) {
-                        classlist.remove("space-incorrect");
-                } else {
-                        classlist?.remove("correct");
-                }
-                classlist?.add("position");
+                let prevElem = position?.previousElementSibling;
+
+                rmClasses(prevElem, ["incorrect", "space-incorrect", "correct"]);
+
+                prevElem?.classList.add("position");
                 position.classList.remove("position");
         }
 
@@ -921,7 +892,7 @@ function incorrectHandler() {
 }
 
 function ctrlbackSpaceHandler() {
-        let pos: HTMLElement = document.querySelector(".position")!;
+        let pos: HTMLElement = $(".position")!;
         let parent = pos.parentElement;
 
         if (isFirstChild(pos) && isFirstChild(parent)) return;
@@ -982,7 +953,7 @@ function finished() {
         typeTestStarted = false;
         readyToStart = false;
 
-        let allIncorrects = document.querySelectorAll(".incorrect").length;
+        let allIncorrects = $$(".incorrect").length;
 
         if (TYPEMODE === "time-type-mode") {
                 const allChars = POSITION + 1;
@@ -1026,21 +997,19 @@ function finished() {
 }
 
 function result() {
-        typeField.style.display = "none";
-        languageButton.style.display = "none";
-        timerTimeTypeMode.style.display = "none";
-        liveRawWpmElem.style.display = "none";
-        liveAccuracyElem.style.display = "none";
+        displayNone([typeField, languageButton, timerTimeTypeMode, liveRawWpmElem, liveAccuracyElem]);
+
         docWpm.innerHTML = wpm.toString();
         docAcc.innerHTML = accuracy + "%";
         docRaw.innerHTML = rawWpm.toString();
+
         resultColoring();
+
         docConsis.innerHTML = consistency + "%";
         docTime.innerHTML = typeTime.toString();
         docError.innerHTML = errors.toString();
 
-        resultField.style.display = "block";
-        buttonsResult.style.display = "block";
+        displayBlock([resultField, buttonsResult]);
 }
 
 function resultColoring() {
@@ -1076,20 +1045,18 @@ function resultColoring() {
         let errC: string = arrayToRgb(betweenTwoColor(color2, color1, errprec));
         let conC: string = arrayToRgb(betweenTwoColor(color1, color2, conperc));
 
-        docWpm.style.color = wpmC;
-        docRaw.style.color = rawwpmC;
-        docAcc.style.color = accC;
-        docConsis.style.color = conC;
-        docError.style.color = errC;
-        docTime.style.color = wpmC;
+        color(docWpm, wpmC);
+        color(docRaw, rawwpmC);
+        color(docAcc, accC);
+        color(docConsis, conC);
+        color(docError, errC);
+        color(docTime, wpmC);
 
-        if (consistency == "0%") docConsis.style.color = resultWorstColorHEX;
+        if (consistency == "0%") color(docConsis, resultWorstColorHEX);
 }
 
 function resetLiveColors() {
-        timerTimeTypeMode.style.color = resultBestColorHEX;
-        liveAccuracyElem.style.color = resultBestColorHEX;
-        liveRawWpmElem.style.color = resultBestColorHEX;
+        color([timerTimeTypeMode, liveAccuracyElem, liveRawWpmElem], resultBestColorHEX);
 }
 
 function restart() {
@@ -1114,9 +1081,8 @@ function restart() {
         typeTestStarted = false;
         readyToStart = true;
 
-        resultField.style.display = "none";
-        typeField.style.display = "block";
-        languageButton.style.display = "block";
+        displayNone(resultField);
+        displayBlock([typeField, languageButton]);
 
         textGenerator();
         clearLiveArrays();
@@ -1145,9 +1111,9 @@ function repeat() {
         typeTestStarted = false;
         readyToStart = true;
 
-        resultField.style.display = "none";
-        typeField.style.display = "block";
-        languageButton.style.display = "block";
+        displayNone(resultField);
+        displayBlock([typeField, languageButton]);
+
         textToHTML(TEXT);
         clearLiveArrays();
         clearLiveInters();
@@ -1189,14 +1155,14 @@ repeatButton.addEventListener("click", () => {
 
 document.addEventListener("keyup", function (event) {
         if (event.getModifierState("CapsLock")) {
-                capsLockState.style.display = "block";
+                displayBlock(capsLockState);
         } else {
-                capsLockState.style.display = "none";
+                displayNone(capsLockState);
         }
 });
 
 function typeModeToLocalStorage() {
-        let typeModeItems = document.querySelectorAll(".type-mode-item")!;
+        let typeModeItems = $$(".type-mode-item")!;
         let actives: Element[] = [];
         for (let i = 0; i < typeModeItems.length; i++) {
                 if (typeModeItems[i].classList.contains("mode-active")) {
@@ -1206,16 +1172,16 @@ function typeModeToLocalStorage() {
         for (let i = 0; i < actives.length; i++) {
                 let activeParent = actives[i].parentElement!;
                 if (actives[i].id === "word-type-mode") {
-                        localStorage.setItem("TYPEMODE", "word-type-mode");
+                        lsSet("TYPEMODE", "word-type-mode");
                         TYPEMODE = "word-type-mode";
                 } else if (actives[i].id === "time-type-mode") {
-                        localStorage.setItem("TYPEMODE", "time-type-mode");
+                        lsSet("TYPEMODE", "time-type-mode");
                         TYPEMODE = "time-type-mode";
                 } else if (activeParent.id === "word-type-mode-options") {
-                        localStorage.setItem("nWordsInput", actives[i].innerHTML);
+                        lsSet("nWordsInput", actives[i].innerHTML);
                         nWordsInput = Number(actives[i].innerHTML);
                 } else if (activeParent.id === "time-type-mode-options") {
-                        localStorage.setItem("nTimeInput", actives[i].innerHTML);
+                        lsSet("nTimeInput", actives[i].innerHTML);
                         nTimeInput = Number(actives[i].innerHTML);
                 }
         }
@@ -1230,7 +1196,7 @@ function typeModeToLocalStorage() {
 }
 
 function typeModeToStyle() {
-        let typeModeItems = document.querySelectorAll(".type-mode-item");
+        let typeModeItems = $$(".type-mode-item");
         for (let i = 0; i < typeModeItems.length; i++) {
                 if (typeModeItems[i].classList.contains("mode-active")) {
                         typeModeItems[i].classList.remove("mode-active");
@@ -1263,7 +1229,7 @@ function selectTypeMode(node: HTMLDivElement) {
                         node.classList.add("mode-active");
                         docTimeTypeMode.classList.remove("mode-active");
                         TYPEMODE = "word-type-mode";
-                        localStorage.setItem("TYPEMODE", "word-type-mode");
+                        lsSet("TYPEMODE", "word-type-mode");
                         typeModeToLocalStorage();
                         return;
                 }
@@ -1273,7 +1239,7 @@ function selectTypeMode(node: HTMLDivElement) {
                         node.classList.add("mode-active");
                         docWordTypeMode.classList.remove("mode-active");
                         TYPEMODE = "time-type-mode";
-                        localStorage.setItem("TYPEMODE", "time-type-mode");
+                        lsSet("TYPEMODE", "time-type-mode");
                         typeModeToLocalStorage();
                         return;
                 }
@@ -1281,13 +1247,13 @@ function selectTypeMode(node: HTMLDivElement) {
                 if (node.classList.contains("mode-active")) {
                         node.classList.remove("mode-active");
                         PUNCTUATION = "OFF";
-                        localStorage.setItem("PUNCTUATION", "OFF");
+                        lsSet("PUNCTUATION", "OFF");
                         restart();
                         return;
                 } else {
                         node.classList.add("mode-active");
                         PUNCTUATION = "ON";
-                        localStorage.setItem("PUNCTUATION", "ON");
+                        lsSet("PUNCTUATION", "ON");
                         restart();
                         return;
                 }
@@ -1295,24 +1261,21 @@ function selectTypeMode(node: HTMLDivElement) {
                 if (node.classList.contains("mode-active")) {
                         node.classList.remove("mode-active");
                         NUMBERS = "OFF";
-                        localStorage.setItem("NUMBERS", "OFF");
+                        lsSet("NUMBERS", "OFF");
                         restart();
                         return;
                 } else {
                         node.classList.add("mode-active");
                         NUMBERS = "ON";
-                        localStorage.setItem("NUMBERS", "ON");
+                        lsSet("NUMBERS", "ON");
                         restart();
                         return;
                 }
         }
         let parent = node.parentNode!;
-        let children = parent.children;
-        for (let i = 0; i < children.length; i++) {
-                if (children[i].classList.contains("mode-active")) {
-                        children[i].classList.remove("mode-active");
-                }
-        }
+        let children = Array.from(parent.children);
+
+        rmClasses(children, "mode-active");
 
         node.classList.add("mode-active");
         typeModeToLocalStorage();
@@ -1608,7 +1571,7 @@ function setupOnOffSettings() {
         for (let i = 0; i < onOffSettingsElements.length; i++) {
                 let ofsetting = onoffsetttings[onOffSettingsElements[i].id as onOffSettingsIds];
 
-                ofsetting.state = (localStorage.getItem(ofsetting.localStorageKey) as "OFF" | "ON") || ofsetting.state;
+                ofsetting.state = (lsGet(ofsetting.localStorageKey) as "OFF" | "ON") || ofsetting.state;
 
                 ofsetting.ofButton.innerHTML = ofsetting.state;
 
@@ -1618,11 +1581,11 @@ function setupOnOffSettings() {
 
                         if (ofButton.innerHTML === "OFF") {
                                 ofButton.innerHTML = "ON";
-                                localStorage.setItem(lsKey, "ON");
+                                lsSet(lsKey, "ON");
                                 ofsetting.state = "ON";
                         } else {
                                 ofButton.innerHTML = "OFF";
-                                localStorage.setItem(lsKey, "OFF");
+                                lsSet(lsKey, "OFF");
                                 ofsetting.state = "OFF";
                         }
 
@@ -1654,11 +1617,11 @@ caretStyleElem.addEventListener("click", () => {
         let index = caretStyleStates.indexOf(switchCaretStyle.innerHTML);
         if (index === caretStyleStates.length - 1) {
                 caretStyleState = caretStyleStates[0];
-                localStorage.setItem("caretStyleState", caretStyleState);
+                lsSet("caretStyleState", caretStyleState);
                 switchCaretStyle.innerHTML = caretStyleState.toUpperCase();
         } else {
                 caretStyleState = caretStyleStates[index + 1];
-                localStorage.setItem("caretStyleState", caretStyleState);
+                lsSet("caretStyleState", caretStyleState);
                 switchCaretStyle.innerHTML = caretStyleState.toUpperCase();
         }
         addCaretStyleOnScreen();
@@ -1668,15 +1631,9 @@ caretStyleElem.addEventListener("click", () => {
 
 function ofButtonStyle(elem: HTMLSpanElement) {
         if (elem.innerHTML === "OFF") {
-                if (elem.classList.contains("on-color")) {
-                        elem.classList.remove("on-color");
-                }
-                elem.classList.add("off-color");
+                switchClass(elem, "on-color", "off-color");
         } else {
-                if (elem.classList.contains("off-color")) {
-                        elem.classList.remove("off-color");
-                }
-                elem.classList.add("on-color");
+                switchClass(elem, "off-color", "on-color");
         }
 }
 
@@ -1689,7 +1646,7 @@ function nextWordPosition(txt: string, currentPosition: number) {
 }
 
 function spaceToNextWordHandler(nextPosition: number) {
-        let positionElem = document.querySelector(".position")!;
+        let positionElem = $(".position")!;
         let positionParent = positionElem.parentElement;
         if (isLastChild(positionParent)) {
                 return;
@@ -1707,73 +1664,49 @@ function spaceToNextWordHandler(nextPosition: number) {
 }
 
 function checkWordForHighlight() {
-        let pos = document.querySelector(".position")!;
+        let pos = $(".position")!;
         if (pos.classList.contains("highlight") === false) {
                 let parent = pos.parentElement!;
                 if (isFirstChild(parent) === false) {
                         let previousParent = parent.previousElementSibling!;
 
-                        for (let i = 0; i < previousParent.children.length; i++) {
-                                if (previousParent.children[i].classList.contains("highlight")) {
-                                        previousParent.children[i].classList.remove("highlight");
-                                }
-                        }
+                        rmClasses(Array.from(previousParent.children), "highlight");
                 }
                 if (isLastChild(parent) === false) {
                         let nextParent = parent.nextElementSibling!;
 
-                        for (let i = 0; i < nextParent.children.length; i++) {
-                                if (nextParent.children[i].classList.contains("highlight")) {
-                                        nextParent.children[i].classList.remove("highlight");
-                                }
-                        }
+                        rmClasses(Array.from(nextParent.children), "highlight");
                 }
-                for (let i = 0; i < parent.children.length; i++) {
-                        parent.children[i].classList.add("highlight");
-                }
+                addClasses(Array.from(parent.children), "highlight");
         }
 }
 
 function checkNextWordForHighlight() {
-        let pos = document.querySelector(".position")!;
+        let pos = $(".position")!;
         let parent = pos.parentNode!;
         let parentElem = pos.parentElement!;
         let nextParent = parentElem.nextElementSibling;
         if (nextParent == null || parentElem.nextElementSibling?.tagName === "SPAN") {
-                for (let i = 0; i < parent.children.length; i++) {
-                        if (parent.children[i].classList.contains("next-highlight")) {
-                                parent.children[i].classList.remove("next-highlight");
-                        }
-                }
+                rmClasses(Array.from(parent.children), "next-highlight");
                 return;
         }
         if (parentElem.nextElementSibling?.tagName !== "SPAN" && nextParent.children[0].classList.contains("next-highlight") === false) {
                 if (isFirstChild(nextParent) === false) {
-                        for (let i = 0; i < parent.children.length; i++) {
-                                if (parent.children[i].classList.contains("next-highlight")) {
-                                        parent.children[i].classList.remove("next-highlight");
-                                }
-                        }
+                        rmClasses(Array.from(parent.children), "next-highlight");
                 }
                 if (isLastChild(nextParent) === false) {
                         let nextNextParent = nextParent.nextElementSibling!;
 
-                        for (let i = 0; i < nextNextParent?.children?.length; i++) {
-                                if (nextNextParent.children[i].classList.contains("next-highlight")) {
-                                        nextNextParent.children[i].classList.remove("next-highlight");
-                                }
-                        }
+                        rmClasses(Array.from(nextNextParent.children), "next-highlight");
                 }
-                for (let i = 0; i < nextParent.children.length; i++) {
-                        nextParent.children[i].classList.add("next-highlight");
-                }
+                addClasses(Array.from(nextParent.children), "next-highlight");
         }
 }
 
 resetCustomTheme.addEventListener("click", () => {
         for (const key in inputIdWithColorKey) {
                 if (inputIdWithColorKey[key as InputIdWithColorKeyKeys][1] in localStorage) {
-                        localStorage.setItem(inputIdWithColorKey[key as InputIdWithColorKeyKeys][1], tokyoNightDark[inputIdWithColorKey[key as InputIdWithColorKeyKeys][0]]);
+                        lsSet(inputIdWithColorKey[key as InputIdWithColorKeyKeys][1], tokyoNightDark[inputIdWithColorKey[key as InputIdWithColorKeyKeys][0]]);
                 }
         }
         (document.querySelectorAll(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
@@ -1900,13 +1833,13 @@ let liveRawWpmInter: ReturnType<typeof setInterval>;
 let liveAccuracyInter: ReturnType<typeof setInterval>;
 function liveRawWpmStart() {
         liveRawWpmInter = setInterval(() => {
-                if (resultField.style.display === "block") clearInterval(liveRawWpmInter);
+                if (isBlock(resultField)) clearInterval(liveRawWpmInter);
                 calculateRawWpmSecond();
         }, 500);
 }
 function liveAccuracyStart() {
         liveAccuracyInter = setInterval(() => {
-                if (resultField.style.display === "block") clearInterval(liveAccuracyInter);
+                if (isBlock(resultField)) clearInterval(liveAccuracyInter);
                 calculateAccuracySecond();
         }, 500);
 }
@@ -1938,7 +1871,7 @@ function liveRawWpmColoring(wpm: number) {
         let rawwpmC = betweenTwoColor(color1, color2, wpmrawperc);
         let rawwpmCstring = arrayToRgb(rawwpmC);
 
-        liveRawWpmElem.style.color = rawwpmCstring;
+        color(liveRawWpmElem, rawwpmCstring);
 }
 
 function liveAccuracyColoring(acc: number) {
@@ -1954,7 +1887,8 @@ function liveAccuracyColoring(acc: number) {
         let accC = betweenTwoColor(color1, color2, accperc);
 
         let accCstring = arrayToRgb(accC);
-        liveAccuracyElem.style.color = accCstring;
+
+        color(liveAccuracyElem, accCstring);
 }
 
 function timerColoring(time: number, now: number) {
@@ -1966,10 +1900,11 @@ function timerColoring(time: number, now: number) {
         let color1 = rgbToArray(hexToRgb(resultWorstColorHEX));
         let color2 = rgbToArray(hexToRgb(resultBestColorHEX));
 
-        let color = betweenTwoColor(color1, color2, perc);
+        let colorBetween = betweenTwoColor(color1, color2, perc);
 
-        let colorString = arrayToRgb(color);
-        timerTimeTypeMode.style.color = colorString;
+        let colorString = arrayToRgb(colorBetween);
+
+        color(timerTimeTypeMode, colorString);
 }
 // TEST //
 // TEST //
