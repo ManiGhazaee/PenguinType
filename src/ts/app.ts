@@ -203,59 +203,93 @@ const customTheme = document.getElementById("custom-theme")!;
 const resetCustomTheme = document.getElementById("reset-custom-theme")!;
 
 // on-off settings
-let spaceToNextWord = document.getElementById("space-to-next-word")!;
-let ofSpaceToNextWord = document.getElementById("of-space-to-next-word")!;
+type onOffSettingsIds = "space-to-next-word" | "current-word-highlight" | "next-word-highlight" | "smooth-caret" | "smooth-caret" | "smooth-caret" | "show-typed-word-on-top" | "smooth-caret" | "show-live-raw-wpm" | "show-live-accuracy";
 
-let spaceToNextWordLocalStorage = localStorage.getItem("spaceToNextWordState");
-let spaceToNextWordState = spaceToNextWordLocalStorage || "OFF";
-ofSpaceToNextWord.innerHTML = spaceToNextWordState;
+type OnOffSettings = {
+        [key in onOffSettingsIds]: {
+                state: "OFF" | "ON";
+                localStorageKey: string;
+                ofButton: HTMLElement;
+                onClickFunction?: Function;
+        };
+};
 
-let currentWordHighlight = document.getElementById("current-word-highlight")!;
-let ofCurrentWordHighlight = document.getElementById("of-current-word-highlight")!;
+const onOffSettingsElements = document.getElementsByClassName("onoffsettings") as HTMLCollectionOf<HTMLElement>;
+// const onOffSettingsElementsByIdObject = elementsArrayToByIdObject(onOffSettingsElements);
 
-let currentWordHighlightLocalStorage = localStorage.getItem("currentWordHighlightState")!;
-let currentWordHighlightState = currentWordHighlightLocalStorage || "OFF";
-ofCurrentWordHighlight.innerHTML = currentWordHighlightState;
+const ofButtonsElements = document.getElementsByClassName("of-button") as HTMLCollectionOf<HTMLElement>;
+const ofButtonsElementsByIdObject = elementsArrayToByIdObject(ofButtonsElements);
 
-let nextWordHighlight = document.getElementById("next-word-highlight")!;
-let ofNextWordHighlight = document.getElementById("of-next-word-highlight")!;
+const onoffsetttings: OnOffSettings = {
+        "space-to-next-word": {
+                state: "OFF",
+                localStorageKey: "spaceToNextWordState",
+                ofButton: ofButtonsElementsByIdObject["of-space-to-next-word"],
+        },
+        "current-word-highlight": {
+                state: "OFF",
+                localStorageKey: "currentWordHighlightState",
+                ofButton: ofButtonsElementsByIdObject["of-current-word-highlight"],
+        },
+        "next-word-highlight": {
+                state: "OFF",
+                localStorageKey: "nextWordHighlightState",
+                ofButton: ofButtonsElementsByIdObject["of-next-word-highlight"],
+        },
+        "smooth-caret": {
+                state: "OFF",
+                localStorageKey: "smoothCaretState",
+                ofButton: ofButtonsElementsByIdObject["of-smooth-caret"],
+                onClickFunction: () => {
+                        addCaretStyleOnScreen();
+                        positionUpdate();
+                        updateCaretOnScreen();
+                },
+        },
+        "show-typed-word-on-top": {
+                state: "OFF",
+                localStorageKey: "showTypedWordOnTopState",
+                ofButton: ofButtonsElementsByIdObject["of-show-typed-word-on-top"],
+        },
+        "show-live-raw-wpm": {
+                state: "OFF",
+                localStorageKey: "showLiveRawWpmState",
+                ofButton: ofButtonsElementsByIdObject["of-show-live-raw-wpm"],
+                onClickFunction: () => {
+                        liveShowOnPage();
+                },
+        },
+        "show-live-accuracy": {
+                state: "OFF",
+                localStorageKey: "showLiveAccuracyState",
+                ofButton: ofButtonsElementsByIdObject["of-show-live-accuracy"],
+                onClickFunction: () => {
+                        liveShowOnPage();
+                },
+        },
+};
 
-let nextWordHighlightLocalStorage = localStorage.getItem("nextWordHighlightState")!;
-let nextWordHighlightState = nextWordHighlightLocalStorage || "OFF";
-ofNextWordHighlight.innerHTML = nextWordHighlightState;
+setupOnOffSettings();
 
-let smoothCaret = document.getElementById("smooth-caret")!;
-let ofSmoothCaret = document.getElementById("of-smooth-caret")!;
 
-let smoothCaretLocalStorage = localStorage.getItem("smoothCaretState");
-let smoothCaretState = smoothCaretLocalStorage || "OFF";
-ofSmoothCaret.innerHTML = smoothCaretState;
+let spaceToNextWordState = onoffsetttings["space-to-next-word"].state;
+let currentWordHighlightState = onoffsetttings["current-word-highlight"].state;
+let nextWordHighlightState = onoffsetttings["next-word-highlight"].state;
+let smoothCaretState = onoffsetttings["smooth-caret"].state;
+// let showTypedWordOnTopState = onoffsetttings["show-typed-word-on-top"].state;
+let showLiveRawWpmState = onoffsetttings["show-live-raw-wpm"].state;
+let showLiveAccuracyState = onoffsetttings["show-live-accuracy"].state;
 
-let showTypedWordOnTop = document.getElementById("show-typed-word-on-top")!;
-let ofshowTypedWordOnTop = document.getElementById("of-show-typed-word-on-top")!;
+function updateStates() {
+        spaceToNextWordState = onoffsetttings["space-to-next-word"].state;
+        currentWordHighlightState = onoffsetttings["current-word-highlight"].state;
+        nextWordHighlightState = onoffsetttings["next-word-highlight"].state;
+        smoothCaretState = onoffsetttings["smooth-caret"].state;
+        // showTypedWordOnTopState = onoffsetttings["show-typed-word-on-top"].state;
+        showLiveRawWpmState = onoffsetttings["show-live-raw-wpm"].state;
+        showLiveAccuracyState = onoffsetttings["show-live-accuracy"].state;
+}
 
-let showTypedWordOnTopLocalStorage = localStorage.getItem("showTypedWordOnTopState");
-let showTypedWordOnTopState = showTypedWordOnTopLocalStorage || "OFF";
-ofshowTypedWordOnTop.innerHTML = showTypedWordOnTopState;
-
-let showLiveRawWpm = document.getElementById("show-live-raw-wpm")!;
-let ofshowLiveRawWpm = document.getElementById("of-show-live-raw-wpm")!;
-
-let showLiveRawWpmLocalStorage = localStorage.getItem("showLiveRawWpmState")!;
-let showLiveRawWpmState = showLiveRawWpmLocalStorage || "OFF";
-ofshowLiveRawWpm.innerHTML = showLiveRawWpmState;
-
-let showLiveAccuracy = document.getElementById("show-live-accuracy")!;
-let ofshowLiveAccuracy = document.getElementById("of-show-live-accuracy")!;
-
-let showLiveAccuracyLocalStorage = localStorage.getItem("showLiveAccuracyState");
-let showLiveAccuracyState = showLiveAccuracyLocalStorage || "OFF";
-ofshowLiveAccuracy.innerHTML = showLiveAccuracyState;
-
-let allOnOffBtns: NodeListOf<HTMLSpanElement> = document.querySelectorAll(".of-button")!;
-allOnOffBtns.forEach((elem) => {
-        ofButtonStyle(elem);
-});
 // end of on-off settings
 
 let ctrlPressed = false;
@@ -1570,60 +1604,51 @@ const inputIdWithColorKey: InputIdWithColorKey = {
         });
 });
 
-spaceToNextWord.addEventListener("click", () => {
-        if (ofSpaceToNextWord.innerHTML === "OFF") {
-                ofSpaceToNextWord.innerHTML = "ON";
-                localStorage.setItem("spaceToNextWordState", "ON");
-                spaceToNextWordState = "ON";
-        } else {
-                ofSpaceToNextWord.innerHTML = "OFF";
-                localStorage.setItem("spaceToNextWordState", "OFF");
-                spaceToNextWordState = "OFF";
-        }
-        ofButtonStyle(ofSpaceToNextWord);
-});
+function setupOnOffSettings() {
+        for (let i = 0; i < onOffSettingsElements.length; i++) {
+                let ofsetting = onoffsetttings[onOffSettingsElements[i].id as onOffSettingsIds];
 
-currentWordHighlight.addEventListener("click", () => {
-        if (ofCurrentWordHighlight.innerHTML === "OFF") {
-                ofCurrentWordHighlight.innerHTML = "ON";
-                localStorage.setItem("currentWordHighlightState", "ON");
-                currentWordHighlightState = "ON";
-        } else {
-                ofCurrentWordHighlight.innerHTML = "OFF";
-                localStorage.setItem("currentWordHighlightState", "OFF");
-                currentWordHighlightState = "OFF";
-        }
-        ofButtonStyle(ofCurrentWordHighlight);
-});
+                ofsetting.state = (localStorage.getItem(ofsetting.localStorageKey) as "OFF" | "ON") || ofsetting.state;
 
-nextWordHighlight.addEventListener("click", () => {
-        if (ofNextWordHighlight.innerHTML === "OFF") {
-                ofNextWordHighlight.innerHTML = "ON";
-                localStorage.setItem("nextWordHighlightState", "ON");
-                nextWordHighlightState = "ON";
-        } else {
-                ofNextWordHighlight.innerHTML = "OFF";
-                localStorage.setItem("nextWordHighlightState", "OFF");
-                nextWordHighlightState = "OFF";
-        }
-        ofButtonStyle(ofNextWordHighlight);
-});
+                ofsetting.ofButton.innerHTML = ofsetting.state;
 
-smoothCaret.addEventListener("click", () => {
-        if (ofSmoothCaret.innerHTML === "OFF") {
-                ofSmoothCaret.innerHTML = "ON";
-                localStorage.setItem("smoothCaretState", "ON");
-                smoothCaretState = "ON";
-        } else {
-                ofSmoothCaret.innerHTML = "OFF";
-                localStorage.setItem("smoothCaretState", "OFF");
-                smoothCaretState = "OFF";
+                onOffSettingsElements[i].addEventListener("click", () => {
+                        let ofButton = ofsetting.ofButton;
+                        let lsKey = ofsetting.localStorageKey;
+
+                        if (ofButton.innerHTML === "OFF") {
+                                ofButton.innerHTML = "ON";
+                                localStorage.setItem(lsKey, "ON");
+                                ofsetting.state = "ON";
+                        } else {
+                                ofButton.innerHTML = "OFF";
+                                localStorage.setItem(lsKey, "OFF");
+                                ofsetting.state = "OFF";
+                        }
+
+                        ofButtonStyle(ofsetting.ofButton);
+
+                        updateStates();
+
+                        if (ofsetting.onClickFunction !== undefined) {
+                                ofsetting.onClickFunction();
+                        }
+                });
         }
-        ofButtonStyle(ofSmoothCaret);
-        addCaretStyleOnScreen();
-        positionUpdate();
-        updateCaretOnScreen();
-});
+        for (let i = 0; i < ofButtonsElements.length; i++) {
+                ofButtonStyle(ofButtonsElements[i]);
+        }
+}
+
+function elementsArrayToByIdObject(array: HTMLCollectionOf<HTMLElement> | HTMLElement[]) {
+        let result: { [key: string]: HTMLElement } = {};
+
+        for (let i = 0; i < array.length; i++) {
+                result[array[i].id] = array[i];
+        }
+
+        return result;
+}
 
 caretStyleElem.addEventListener("click", () => {
         let index = caretStyleStates.indexOf(switchCaretStyle.innerHTML);
@@ -1639,47 +1664,6 @@ caretStyleElem.addEventListener("click", () => {
         addCaretStyleOnScreen();
         positionUpdate();
         updateCaretOnScreen();
-});
-
-showTypedWordOnTop.addEventListener("click", () => {
-        if (ofshowTypedWordOnTop.innerHTML === "OFF") {
-                ofshowTypedWordOnTop.innerHTML = "ON";
-                localStorage.setItem("showTypedWordOnTopState", "ON");
-                showTypedWordOnTopState = "ON";
-        } else {
-                ofshowTypedWordOnTop.innerHTML = "OFF";
-                localStorage.setItem("showTypedWordOnTopState", "OFF");
-                showTypedWordOnTopState = "OFF";
-        }
-        ofButtonStyle(ofshowTypedWordOnTop);
-});
-
-showLiveRawWpm.addEventListener("click", () => {
-        if (ofshowLiveRawWpm.innerHTML === "OFF") {
-                ofshowLiveRawWpm.innerHTML = "ON";
-                localStorage.setItem("showLiveRawWpmState", "ON");
-                showLiveRawWpmState = "ON";
-        } else {
-                ofshowLiveRawWpm.innerHTML = "OFF";
-                localStorage.setItem("showLiveRawWpmState", "OFF");
-                showLiveRawWpmState = "OFF";
-        }
-        ofButtonStyle(ofshowLiveRawWpm);
-        liveShowOnPage();
-});
-
-showLiveAccuracy.addEventListener("click", () => {
-        if (ofshowLiveAccuracy.innerHTML === "OFF") {
-                ofshowLiveAccuracy.innerHTML = "ON";
-                localStorage.setItem("showLiveAccuracyState", "ON");
-                showLiveAccuracyState = "ON";
-        } else {
-                ofshowLiveAccuracy.innerHTML = "OFF";
-                localStorage.setItem("showLiveAccuracyState", "OFF");
-                showLiveAccuracyState = "OFF";
-        }
-        ofButtonStyle(ofshowLiveAccuracy);
-        liveShowOnPage();
 });
 
 function ofButtonStyle(elem: HTMLSpanElement) {
