@@ -12,7 +12,7 @@ const popUps = byId("popups")!;
 const darkBack = byId("dark-back")!;
 const setttingsFontSizeDisplay = byId("settings-font-size-display")!;
 
-const plusBtns = document.getElementsByClassName("plus-btn")!;
+const plusBtns = byClassName("plus-btn")!;
 const backSpace = byId("back-space")!;
 
 const notifElem = byId("notif")!;
@@ -89,7 +89,7 @@ type LanguageObject = {
         [key in LanguageNames]: string[];
 };
 
-let languageLocalStorage: LanguageNamesLS = localStorage.getItem("LANGUAGE") as LanguageNamesLS;
+let languageLocalStorage: LanguageNamesLS = lsGet("LANGUAGE") as LanguageNamesLS;
 let LANGUAGE = english200;
 let LANGUAGENAME: LanguageNames = languageLocalStorage || "english-200";
 
@@ -101,9 +101,9 @@ const LanguagesObj: LanguageObject = {
 
 LANGUAGE = LanguagesObj[LANGUAGENAME];
 
-const languageSettingsItemsDisplay = document.getElementById("language-settings-items-display")!;
-const languageButton = document.getElementById("language")!;
-const languagePopup = document.getElementById("language-popup")!;
+const languageSettingsItemsDisplay = byId("language-settings-items-display")!;
+const languageButton = byId("language")!;
+const languagePopup = byId("language-popup")!;
 
 let localStorageBg = lsGet("bgC");
 let localStorageFst = lsGet("fstC");
@@ -341,7 +341,7 @@ darkBack.addEventListener("click", () => {
         settings.blur();
 });
 
-document.getElementById("font-size")!.addEventListener("click", () => {
+byId("font-size")!.addEventListener("click", () => {
         displayNone(settingsItemsDisplay);
         displayBlock(setttingsFontSizeDisplay);
 });
@@ -377,11 +377,10 @@ function inputNumberQuantity(node: HTMLSpanElement, sign: string) {
 }
 
 backSpace.addEventListener("click", () => {
-        if (settingsItemsDisplay.style.display === "block") {
-                popUps.style.display = "none";
-                darkBack.style.display = "none";
-        } else if (settingsItemsDisplay.style.display === "none") {
-                document.querySelectorAll(".setting-inside").forEach((e: Element) => {
+        if (isBlock(settingsItemsDisplay)) {
+                displayNone([popUps, darkBack]);
+        } else if (isNone(settingsItemsDisplay)) {
+                $$(".setting-inside").forEach((e: Element) => {
                         if ((e as HTMLElement).style.display === "block") {
                                 (e as HTMLElement).style.display = "none";
                         }
@@ -466,14 +465,14 @@ function matchSearch(node: HTMLInputElement) {
         }
         if (txt === "") {
                 for (let i = 0; i < LK.length; i++) {
-                        document.getElementById(LO[copyOfList[i]])!.style.display = "block";
+                        byId(LO[copyOfList[i]])!.style.display = "block";
                 }
         }
         let not = false;
         for (let i = 0; i < copyOfList.length; i++) {
                 for (let j = 0; j < txt.length; j++) {
                         if (tolowercase(txt[j]) !== tolowercase(copyOfList[i][j])) {
-                                document.getElementById(LO[copyOfList[i]])!.style.display = "none";
+                                byId(LO[copyOfList[i]])!.style.display = "none";
                                 copyOfList.splice(i, 1);
                                 not = true;
                                 break;
@@ -485,7 +484,7 @@ function matchSearch(node: HTMLInputElement) {
                 }
         }
         for (let i = 0; i < copyOfList.length; i++) {
-                document.getElementById(LO[copyOfList[i]])!.style.display = "block";
+                byId(LO[copyOfList[i]])!.style.display = "block";
         }
 }
 
@@ -538,7 +537,7 @@ function textGeneratorToHtmlTimeTypeMode() {
         let resultString: string = " " + result.join(" ");
         TEXT += resultString;
 
-        let firstWordTop = (document.querySelector(".word") as HTMLElement).style.top;
+        let firstWordTop = ($(".word") as HTMLElement).style.top;
 
         let x = document.createElement("div");
         x.classList.add("letter");
@@ -673,24 +672,9 @@ document.addEventListener("keydown", (event) => {
 
         if (event.key === " " && spaceToNextWordState === "ON") {
                 if (typeTestStarted === false && readyToStart === true) {
-                        typeTestStarted = true;
-                        startTime = performance.now();
-                        focusMode(true);
-                        if (TYPEMODE === "time-type-mode") {
-                                timerForTimeTypeMode(Number(nTimeInput));
-                        }
-
-                        liveShowOnPage();
-
-                        if (showLiveRawWpmState === "ON") {
-                                liveRawWpmStart();
-                        }
-                        if (showLiveAccuracyState === "ON") {
-                                liveAccuracyStart();
-                        }
+                        onStart();
                 }
-
-                let pos = document.querySelector(".position")!;
+                let pos = $(".position")!;
                 let parentElem = pos.parentElement;
                 if (isLastChild(pos.parentNode) || parentElem?.nextElementSibling?.tagName === "SPAN") {
                         finished();
@@ -705,42 +689,14 @@ document.addEventListener("keydown", (event) => {
                 backSpaceHandler();
         } else if (event.key === TEXT[POSITION]) {
                 if (typeTestStarted === false && readyToStart === true) {
-                        typeTestStarted = true;
-                        startTime = performance.now();
-                        focusMode(true);
-                        if (TYPEMODE === "time-type-mode") {
-                                timerForTimeTypeMode(Number(nTimeInput));
-                        }
-
-                        liveShowOnPage();
-
-                        if (showLiveRawWpmState === "ON") {
-                                liveRawWpmStart();
-                        }
-                        if (showLiveAccuracyState === "ON") {
-                                liveAccuracyStart();
-                        }
+                        onStart();
                 }
                 POSITION++;
 
                 correctHandler();
         } else if (event.key !== TEXT[POSITION]) {
                 if (typeTestStarted === false && readyToStart === true) {
-                        typeTestStarted = true;
-                        startTime = performance.now();
-                        focusMode(true);
-                        if (TYPEMODE === "time-type-mode") {
-                                timerForTimeTypeMode(Number(nTimeInput));
-                        }
-
-                        liveShowOnPage();
-
-                        if (showLiveRawWpmState === "ON") {
-                                liveRawWpmStart();
-                        }
-                        if (showLiveAccuracyState === "ON") {
-                                liveAccuracyStart();
-                        }
+                        onStart();
                 }
                 numberOfErrors++;
                 POSITION++;
@@ -755,6 +711,24 @@ document.addEventListener("keydown", (event) => {
                 checkNextWordForHighlight();
         }
 });
+
+function onStart() {
+        typeTestStarted = true;
+        startTime = performance.now();
+        focusMode(true);
+        if (TYPEMODE === "time-type-mode") {
+                timerForTimeTypeMode(Number(nTimeInput));
+        }
+
+        liveShowOnPage();
+
+        if (showLiveRawWpmState === "ON") {
+                liveRawWpmStart();
+        }
+        if (showLiveAccuracyState === "ON") {
+                liveAccuracyStart();
+        }
+}
 
 document.addEventListener("keyup", (event) => {
         if (event.key === "Control") {
@@ -848,7 +822,7 @@ function backSpaceHandler() {
 }
 
 function correctHandler() {
-        let position = document.querySelector(".position")!;
+        let position = $(".position")!;
         position.classList.add("correct");
 
         if (isLastChild(position)) {
@@ -868,7 +842,7 @@ function correctHandler() {
 }
 
 function incorrectHandler() {
-        let position = document.querySelector(".position")!;
+        let position = $(".position")!;
         if (position.innerHTML === " ") {
                 position.classList.add("space-incorrect");
         } else {
@@ -1285,7 +1259,7 @@ function afterTypeModeHandler() {
         restart();
 }
 
-(document.querySelectorAll(".type-mode-item") as NodeListOf<HTMLDivElement>).forEach((e) => {
+($$(".type-mode-item") as NodeListOf<HTMLDivElement>).forEach((e) => {
         e.addEventListener("click", () => {
                 selectTypeMode(e);
                 showTimerOnPage();
@@ -1332,9 +1306,9 @@ function showTimerOnPage() {
 showTimerOnPage();
 
 function positioningTypeFieldOnCaret() {
-        let firstWord: HTMLElement = document.querySelector(".word")!;
-        let allWords: NodeListOf<HTMLElement> = document.querySelectorAll(".word")!;
-        let caretLetter = document.querySelector(".position");
+        let firstWord: HTMLElement = $(".word")!;
+        let allWords: NodeListOf<HTMLElement> = ($$(".word") as NodeListOf<HTMLElement>)!;
+        let caretLetter = $(".position");
         let caretWord = caretLetter?.parentElement;
         let caretWordTop = caretWord?.offsetTop;
 
@@ -1357,19 +1331,19 @@ function positioningTypeFieldOnCaret() {
 function updateCaretOnScreen() {
         if (caretStyleState === "block" && smoothCaretState === "OFF") return;
         else {
-                let pos: HTMLElement = document.querySelector(".position")!;
+                let pos: HTMLElement = $(".position")!;
                 let parent = pos.parentElement;
                 let posX = pos.offsetLeft + (parent?.offsetLeft || 0);
                 let posY = pos.offsetTop + (parent?.offsetTop || 0);
-                let caret: HTMLElement = document.querySelector(".block-caret")!;
+                let caret: HTMLElement = $(".block-caret")!;
                 if (caretStyleState === "BLOCK") {
-                        caret = document.querySelector(".block-caret")!;
+                        caret = $(".block-caret")!;
                 } else if (caretStyleState === "LINE") {
-                        caret = document.querySelector(".line-caret")!;
+                        caret = $(".line-caret")!;
                 } else if (caretStyleState === "OUTLINE-BLOCK") {
-                        caret = document.querySelector(".outline-block-caret")!;
+                        caret = $(".outline-block-caret")!;
                 } else if (caretStyleState === "UNDERLINE") {
-                        caret = document.querySelector(".underline-block-caret")!;
+                        caret = $(".underline-block-caret")!;
                 }
 
                 if (caret != undefined) {
@@ -1391,24 +1365,23 @@ function updateCaretOnScreen() {
 
 window.addEventListener("resize", updateCaretOnScreen);
 
-document.querySelectorAll(".lang").forEach((e) => {
+$$(".lang").forEach((e) => {
         e.addEventListener("click", () => {
                 let langStr: LanguageNames = e.id as LanguageNames;
                 console.log(langStr);
-                localStorage.setItem("LANGUAGE", langStr);
+                lsSet("LANGUAGE", langStr);
                 LANGUAGENAME = langStr;
                 LANGUAGE = LanguagesObj[LANGUAGENAME];
                 restart();
-                languagePopup.style.display = "none";
-                darkBack.style.display = "none";
+                displayNone([languagePopup, darkBack]);
                 languageButton.innerHTML = langStr.replace("-", " ").toUpperCase();
         });
 });
 
-document.querySelectorAll(".theme").forEach((e) => {
+$$(".theme").forEach((e) => {
         e.addEventListener("click", () => {
                 THEME = themeObj[e.id as ThemeNames];
-                localStorage.setItem("THEME", e.id);
+                lsSet("THEME", e.id);
                 resultBestColorHEX = THEME["--best-score-color"] || themeObj["tokyo-night-dark"]["--best-score-color"];
                 resultWorstColorHEX = THEME["--worst-score-color"] || themeObj["tokyo-night-dark"]["--worst-score-color"];
                 themeUpdateOnScreen();
@@ -1417,8 +1390,8 @@ document.querySelectorAll(".theme").forEach((e) => {
 });
 themeUpdateOnScreen();
 function themeUpdateOnScreen() {
-        let root = (document.querySelector(":root") as HTMLElement)!;
-        let sheet = (document.getElementById("new-animation") as HTMLStyleElement)!.sheet;
+        let root = ($(":root") as HTMLElement)!;
+        let sheet = (byId("new-animation") as HTMLStyleElement)!.sheet;
         for (const key in THEME) {
                 root.style.setProperty(key, THEME[key as keyof Theme]);
         }
@@ -1432,7 +1405,7 @@ function themeUpdateOnScreen() {
         resetLiveColors();
 }
 function positionUpdate() {
-        let head = document.querySelector("head")!;
+        let head = $("head")!;
         if (caretStyleState === "BLOCK") {
                 if (smoothCaretState === "ON") {
                         head.insertAdjacentHTML(
@@ -1548,17 +1521,17 @@ const inputIdWithColorKey: InputIdWithColorKey = {
         "worst-color-input": ["--worst-score-color", "wsC"],
 };
 
-(document.querySelectorAll(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
+($$(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
         e.value = THEME[inputIdWithColorKey[e.id as InputIdWithColorKeyKeys][0] as InputIdWithColorKeyFirstElements];
 });
 
-(document.querySelectorAll(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
+($$(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
         e.addEventListener("input", () => {
                 let id: InputIdWithColorKeyKeys = e.id as InputIdWithColorKeyKeys;
                 let value = e.value;
 
                 THEME[inputIdWithColorKey[id][0]] = value;
-                localStorage.setItem(inputIdWithColorKey[id][1], value);
+                lsSet(inputIdWithColorKey[id][1], value);
 
                 resultBestColorHEX = THEME["--best-score-color"];
                 resultWorstColorHEX = THEME["--worst-score-color"];
@@ -1709,7 +1682,7 @@ resetCustomTheme.addEventListener("click", () => {
                         lsSet(inputIdWithColorKey[key as InputIdWithColorKeyKeys][1], tokyoNightDark[inputIdWithColorKey[key as InputIdWithColorKeyKeys][0]]);
                 }
         }
-        (document.querySelectorAll(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
+        ($$(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
                 e.value = tokyoNightDark[inputIdWithColorKey[e.id as InputIdWithColorKeyKeys][0]];
                 customThemeObj[inputIdWithColorKey[e.id as InputIdWithColorKeyKeys][0]] = e.value;
         });
@@ -1765,17 +1738,17 @@ function addCaretStyleOnScreen() {
 }
 
 function caretClassRemove() {
-        while (document.querySelector(".block-caret") != undefined) {
-                document.querySelector(".block-caret")!.remove();
+        while ($(".block-caret") != undefined) {
+                $(".block-caret")!.remove();
         }
-        while (document.querySelector(".line-caret") != undefined) {
-                document.querySelector(".line-caret")!.remove();
+        while ($(".line-caret") != undefined) {
+                $(".line-caret")!.remove();
         }
-        while (document.querySelector(".outline-block-caret") != undefined) {
-                document.querySelector(".outline-block-caret")!.remove();
+        while ($(".outline-block-caret") != undefined) {
+                $(".outline-block-caret")!.remove();
         }
-        while (document.querySelector(".underline-block-caret") != undefined) {
-                document.querySelector(".underline-block-caret")!.remove();
+        while ($(".underline-block-caret") != undefined) {
+                $(".underline-block-caret")!.remove();
         }
         return 0;
 }
