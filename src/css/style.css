@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap");
 
 :root {
         --first-color: rgba(255, 255, 255, 0.24);
@@ -11,14 +11,11 @@
         --third-color: #bb9af7;
         --dark-blue-color: #152f66;
         --blue-color: #7aa2f7;
-
-
-
 }
 
 html {
         background-color: var(--background-color);
-        font-family: "Iosevka Web", "Iosevka", "consolas", 'Courier New', Courier, monospace;
+        font-family: "Iosevka Web", "Iosevka", "consolas", "Courier New", Courier, monospace;
         font-size: 170px;
         cursor: default;
         user-select: none;
@@ -27,8 +24,6 @@ html {
         transition: 400ms;
         scroll-behavior: smooth;
 }
-
-
 
 ::-moz-selection {
         /* Code for Firefox */
@@ -154,8 +149,8 @@ label {
         background-color: var(--background-color);
 }
 
-input:focus~label,
-input:valid~label {
+input:focus ~ label,
+input:valid ~ label {
         top: -10px;
         font-size: 14px;
         color: var(--error-color);
@@ -280,7 +275,7 @@ fieldset {
 }
 
 .uifont {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
 }
 
 .setting-input {
@@ -420,11 +415,11 @@ fieldset {
 .gg-menu::before {
         content: "";
         position: absolute;
-        top: 12px
+        top: 12px;
 }
 
 .gg-menu::after {
-        top: 6px
+        top: 6px;
 }
 
 /* css.org20 ^^^^^^^^^^^^^^^^^^^^  */
@@ -488,10 +483,10 @@ fieldset {
 }
 
 .letter {
+        position: relative;
         display: inline-flex;
         color: var(--first-color);
         margin: 0px 0px;
-
 }
 
 .word {
@@ -506,10 +501,12 @@ fieldset {
 }
 
 .incorrect {
+        position: relative;
         color: var(--error-color) !important;
 }
 
 .space-incorrect {
+        color: var(--error-color);
         background-color: var(--error-color);
 }
 
@@ -593,9 +590,6 @@ fieldset {
         width: 10px;
 }
 
-
-
-
 /* type-field */
 
 /* result-field */
@@ -630,9 +624,7 @@ h1 {
 .wrapper {
         display: inline-block;
         width: 270px;
-
 }
-
 
 /* result-field */
 
@@ -753,7 +745,6 @@ h1 {
 #type-title {
         display: inline-block;
         color: inherit;
-
 }
 
 #penguin-title {
@@ -775,9 +766,7 @@ h1 {
         color: var(--error-color);
         font-size: 20px;
         line-height: 20px;
-
 }
-
 
 .type-mode-bar {
         display: inline-block;
@@ -795,7 +784,6 @@ h1 {
         display: inline-block;
         height: 20px;
         color: inherit;
-
 }
 
 .type-mode-item {
@@ -832,7 +820,6 @@ h1 {
         font-size: 20px;
         color: var(--best-score-color);
         text-align: left;
-
 }
 
 #live-accuracy {
@@ -844,7 +831,6 @@ h1 {
         font-size: 20px;
         color: var(--best-score-color);
         text-align: left;
-
 }
 
 #language {
@@ -878,7 +864,6 @@ h1 {
         background-color: var(--background-color);
 }
 
-
 #language-item-search {
         text-align: left;
         border: none;
@@ -906,8 +891,6 @@ h1 {
         margin: 40px auto;
         width: 500px;
         text-align: center;
-
-
 }
 
 a {
@@ -986,7 +969,6 @@ a:visited {
         height: 680px;
         margin: 80px auto;
         transition: 300ms;
-
 }
 
 .search-bar {
@@ -1017,7 +999,6 @@ a:visited {
         outline: none;
         border: none;
 }
-
 
 input[type="color"] {
         -webkit-appearance: none;
@@ -1068,7 +1049,6 @@ input[type="color"] {
                 font-size: 5vh;
         }
 }
-
 
 .of-button {
         position: absolute;
@@ -1232,4 +1212,13 @@ input[type="color"] {
                 border-color: rgb(255, 255, 255, 0);
                 color: var(--first-color);
         }
+}
+
+.show-incorrect {
+        display: inline-block;
+        position: absolute;
+        top: 18px;
+        left: 50%;
+        transform: translate(-50%,0);
+        font-size: 10px;
 }

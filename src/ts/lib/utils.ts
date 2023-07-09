@@ -118,7 +118,10 @@ export function changeCase(string: string, changeTo: Case): string {
                         }
                 }
                 for (let i = 0; i < arr.length - 1; i++) {
-                        if ((arr[i] === "_" && (arr[i + 1] === "_" || arr[i + 1] === "-")) || (arr[i] === "-" && (arr[i + 1] === "_" || arr[i + 1] === "-"))) {
+                        if (
+                                (arr[i] === "_" && (arr[i + 1] === "_" || arr[i + 1] === "-")) ||
+                                (arr[i] === "-" && (arr[i + 1] === "_" || arr[i + 1] === "-"))
+                        ) {
                                 arr.splice(i, 1);
                                 i--;
                         }
@@ -425,7 +428,11 @@ export function betweenTwoColor(color1: number[], color2: number[], percent: num
         let sign2 = smaller2 === color2[1] ? -1 : 1;
         let sign3 = smaller3 === color2[2] ? -1 : 1;
 
-        return [color1[0] + (sign1 * (diff1 * percent)) / 100, color1[1] + (sign2 * (diff2 * percent)) / 100, color1[2] + (sign3 * (diff3 * percent)) / 100];
+        return [
+                color1[0] + (sign1 * (diff1 * percent)) / 100,
+                color1[1] + (sign2 * (diff2 * percent)) / 100,
+                color1[2] + (sign3 * (diff3 * percent)) / 100,
+        ];
 }
 
 /**
@@ -720,4 +727,52 @@ export function color(elements: HTMLElement | HTMLElement[], color: string) {
         for (let i = 0; i < elems.length; i++) {
                 elems[i].style.color = color;
         }
+}
+/**
+ * Converts an HTML string into a document fragment.
+ *
+ * @example
+ * const htmlString = '<p>Hello, world!</p>';
+ * const fragment = html(htmlString);
+ * document.body.appendChild(fragment);
+ */
+export function html(htmlString: string) {
+        const fragment = document.createDocumentFragment();
+        const container = document.createElement("div");
+        container.innerHTML = htmlString;
+        while (container.firstChild) {
+                fragment.appendChild(container.firstChild);
+        }
+        return fragment.childNodes.length === 1 ? (fragment.firstChild as ChildNode) : fragment;
+}
+
+/**
+ * checks if an element has a class.
+ */
+export function hasClass(elements: HTMLElement, classNmaes: string): boolean;
+export function hasClass(elements: HTMLElement[], classNmaes: string): boolean[];
+export function hasClass(elements: HTMLElement, classNmaes: string[]): boolean[];
+export function hasClass(elements: HTMLElement[], classNmaes: string[]): boolean[][];
+export function hasClass(elements: HTMLElement[] | HTMLElement, classNames: string[] | string): boolean | boolean[] | boolean[][] {
+        const elems = Array.isArray(elements) ? elements : [elements];
+        const classNameArr = Array.isArray(classNames) ? classNames : [classNames];
+
+        let result: boolean[][] = [];
+
+        for (let i = 0; i < elems.length; i++) {
+                let arr = [];
+                for (let j = 0; j < classNameArr.length; j++) {
+                        let bool: boolean;
+                        if (elems[i].classList) bool = elems[i].classList.contains(classNameArr[j]);
+                        else bool = new RegExp("(^| )" + classNameArr[j] + "( |$)", "gi").test(elems[i].className);
+
+                        arr.push(bool);
+                }
+                result.push(arr);
+        }
+        if (result.length === 1) {
+                return result[0];
+        } else if (result[0].length === 1) {
+                return result.flat();
+        } else return result;
 }

@@ -15,11 +15,13 @@
     <link rel="stylesheet" href="https://pvinis.github.io/iosevka-webfont/3.4.1/iosevka.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <script src="dist/src/ts/loading.js"></script>
     <title>PenguinType | Minimalistic Typing Test</title>
-    <meta name="description" content="Typing test website with minimal design and customizable theme. Try yourself with various modes!">
+    <meta name="description"
+        content="Typing test website with minimal design and customizable theme. Try yourself with various modes!">
 </head>
 
 <body>
@@ -82,14 +84,16 @@
         </div>
     </div>
     <div class="buttons-result" id="buttons-result" style="display: block;">
-        <div class="button-large uifont" id="restart-button" tabindex="0" role="button" aria-label="Tab + Enter">RESTART</div>
-        <div class="button-large uifont" id="repeat-button" tabindex="0" role="button" aria-label="Tab + Tab + Enter">REPEAT</div>
+        <div class="button-large uifont" id="restart-button" tabindex="0" role="button" aria-label="Tab + Enter">RESTART
+        </div>
+        <div class="button-large uifont" id="repeat-button" tabindex="0" role="button" aria-label="Tab + Tab + Enter">
+            REPEAT</div>
     </div>
     <div class="buttons-about" id="buttons-about" style="display: block;">
         <div class="button-large-right uifont" id="about-button" tabindex="0">ABOUT</div>
         <div class="button-large-right uifont" id="themes-button" tabindex="0">THEMES</div>
-        <div class="button-large-right uifont" id="github-button" tabindex="0"><a id="github-link" href="https://github.com/ManiGhazaee/PenguinType" target="_blank"
-                rel="noopener noreferrer">GITHUB</a>
+        <div class="button-large-right uifont" id="github-button" tabindex="0"><a id="github-link"
+                href="https://github.com/ManiGhazaee/PenguinType" target="_blank" rel="noopener noreferrer">GITHUB</a>
         </div>
     </div>
     <div class="language uifont" id="language">language</div>
@@ -98,10 +102,12 @@
         <div id="field-settings" class="field">
             <span id="back-space" class="gg-chevron-left"></span>
             <div class="setting-items uifont" id="search-bar">
-                <input type="text" id='item-search' class="setting-items-text uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
+                <input type="text" id='item-search' class="setting-items-text uifont" placeholder="Search..."
+                    autocomplete="off" onkeyup="matchSearch(this)">
             </div>
             <div id="settings-items-display" style="display: block;">
-                <div class="setting-items uifont" id="font-family"><span class="setting-items-text">Font family</span></div>
+                <div class="setting-items uifont" id="font-family"><span class="setting-items-text">Font family</span>
+                </div>
                 <div class="setting-items uifont" id="font-size"><span class="setting-items-text">Font size</span></div>
                 <div class="setting-items uifont onoffsettings" id="space-to-next-word">
                     <span class="setting-items-text">Space to next word</span>
@@ -135,6 +141,10 @@
                     <span class="setting-items-text">Show live accuracy</span>
                     <span class="of-button" id="of-show-live-accuracy">OFF</span>
                 </div>
+                <div class="setting-items uifont onoffsettings" id="show-incorrect">
+                    <span class="setting-items-text">Show incorrect</span>
+                    <span class="of-button" id="of-show-incorrect">OFF</span>
+                </div>
             </div>
 
             <div class="setting-inside" id="settings-font-size-display" style="display: none;">
@@ -142,11 +152,16 @@
                 </div>
                 <div class="setting-input" id="font-size-setting">
                     <label class="input-label uifont">Size (pixel)</label>
-                    <div class="plus-btn" onclick="inputNumberQuantity(this.nextElementSibling, this.className), saveTrigger()">+</div>
-                    <span class="setting-input-number-font-size" id="input-number-font-size" contenteditable='true' data-max="40" data-min="5">20</span>
-                    <div class="minus-btn" onclick="inputNumberQuantity(this.previousElementSibling, this.className), saveTrigger()">-</div>
+                    <div class="plus-btn"
+                        onclick="inputNumberQuantity(this.nextElementSibling, this.className), saveTrigger()">+</div>
+                    <span class="setting-input-number-font-size" id="input-number-font-size" contenteditable='true'
+                        data-max="40" data-min="5">20</span>
+                    <div class="minus-btn"
+                        onclick="inputNumberQuantity(this.previousElementSibling, this.className), saveTrigger()">-
+                    </div>
                 </div>
-                <div class="setting-items uifont save" id="save-font-size" onclick="save(this); notif('Font Size SAVED')">SAVE
+                <div class="setting-items uifont save" id="save-font-size"
+                    onclick="save(this); notif('Font Size SAVED')">SAVE
                 </div>
             </div>
         </div>
@@ -155,27 +170,41 @@
     <div class="pop-up" id="themes-popup" style="display: none;">
         <div class="field" id="themes-settings" style="display: block;">
             <div class="setting-items search-bar uifont" id="themes-search-bar">
-                <input type="text" id='themes-item-search' class="setting-items-text item-search uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
+                <input type="text" id='themes-item-search' class="setting-items-text item-search uifont"
+                    placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
             </div>
             <div id="themes-settings-items-display" style="display: block;">
-                <div class="setting-items theme uifont" id="custom"><span class="setting-items-text">Custom theme</span></div>
-                <div class="setting-items theme uifont" id="tokyo-night-dark"><span class="setting-items-text">Tokyo night dark</span></div>
-                <div class="setting-items theme uifont" id="tokyo-night-light"><span class="setting-items-text">Tokyo night light</span></div>
-                <div class="setting-items theme uifont" id="dark-blue"><span class="setting-items-text">Dark blue</span></div>
+                <div class="setting-items theme uifont" id="custom"><span class="setting-items-text">Custom theme</span>
+                </div>
+                <div class="setting-items theme uifont" id="tokyo-night-dark"><span class="setting-items-text">Tokyo
+                        night dark</span></div>
+                <div class="setting-items theme uifont" id="tokyo-night-light"><span class="setting-items-text">Tokyo
+                        night light</span></div>
+                <div class="setting-items theme uifont" id="dark-blue"><span class="setting-items-text">Dark blue</span>
+                </div>
                 <div class="setting-items theme uifont" id="dark"><span class="setting-items-text">Dark</span></div>
                 <div class="setting-items theme uifont" id="matrix"><span class="setting-items-text">Matrix</span></div>
                 <div class="setting-items theme uifont" id="arch"><span class="setting-items-text">Arch</span></div>
-                <div class="setting-items theme uifont" id="modern-ink"><span class="setting-items-text">Modern ink</span></div>
+                <div class="setting-items theme uifont" id="modern-ink"><span class="setting-items-text">Modern
+                        ink</span></div>
                 <div class="setting-items theme uifont" id="sakura"><span class="setting-items-text">Sakura</span></div>
-                <div class="setting-items theme uifont" id="dracula"><span class="setting-items-text">Dracula</span></div>
-                <div class="setting-items theme uifont" id="terminal"><span class="setting-items-text">Terminal</span></div>
-                <div class="setting-items theme uifont" id="red-dragon"><span class="setting-items-text">Red dragon</span></div>
-                <div class="setting-items theme uifont" id="their-theme"><span class="setting-items-text">Their theme?</span></div>
+                <div class="setting-items theme uifont" id="dracula"><span class="setting-items-text">Dracula</span>
+                </div>
+                <div class="setting-items theme uifont" id="terminal"><span class="setting-items-text">Terminal</span>
+                </div>
+                <div class="setting-items theme uifont" id="red-dragon"><span class="setting-items-text">Red
+                        dragon</span></div>
+                <div class="setting-items theme uifont" id="their-theme"><span class="setting-items-text">Their
+                        theme?</span></div>
                 <div class="setting-items theme uifont" id="jungle"><span class="setting-items-text">Jungle</span></div>
-                <div class="setting-items theme uifont" id="id?"><span class="setting-items-text">Coming soon</span></div>
-                <div class="setting-items theme uifont" id="id?"><span class="setting-items-text">Coming soon</span></div>
-                <div class="setting-items theme uifont" id="id?"><span class="setting-items-text">Coming soon</span></div>
-                <div class="setting-items theme uifont" id="id?"><span class="setting-items-text">Coming soon</span></div>
+                <div class="setting-items theme uifont" id="id?"><span class="setting-items-text">Coming soon</span>
+                </div>
+                <div class="setting-items theme uifont" id="id?"><span class="setting-items-text">Coming soon</span>
+                </div>
+                <div class="setting-items theme uifont" id="id?"><span class="setting-items-text">Coming soon</span>
+                </div>
+                <div class="setting-items theme uifont" id="id?"><span class="setting-items-text">Coming soon</span>
+                </div>
             </div>
             <div class="uifont setting-inside" id="custom-theme" style="display: none;">
                 <div class="setting-items uifont nohover">
@@ -221,7 +250,8 @@
     <div class="pop-up" id="language-popup" style="display: none;">
         <div class="field" id="language-settings" style="display: block;">
             <div class="setting-items search-bar uifont" id="language-search-bar">
-                <input type="text" id='language-item-search' class="setting-items-text item-search uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
+                <input type="text" id='language-item-search' class="setting-items-text item-search uifont"
+                    placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
             </div>
             <div id="language-settings-items-display" style="display: block;">
                 <div class="setting-items lang uifont" id="english-200"><span class="setting-items-text">ENGLISH

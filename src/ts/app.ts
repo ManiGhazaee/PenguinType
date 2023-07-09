@@ -1,8 +1,41 @@
-import { tokyoNightDark, tokyoNightLight, darkBlue, dark, matrix, arch, modernInk, dracula, terminal, redDragon, theirTheme, jungle, sakura } from "./themes.js";
+import {
+        tokyoNightDark,
+        tokyoNightLight,
+        darkBlue,
+        dark,
+        matrix,
+        arch,
+        modernInk,
+        dracula,
+        terminal,
+        redDragon,
+        theirTheme,
+        jungle,
+        sakura,
+} from "./themes.js";
 
 import { punctuation, english1k, english200, javascript100 } from "./language-english.js";
 
-import { byId, $, lsSet, lsGet, byClassName, displayBlock, displayNone, isNone, $$, addClasses, isBlock, opacity_0, opacity_1, rmClasses, color, switchClass } from "./lib/utils.js";
+import {
+        byId,
+        $,
+        lsSet,
+        lsGet,
+        byClassName,
+        displayBlock,
+        displayNone,
+        isNone,
+        $$,
+        addClasses,
+        isBlock,
+        opacity_0,
+        opacity_1,
+        rmClasses,
+        color,
+        switchClass,
+        html,
+        hasClass,
+} from "./lib/utils.js";
 
 const second = 1000;
 
@@ -137,7 +170,21 @@ let customThemeObj = {
         "--worst-score-color": wsC,
 };
 
-type ThemeNames = "tokyo-night-dark" | "tokyo-night-light" | "dark-blue" | "dark" | "matrix" | "arch" | "modern-ink" | "sakura" | "dracula" | "terminal" | "red-dragon" | "their-theme" | "jungle" | "custom";
+type ThemeNames =
+        | "tokyo-night-dark"
+        | "tokyo-night-light"
+        | "dark-blue"
+        | "dark"
+        | "matrix"
+        | "arch"
+        | "modern-ink"
+        | "sakura"
+        | "dracula"
+        | "terminal"
+        | "red-dragon"
+        | "their-theme"
+        | "jungle"
+        | "custom";
 type ThemeNamesLS = ThemeNames | null;
 type Theme = {
         "--background-color": string;
@@ -205,7 +252,18 @@ const customTheme = byId("custom-theme")!;
 const resetCustomTheme = byId("reset-custom-theme")!;
 
 // on-off settings
-type onOffSettingsIds = "space-to-next-word" | "current-word-highlight" | "next-word-highlight" | "smooth-caret" | "smooth-caret" | "smooth-caret" | "show-typed-word-on-top" | "smooth-caret" | "show-live-raw-wpm" | "show-live-accuracy";
+type onOffSettingsIds =
+        | "space-to-next-word"
+        | "current-word-highlight"
+        | "next-word-highlight"
+        | "smooth-caret"
+        | "smooth-caret"
+        | "smooth-caret"
+        | "show-typed-word-on-top"
+        | "smooth-caret"
+        | "show-live-raw-wpm"
+        | "show-live-accuracy"
+        | "show-incorrect";
 
 type OnOffSettings = {
         [key in onOffSettingsIds]: {
@@ -269,6 +327,11 @@ const onoffsetttings: OnOffSettings = {
                         liveShowOnPage();
                 },
         },
+        "show-incorrect": {
+                state: "OFF",
+                localStorageKey: "showIncorrect",
+                ofButton: ofButtonsElementsByIdObject["of-show-incorrect"],
+        },
 };
 
 setupOnOffSettings();
@@ -280,6 +343,7 @@ let smoothCaretState = onoffsetttings["smooth-caret"].state;
 // let showTypedWordOnTopState = onoffsetttings["show-typed-word-on-top"].state;
 let showLiveRawWpmState = onoffsetttings["show-live-raw-wpm"].state;
 let showLiveAccuracyState = onoffsetttings["show-live-accuracy"].state;
+let showIncorrectState = onoffsetttings["show-incorrect"].state;
 
 function updateStates() {
         spaceToNextWordState = onoffsetttings["space-to-next-word"].state;
@@ -289,6 +353,7 @@ function updateStates() {
         // showTypedWordOnTopState = onoffsetttings["show-typed-word-on-top"].state;
         showLiveRawWpmState = onoffsetttings["show-live-raw-wpm"].state;
         showLiveAccuracyState = onoffsetttings["show-live-accuracy"].state;
+        showIncorrectState = onoffsetttings["show-incorrect"].state;
 }
 
 // end of on-off settings
@@ -649,7 +714,14 @@ function addNumbers(arr: string[]) {
 }
 
 document.addEventListener("keydown", (event) => {
-        if (event.key === "Shift" || event.key === "Tab" || event.key === "Enter" || event.key === "Alt" || event.key === "F11" || event.key === "CapsLock") {
+        if (
+                event.key === "Shift" ||
+                event.key === "Tab" ||
+                event.key === "Enter" ||
+                event.key === "Alt" ||
+                event.key === "F11" ||
+                event.key === "CapsLock"
+        ) {
                 return;
         }
         if (POSITION === 0 && event.key === "Backspace") return;
@@ -701,7 +773,7 @@ document.addEventListener("keydown", (event) => {
                 numberOfErrors++;
                 POSITION++;
 
-                incorrectHandler();
+                incorrectHandler(event.key);
         }
 
         if (currentWordHighlightState === "ON") {
@@ -817,6 +889,8 @@ function backSpaceHandler() {
                 position.classList.remove("position");
         }
 
+        showIncorrectHandler("CLEAR", $(".position") as HTMLElement);
+
         positioningTypeFieldOnCaret();
         updateCaretOnScreen();
 }
@@ -841,7 +915,7 @@ function correctHandler() {
         updateCaretOnScreen();
 }
 
-function incorrectHandler() {
+function incorrectHandler(incorrect: string) {
         let position = $(".position")!;
         if (position.innerHTML === " ") {
                 position.classList.add("space-incorrect");
@@ -861,8 +935,35 @@ function incorrectHandler() {
                 position?.nextElementSibling?.classList.add("position");
                 position.classList.remove("position");
         }
+
+        showIncorrectHandler(incorrect, position);
+
         positioningTypeFieldOnCaret();
         updateCaretOnScreen();
+}
+
+function showIncorrectHandler(incorrectKey: string, incorrectElem: HTMLElement) {
+        if (showIncorrectState === "OFF") return;
+        if (incorrectKey === "CLEAR") {
+                while (incorrectElem.querySelector(".show-incorrect")) {
+                        incorrectElem.querySelector(".show-incorrect")?.remove();
+                }
+                return;
+        }
+        const incorrectHtml = html(`<span class="show-incorrect">${incorrectKey}</span>`);
+        incorrectElem.appendChild(incorrectHtml);
+}
+
+function showIncorrectCtrlBSHandler() {
+        if (showIncorrectState === "OFF") return;
+        const allIncors = $$(".show-incorrect");
+        allIncors.forEach((e) => {
+                let parent = e.parentElement;
+                let has = hasClass(parent!, ["incorrect", "space-incorrect"]);
+                if (!(has[0] || has[1])) {
+                        e.remove();
+                }
+        });
 }
 
 function ctrlbackSpaceHandler() {
@@ -897,6 +998,7 @@ function ctrlbackSpaceHandler() {
                 }
         }
         updateCaretOnScreen();
+        showIncorrectCtrlBSHandler();
 }
 
 function removeCorrOrIncorrClass(node: HTMLElement | Element | null) {
@@ -1007,8 +1109,8 @@ function resultColoring() {
         else if (accuracy < resultWorstAcc) accperc = 0;
         if (errors > errdiff) errprec = 100;
         else if (errors <= 0) errprec = 0;
-        if (consistency > resultBestConsis) conperc = 100;
-        else if (consistency < resultWorstConsis) conperc = 0;
+        if (Number(consistency) > resultBestConsis) conperc = 100;
+        else if (Number(consistency) < resultWorstConsis) conperc = 0;
 
         let color1 = rgbToArray(hexToRgb(resultWorstColorHEX));
         let color2 = rgbToArray(hexToRgb(resultBestColorHEX));
@@ -1464,7 +1566,11 @@ function betweenTwoColor(color1: [number, number, number], color2: [number, numb
         let sign2 = smaller2 === color2[1] ? -1 : 1;
         let sign3 = smaller3 === color2[2] ? -1 : 1;
 
-        return [color1[0] + (sign1 * (diff1 * percent)) / 100, color1[1] + (sign2 * (diff2 * percent)) / 100, color1[2] + (sign3 * (diff3 * percent)) / 100];
+        return [
+                color1[0] + (sign1 * (diff1 * percent)) / 100,
+                color1[1] + (sign2 * (diff2 * percent)) / 100,
+                color1[2] + (sign3 * (diff3 * percent)) / 100,
+        ];
 }
 function arrayToRgb(arr: [number, number, number]) {
         return `rgb(${arr[0]}, ${arr[1]}, ${arr[2]})`;
@@ -1679,7 +1785,10 @@ function checkNextWordForHighlight() {
 resetCustomTheme.addEventListener("click", () => {
         for (const key in inputIdWithColorKey) {
                 if (inputIdWithColorKey[key as InputIdWithColorKeyKeys][1] in localStorage) {
-                        lsSet(inputIdWithColorKey[key as InputIdWithColorKeyKeys][1], tokyoNightDark[inputIdWithColorKey[key as InputIdWithColorKeyKeys][0]]);
+                        lsSet(
+                                inputIdWithColorKey[key as InputIdWithColorKeyKeys][1],
+                                tokyoNightDark[inputIdWithColorKey[key as InputIdWithColorKeyKeys][0]]
+                        );
                 }
         }
         ($$(".color-input") as NodeListOf<HTMLInputElement>).forEach((e) => {
