@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install tsc&&tsc"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/ManiGhazaee/PenguinType/issues"
   },
-  "homepage": "https://github.com/ManiGhazaee/PenguinType#readme"
+  "homepage": "https://github.com/ManiGhazaee/PenguinType#readme",
+  "dependencies": {
+    "typescript": "^5.1.6"
+  }
 }
