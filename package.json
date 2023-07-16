@@ -4,7 +4,8 @@
   "description": "![PenguinType](https://github.com/ManiGhazaee/PenguinType/blob/main/static/images/penguintype/penguintypelogo.jpg)",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
