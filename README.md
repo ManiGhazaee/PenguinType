@@ -5,7 +5,7 @@
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 
 ## About
-Visit the site here: [PenguinType](https://penguintype.epizy.com)
+Visit the site here: [PenguinType](https://penguintype.vercel.app/)
 
 PenguinType is a minimalistic typing test site that allows you to test your typing speed and accuracy. It features a simple and minimal interface, with the ability to choose from different themes or set your own custom theme. It also offers two different typing modes.
 
