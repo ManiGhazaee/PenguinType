@@ -37,6 +37,7 @@ import {
         hasClass,
 } from "./lib/utils.js";
 
+
 const second = 1000;
 
 const settings = byId("settings")!;
@@ -454,6 +455,7 @@ backSpace.addEventListener("click", () => {
         }
 });
 
+// @ts-ignore
 function save(node: HTMLElement) {
         let obj: { [key: string]: string } = {};
         if (node.id === "save-font-size") {
@@ -473,6 +475,7 @@ function changeSaves(obj: { [key: string]: string }) {
         }
 }
 
+// @ts-ignore
 function notif(txt: string) {
         let time = 4;
         let notifInterval: ReturnType<typeof setInterval>;
@@ -510,6 +513,7 @@ function tolowercase(str: string) {
         return str.toLowerCase();
 }
 
+// @ts-ignore
 function matchSearch(node: HTMLInputElement) {
         let LK: string[] = [];
         let LO: { [key: string]: string } = {};
