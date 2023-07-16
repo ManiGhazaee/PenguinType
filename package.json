@@ -1,22 +1,32 @@
 {
-  "name": "penguintype",
-  "version": "2.0.0",
-  "description": "![PenguinType](https://github.com/ManiGhazaee/PenguinType/blob/main/static/images/penguintype/penguintypelogo.jpg)",
-  "main": "index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ManiGhazaee/PenguinType.git"
-  },
-  "author": "mani ghazaee",
-  "bugs": {
-    "url": "https://github.com/ManiGhazaee/PenguinType/issues"
-  },
-  "homepage": "https://github.com/ManiGhazaee/PenguinType#readme",
-  "dependencies": {
-    "typescript": "^5.1.6"
-  }
+        "name": "penguintype",
+        "version": "2.0.0",
+        "description": "![PenguinType](https://github.com/ManiGhazaee/PenguinType/blob/main/static/images/penguintype/penguintypelogo.jpg)",
+        "main": "index.html",
+        "scripts": {
+                "test": "echo \"Error: no test specified\" && exit 1",
+                "build": "tsc"
+        },
+        "repository": {
+                "type": "git",
+                "url": "git+https://github.com/ManiGhazaee/PenguinType.git"
+        },
+        "author": "mani ghazaee",
+        "bugs": {
+                "url": "https://github.com/ManiGhazaee/PenguinType/issues"
+        },
+        "homepage": "https://github.com/ManiGhazaee/PenguinType#readme",
+        "dependencies": {
+                "typescript": "^5.1.6"
+        },
+        "routes": [
+                {
+                        "src": "/dist/(.*)",
+                        "dest": "/dist/$1"
+                },
+                {
+                        "src": "/src/(.*)",
+                        "dest": "/src/$1"
+                }
+        ]
 }
