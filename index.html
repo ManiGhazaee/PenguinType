@@ -11,22 +11,20 @@
     <style id="new-animation" type="text/css"></style>
     <style id="new-position" type="text/css"></style>
 
-    <link rel="icon" href="public/icon/favicon-32x32.png">
+    <link rel="icon" href="src/icon/favicon-32x32.png">
     <link rel="stylesheet" href="https://pvinis.github.io/iosevka-webfont/3.4.1/iosevka.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    <script src="dist/src/ts/loading.js"></script>
+    <!-- <script src="dist/src/ts/loading.js"></script> -->
     <title>PenguinType | Minimalistic Typing Test</title>
-    <meta name="description"
-        content="Typing test website with minimal design and customizable theme. Try yourself with various modes!">
+    <meta name="description" content="Typing test website with minimal design and customizable theme. Try yourself with various modes!">
 </head>
 
 <body>
-    <div id="loading" style="z-index: 999;">
-    </div>
+    <!-- <div id="loading" style="z-index: 999;">
+    </div> -->
     <div id="logo" class="logo">
         <div id="penguin-title" class="uifont">Penguin</div>
         <div id="type-title" class="uifont">Type</div>
@@ -92,8 +90,8 @@
     <div class="buttons-about" id="buttons-about" style="display: block;">
         <div class="button-large-right uifont" id="about-button" tabindex="0">ABOUT</div>
         <div class="button-large-right uifont" id="themes-button" tabindex="0">THEMES</div>
-        <div class="button-large-right uifont" id="github-button" tabindex="0"><a id="github-link"
-                href="https://github.com/ManiGhazaee/PenguinType" target="_blank" rel="noopener noreferrer">GITHUB</a>
+        <div class="button-large-right uifont" id="github-button" tabindex="0"><a id="github-link" href="https://github.com/ManiGhazaee/PenguinType" target="_blank"
+                rel="noopener noreferrer">GITHUB</a>
         </div>
     </div>
     <div class="language uifont" id="language">language</div>
@@ -102,8 +100,7 @@
         <div id="field-settings" class="field">
             <span id="back-space" class="gg-chevron-left"></span>
             <div class="setting-items uifont" id="search-bar">
-                <input type="text" id='item-search' class="setting-items-text uifont" placeholder="Search..."
-                    autocomplete="off" onkeyup="matchSearch(this)">
+                <input type="text" id='item-search' class="setting-items-text uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
             </div>
             <div id="settings-items-display" style="display: block;">
                 <div class="setting-items uifont" id="font-family"><span class="setting-items-text">Font family</span>
@@ -152,16 +149,12 @@
                 </div>
                 <div class="setting-input" id="font-size-setting">
                     <label class="input-label uifont">Size (pixel)</label>
-                    <div class="plus-btn"
-                        onclick="inputNumberQuantity(this.nextElementSibling, this.className), saveTrigger()">+</div>
-                    <span class="setting-input-number-font-size" id="input-number-font-size" contenteditable='true'
-                        data-max="40" data-min="5">20</span>
-                    <div class="minus-btn"
-                        onclick="inputNumberQuantity(this.previousElementSibling, this.className), saveTrigger()">-
+                    <div class="plus-btn" onclick="inputNumberQuantity(this.nextElementSibling, this.className), saveTrigger()">+</div>
+                    <span class="setting-input-number-font-size" id="input-number-font-size" contenteditable='true' data-max="40" data-min="5">20</span>
+                    <div class="minus-btn" onclick="inputNumberQuantity(this.previousElementSibling, this.className), saveTrigger()">-
                     </div>
                 </div>
-                <div class="setting-items uifont save" id="save-font-size"
-                    onclick="save(this); notif('Font Size SAVED')">SAVE
+                <div class="setting-items uifont save" id="save-font-size" onclick="save(this); notif('Font Size SAVED')">SAVE
                 </div>
             </div>
         </div>
@@ -170,8 +163,7 @@
     <div class="pop-up" id="themes-popup" style="display: none;">
         <div class="field" id="themes-settings" style="display: block;">
             <div class="setting-items search-bar uifont" id="themes-search-bar">
-                <input type="text" id='themes-item-search' class="setting-items-text item-search uifont"
-                    placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
+                <input type="text" id='themes-item-search' class="setting-items-text item-search uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
             </div>
             <div id="themes-settings-items-display" style="display: block;">
                 <div class="setting-items theme uifont" id="custom"><span class="setting-items-text">Custom theme</span>
@@ -250,8 +242,7 @@
     <div class="pop-up" id="language-popup" style="display: none;">
         <div class="field" id="language-settings" style="display: block;">
             <div class="setting-items search-bar uifont" id="language-search-bar">
-                <input type="text" id='language-item-search' class="setting-items-text item-search uifont"
-                    placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
+                <input type="text" id='language-item-search' class="setting-items-text item-search uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
             </div>
             <div id="language-settings-items-display" style="display: block;">
                 <div class="setting-items lang uifont" id="english-200"><span class="setting-items-text">ENGLISH
@@ -286,7 +277,7 @@
     <div id="notif" class="uifont" style="display: block;"><span class="notif-text"></span></div>
     <!-- <script src="dist/src/ts/themes.js" type="module" ></script>
     <script src="dist/src/ts/language-english.js" type="module"></script> -->
-    <script src="dist/src/ts/app.js" type="module"></script>
+    <script src="dist/src/ts/bundle.js" type="module"></script>
 </body>
 
 </html>
