@@ -65,6 +65,7 @@ const typeField = byId("type-field")!;
 let startTime: number;
 let finishTime;
 let typeTestStarted = false;
+let isCapsLockOn = false;
 let readyToStart = true;
 
 let TEXT: string;
@@ -1092,6 +1093,7 @@ function result() {
     docError.innerHTML = errors.toString();
 
     displayBlock([resultField, buttonsResult]);
+    displayNone([capsLockState, timerTimeTypeMode]);
 }
 
 function resultColoring() {
@@ -1164,6 +1166,7 @@ function restart() {
     readyToStart = true;
 
     displayNone(resultField);
+    isCapsLockOn ? displayBlock(capsLockState) : displayNone(capsLockState);
     displayBlock([typeField, languageButton]);
 
     textGenerator();
@@ -1194,6 +1197,7 @@ function repeat() {
     readyToStart = true;
 
     displayNone(resultField);
+    isCapsLockOn ? displayBlock(capsLockState) : displayNone(capsLockState);
     displayBlock([typeField, languageButton]);
 
     textToHTML(TEXT);
@@ -1235,13 +1239,17 @@ repeatButton.addEventListener("click", () => {
     settings.blur();
 });
 
-document.addEventListener("keyup", function (event) {
-    if (event.getModifierState("CapsLock")) {
+function checkCapsLock(event: KeyboardEvent) {
+    isCapsLockOn = event.getModifierState('CapsLock');
+    if (isBlock(resultField)) return;
+    if (isCapsLockOn) {
         displayBlock(capsLockState);
     } else {
         displayNone(capsLockState);
     }
-});
+}
+
+document.addEventListener('keydown', checkCapsLock);
 
 function typeModeToLocalStorage() {
     let typeModeItems = $$(".type-mode-item")!;
