@@ -98,14 +98,7 @@
     <div id="dark-back" style="display: none;"></div>
     <div id="popups" style="display: none;">
         <div id="field-settings" class="field">
-            <span id="back-space" class="gg-chevron-left"></span>
-            <div class="setting-items uifont" id="search-bar">
-                <input type="text" id='item-search' class="setting-items-text uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
-            </div>
             <div id="settings-items-display" style="display: block;">
-                <div class="setting-items uifont" id="font-family"><span class="setting-items-text">Font family</span>
-                </div>
-                <div class="setting-items uifont" id="font-size"><span class="setting-items-text">Font size</span></div>
                 <div class="setting-items uifont onoffsettings" id="space-to-next-word">
                     <span class="setting-items-text">Space to next word</span>
                     <span class="of-button" id="of-space-to-next-word">OFF</span>
@@ -143,28 +136,11 @@
                     <span class="of-button" id="of-show-incorrect">OFF</span>
                 </div>
             </div>
-
-            <div class="setting-inside" id="settings-font-size-display" style="display: none;">
-                <div class="setting-input"><span class="input-label uifont">Font size</span>
-                </div>
-                <div class="setting-input" id="font-size-setting">
-                    <label class="input-label uifont">Size (pixel)</label>
-                    <div class="plus-btn" onclick="inputNumberQuantity(this.nextElementSibling, this.className), saveTrigger()">+</div>
-                    <span class="setting-input-number-font-size" id="input-number-font-size" contenteditable='true' data-max="40" data-min="5">20</span>
-                    <div class="minus-btn" onclick="inputNumberQuantity(this.previousElementSibling, this.className), saveTrigger()">-
-                    </div>
-                </div>
-                <div class="setting-items uifont save" id="save-font-size" onclick="save(this); notif('Font Size SAVED')">SAVE
-                </div>
-            </div>
         </div>
     </div>
 
     <div class="pop-up" id="themes-popup" style="display: none;">
         <div class="field" id="themes-settings" style="display: block;">
-            <div class="setting-items search-bar uifont" id="themes-search-bar">
-                <input type="text" id='themes-item-search' class="setting-items-text item-search uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
-            </div>
             <div id="themes-settings-items-display" style="display: block;">
                 <div class="setting-items theme uifont" id="custom"><span class="setting-items-text">Custom theme</span>
                 </div>
@@ -241,9 +217,6 @@
     </div>
     <div class="pop-up" id="language-popup" style="display: none;">
         <div class="field" id="language-settings" style="display: block;">
-            <div class="setting-items search-bar uifont" id="language-search-bar">
-                <input type="text" id='language-item-search' class="setting-items-text item-search uifont" placeholder="Search..." autocomplete="off" onkeyup="matchSearch(this)">
-            </div>
             <div id="language-settings-items-display" style="display: block;">
                 <div class="setting-items lang uifont" id="english-200"><span class="setting-items-text">ENGLISH
                         200</span>
@@ -275,7 +248,6 @@
         </div>
     </div>
 
-    <div id="notif" class="uifont" style="display: block;"><span class="notif-text"></span></div>
     <!-- <script src="dist/src/ts/themes.js" type="module" ></script>
     <script src="dist/src/ts/language-english.js" type="module"></script> -->
     <script src="dist/src/ts/bundle.js" type="module"></script>

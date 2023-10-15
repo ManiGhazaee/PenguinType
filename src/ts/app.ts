@@ -43,13 +43,6 @@ const settings = byId("settings")!;
 const settingsItemsDisplay = byId("settings-items-display")!;
 const popUps = byId("popups")!;
 const darkBack = byId("dark-back")!;
-const setttingsFontSizeDisplay = byId("settings-font-size-display")!;
-
-const plusBtns = byClassName("plus-btn")!;
-const backSpace = byId("back-space")!;
-
-const notifElem = byId("notif")!;
-const notifText = $(".notif-text")!;
 
 let itemsListObject: { [key: string]: string } = {};
 let itemsListKeys: string[] = [];
@@ -244,7 +237,7 @@ const resultWorstWpmRaw = 30;
 const resultBestAcc = 100;
 const resultWorstAcc = 50;
 const resultAllCharToErrRatio = 0.04;
-const resultBestConsis = 90;
+const resultBestConsis = 100;
 const resultWorstConsis = 40;
 
 const custom = byId("custom")!;
@@ -407,92 +400,6 @@ darkBack.addEventListener("click", () => {
     settings.blur();
 });
 
-byId("font-size")!.addEventListener("click", () => {
-    displayNone(settingsItemsDisplay);
-    displayBlock(setttingsFontSizeDisplay);
-});
-
-Array.from(plusBtns).forEach((e) => {
-    e.addEventListener("click", () => inputNumberQuantity(e.nextElementSibling as HTMLSpanElement, e.className), {
-        once: true,
-    });
-});
-
-function inputNumberQuantity(node: HTMLSpanElement, sign: string) {
-    let num;
-    let max = Number(node.dataset.max);
-    let min = Number(node.dataset.min);
-
-    node.innerHTML == "" ? (num = 0) : (num = Number(node.innerHTML));
-    if (num > max) {
-        node.innerHTML = max.toString();
-        return;
-    } else if (num < min) {
-        node.innerHTML = min.toString();
-        return;
-    }
-    if (sign === "plus-btn") {
-        if (num + 1 > max) return;
-        num++;
-    } else {
-        if (num - 1 < min) return;
-        num--;
-    }
-
-    num = num.toString();
-    if (num.length === 1) num = "0" + num;
-    node.innerHTML = num;
-}
-
-backSpace.addEventListener("click", () => {
-    if (isBlock(settingsItemsDisplay)) {
-        displayNone([popUps, darkBack]);
-    } else if (isNone(settingsItemsDisplay)) {
-        $$(".setting-inside").forEach((e: Element) => {
-            if ((e as HTMLElement).style.display === "block") {
-                (e as HTMLElement).style.display = "none";
-            }
-        });
-        settingsItemsDisplay.style.display = "block";
-    }
-});
-
-// @ts-ignore
-function save(node: HTMLElement) {
-    let obj: { [key: string]: string } = {};
-    if (node.id === "save-font-size") {
-        $$(".setting-input-number-font-size").forEach((e) => {
-            obj[e.id.toString()] = e.innerHTML.toString();
-        });
-    }
-
-    changeSaves(obj);
-}
-
-function changeSaves(obj: { [key: string]: string }) {
-    for (const key in obj) {
-        if (key === "input-number-font-size") {
-            typeField.style.fontSize = obj[key].toString() + "px";
-        }
-    }
-}
-
-// @ts-ignore
-function notif(txt: string) {
-    let time = 4;
-    let notifInterval: ReturnType<typeof setInterval>;
-
-    notifText.innerHTML = txt;
-    notifElem.style.right = "-2px";
-    notifInterval = setInterval(() => {
-        time = time - 1;
-        if (time <= 0) {
-            notifElem.style.right = "-302px";
-            clearInterval(notifInterval);
-        }
-    }, second);
-}
-
 settingsItemsDisplay.querySelectorAll(".setting-items").forEach((e) => {
     itemsListObject[(e.firstChild as HTMLSpanElement).innerHTML] = e.id;
     itemsListKeys.push((e.firstChild as HTMLSpanElement).innerHTML);
@@ -507,57 +414,6 @@ themesSettingItemsDisplay.querySelectorAll(".setting-items").forEach((e) => {
     themesItemsListOjbect[(e.firstChild as HTMLSpanElement).innerHTML] = e.id;
     themesItemsListKeys.push((e.firstChild as HTMLSpanElement).innerHTML);
 });
-
-// why am i doing this?
-function tolowercase(str: string) {
-    if (str === " ") return " ";
-    if (str == null) return " ";
-    return str.toLowerCase();
-}
-
-// @ts-ignore
-function matchSearch(node: HTMLInputElement) {
-    let LK: string[] = [];
-    let LO: { [key: string]: string } = {};
-    if (node.id === "item-search") {
-        LK = itemsListKeys;
-        LO = itemsListObject;
-    } else if (node.id === "language-item-search") {
-        LK = languageItemsListKeys;
-        LO = languageItemsListObject;
-    } else if (node.id === "themes-item-search") {
-        LK = themesItemsListKeys;
-        LO = themesItemsListOjbect;
-    }
-    let txt = node.value;
-    let copyOfList = [];
-    for (let i = 0; i < LK.length; i++) {
-        copyOfList.push(LK[i]);
-    }
-    if (txt === "") {
-        for (let i = 0; i < LK.length; i++) {
-            byId(LO[copyOfList[i]])!.style.display = "block";
-        }
-    }
-    let not = false;
-    for (let i = 0; i < copyOfList.length; i++) {
-        for (let j = 0; j < txt.length; j++) {
-            if (tolowercase(txt[j]) !== tolowercase(copyOfList[i][j])) {
-                byId(LO[copyOfList[i]])!.style.display = "none";
-                copyOfList.splice(i, 1);
-                not = true;
-                break;
-            }
-        }
-        if (not) {
-            i--;
-            not = false;
-        }
-    }
-    for (let i = 0; i < copyOfList.length; i++) {
-        byId(LO[copyOfList[i]])!.style.display = "block";
-    }
-}
 
 // WHY?
 function isLastChild(el: Node | HTMLElement | null) {
@@ -1240,7 +1096,7 @@ repeatButton.addEventListener("click", () => {
 });
 
 function checkCapsLock(event: KeyboardEvent) {
-    isCapsLockOn = event.getModifierState('CapsLock');
+    isCapsLockOn = event.getModifierState("CapsLock");
     if (isBlock(resultField)) return;
     if (isCapsLockOn) {
         displayBlock(capsLockState);
@@ -1249,7 +1105,7 @@ function checkCapsLock(event: KeyboardEvent) {
     }
 }
 
-document.addEventListener('keydown', checkCapsLock);
+document.addEventListener("keydown", checkCapsLock);
 
 function typeModeToLocalStorage() {
     let typeModeItems = $$(".type-mode-item")!;
